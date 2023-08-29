@@ -32,7 +32,7 @@ procedure cargarLista(var l: lista);
 var
 	num: integer;
 begin
-	num:= random(101); //101, 100, OTRA FORMA? D:
+	num:= random(101); //101 ES
 	if(num <> 0) then
 		begin
 			agregarAdelante(l, num);
@@ -48,8 +48,7 @@ Begin
     else begin
         if (l^.dato < min) then
             min:=l^.dato;
-        l:=l^.sig;
-    MinimoValor:=MinimoValor(l,min);
+    MinimoValor:=MinimoValor(l^.sig,min);
     end;
 End;
 
@@ -61,8 +60,7 @@ Begin
     else begin
         if (l^.dato > max) then
             max:=l^.dato;
-        l:=l^.sig;
-    MaximoValor:=MaximoValor(l,max);
+    MaximoValor:=MaximoValor(l^.sig,max);
     end;
 End;
 
