@@ -1,153 +1,179 @@
+program ej3;
 const
-	PRODU = 10;
+	LIM = 10;
 type
 
-	PRODUCTOS = 1..PRODU;
+	TIPO = 1..10;
 	
 	producto = record
-		codigo : integer;
-		stock : integer;
+		code : integer;
 		precio : real;
+		stock : integer;
+		rubro : TIPO;
+		end;
+		
+	informacion = record
+		code : integer;
+		precio : real;
+		stock : integer;
 		end;
 		
 	arb = ^nodo;
+
 	
 	nodo = record
-		rubro : PRODUCTOS;
-		dato : producto;
 		hi : arb;
 		hd : arb;
+		dato : informacion;
 		end;
 		
-	vec = array[PRODUCTOS] of arb;
-
-	max = record
-		codigo : integer;
+	vec = array[TIPO] of arb;
+	
+	maxcode = record
+		code : integer;
 		stock : integer;
 		end;
-		
-	vecmax = array[PRODUCTOS] of max;
 	
-	vecrango = array[PRODUCTOS] of integer;
-
+	vecmaxcode= array[TIPO] of maxcode;
+	
+	vecrango = array[TIPO] of integer;
+	
 procedure leer(var p : producto);
 begin
-	p.precio := random(101);
-	p.codigo :=random(11) -1;
-	p.stock := random (101);
-	
+	{writeln('ingresar code: ');
+	readln(p.code);}
+	p.code := random(11) - 1;
+	p.precio := random(100)+1;
+	p.stock := random(100)+1;
+	p.rubro := random(10) + 1;
+	{writeln('ingrese rubro: ');
+	readln(p.rubro);}
 end;
-
 
 procedure inicializarvector(var v : vec);
 var
 	i : integer;
 begin
-	for i := 1 to PRODU do
-		begin
-			v[i] := nil;
-		end;
+	for i := 1 to LIM do
+		v[i] := nil;
 end;
 
-
-
-procedure cargararbol(var a : arb; elem : producto);
+procedure agregarnodo(var a : arb; i : informacion);
 begin
 	if(a = nil) then
 		begin
-			new(a); a^.hi := nil; a^.hd := nil; a^.dato := elem;
+			new(a); a^.hi := nil; a^.hd := nil; a^.dato := i;
 		end
-	else
+	else	
 		begin
-			if(elem.codigo <= a^.dato.codigo) then
-				cargararbol(a^.hi, elem)
+			if(i.code <= a^.dato.code) then
+				agregarnodo(a^.hi, i)
 			else
-				cargararbol(a^.hd, elem);
+				agregarnodo(a^.hd, i);
 		end;
 end;
-
 
 procedure cargarvector(var v : vec);
 var
 	p : producto;
-	aux : PRODUCTOS;
+	i : informacion;
 begin
-	aux := random(10) + 1;
 	leer(p);
-	if(p.codigo <> -1) then
+	if(p.code <> -1) then
 		begin
-			cargararbol(v[aux], p);
+			i.stock := p.stock;
+			i.code := p.code;
+			i.precio := p.precio;
+			agregarnodo(v[p.rubro], i);
 			cargarvector(v);
 		end;
 end;
 
-function buscarenarboles(a : arb; codigo : integer) : boolean;
+procedure imprimirarbol(a : arb);
+begin
+	if(a<>nil) then
+		begin
+			writeln(a^.dato.code);
+			imprimirarbol(a^.hd);
+			imprimirarbol(a^.hi);
+		end;
+end;
+
+
+procedure imprimirvector(v : vec);
+var
+	i : integer;
+begin
+	for i := 1 to LIM do
+		begin
+			imprimirarbol(v[i]);
+		end;
+end;
+
+function buscararbol(a : arb; codigo : integer) : boolean;
 begin
 	if(a <> nil) then
 		begin
-			if(a^.dato.codigo = codigo) then
-				buscarenarboles := true
+			if(a^.dato.code = codigo) then
+				buscararbol := true
 			else
 				begin
-					if(codigo > a^.dato.codigo) then
-						buscarenarboles(a^.hd, codigo)
+					if(codigo > a^.dato.code) then
+						buscararbol := buscararbol(a^.hd, codigo)
 					else
-						buscarenarboles(a^.hi, codigo);
+						buscararbol := buscararbol(a^.hi, codigo);
 				end;
 		end
 	else
-		buscarenarboles := false;
+		buscararbol := false;	
 end;
 			
 
-function buscar(v : vec; rubro : PRODUCTOS; codigo : integer) : boolean;
+
+function codigoexiste(v : vec; rubro : TIPO; codigo : integer) : boolean;
 begin
-	if(v[rubro]^.dato.codigo = codigo) then
-		buscar := true
-	else
-		begin
-			if(codigo > v[rubro]^.dato.codigo) then
-				buscar := buscarenarboles(v[rubro]^.hd, codigo)
-			else
-				buscar := buscarenarboles(v[rubro]^.hi, codigo);
-		end;
+	codigoexiste := buscararbol(v[rubro], codigo);
 end;
 
 
-procedure maximoarbol2(a : arb; var maxcode, maxstock : integer);//me marca error de compilacion aca
-var 
-	mcode, mstock : integer;
+procedure maxcodearbol(a : arb; var codemax, maxstock : integer);
 begin
 	if(a <> nil) then
 		begin
-			if(a^.dato.codigo > maxcode) then	
+			if(codemax < a^.dato.code) then
 				begin
-					maxcode := a^.dato.codigo;
+					codemax := a^.dato.code;
 					maxstock := a^.dato.stock;
-					mcode := maxcode;
-					mstock := maxstock;
-					maximoarbol2(a^.hd, mcode, mstock);//mal pasaje de parametros?
+					maxcodearbol(a^.hd, codemax, maxstock);
 				end
 			else
-				maximoarbol2(a^.hd, mcode, mstock);
+				maxcodearbol(a^.hd, codemax, maxstock);
 		end;
 end;
 
-procedure maximo(var vec : vecmax; v : vec); 
+procedure codigomaximo(var vm : vecmaxcode; v : vec; var codemax, stockmax : integer);
 var
-	code, stock, i : integer;
+	i : integer;
 begin
-	for i:= 1 to PRODU do
+	for i := 1 to LIM do
 		begin
-			maximoarbol2(v[i], code, stock);
-			vec[i].stock := stock;
-			vec[i].codigo := code;
+			codemax := 0;
+			stockmax := 0;
+			maxcodearbol(v[i], codemax, stockmax);
+			vm[i].code := codemax;
+			vm[i].stock := stockmax;
 		end;
 end;
+			
+procedure imprimirvectormax(v : vecmaxcode);
+var
+	i : integer;
+begin
+	for i := 1 to LIM do
+		writeln(v[i].code);
+end;
 
-
-
-function entredosnum(valor, num1, num2 : integer) : boolean;
+function enrango(numero, num1, num2 : integer) : boolean;
 var
 	aux : integer;
 begin
@@ -155,73 +181,62 @@ begin
 		begin
 			aux := num1;
 			num1 := num2;
-			num2 := aux;
+			num2 := num1;
 		end;
-	if(valor >= num1) and (valor <= num2) then
-		entredosnum := true
+	if(numero >= num1) and (numero <= num2) then
+		enrango := true
 	else
-		entredosnum := false;
+		enrango := false;
 end;
-
 
 function rango(a : arb; num1, num2 : integer) : integer;
 begin
-	if( a <> nil) then
-		begin
-			if(entredosnum(a^.dato.codigo, num1, num2)) then
-				rango := rango(a^.hi, num1, num2) + rango(a^.hd, num1, num2) + 1
-			else
-				begin
-					if(num1 > a^.dato.codigo) then
-						rango(a^.hd, num1, num2)
-					else
-						rango(a^.hi, num1, num2);
-				end;
-		end
-	else
-		rango := 0;
+    if(a <> nil) then  
+        begin
+        	if(enrango(a^.dato.code, num1, num2)) then	
+        	    begin
+        		    rango := rango(a^.hd, num1, num2) + rango(a^.hi, num1, num2) + 1;
+        		end;
+        end
+    else
+        rango := 0;
 end;
-
-procedure enrango(var vecrango : vecrango; v : vec; num1, num2 : integer);
+        
+procedure rangovector(var vecr : vecrango; num1, num2 : integer; v : vec);
 var
 	i : integer;
 begin
-	for i := 1 to PRODU do
+	for i := 1 to LIM do
 		begin
-			vecrango[i] := rango(v[i], num1, num2);
+			vecr[i] := rango(v[i], num1, num2);
 		end;
 end;
 
-procedure imprimir(v : vecrango; vec : vecmax);
+procedure imprimirvectorrango(v : vecrango);
 var
-	i  : integer;
+	i : integer;
 begin
-	for i := 1 to PRODU do 
-		begin
-			writeln(vec[i].stock);
-			writeln(vec[i].codigo);
-			writeln(v[i]);
-		end;
+	for i := 1 to LIM do
+		write(' | ',v[i],' | ');
 end;
-	
+
 var
 	v : vec;
+	rubro : TIPO;
+	num1, num2, codemax, stockmax, codigo : integer;
+	vmax : vecmaxcode;
 	vrango : vecrango;
-	codigo,num1, num2 : integer;
-	vmax : vecmax;
-	rubro : PRODUCTOS;
 begin
-	Randomize;
-	inicializarvector(v);
-	writeln('inico');
+	randomize;
 	cargarvector(v);
-	writeln('vector cargado');
-	rubro := 4;
-	codigo := 05;
-	writeln('esta este codigo en este rubro?: ', buscar(v, rubro, codigo));
-	maximo(vmax, v);
+	imprimirvector(v);
+	rubro := 2;
+	codigo := 7;
+	writeln(codigoexiste(v, rubro, codigo));
+	codigomaximo(vmax, v, codemax, stockmax);
+	imprimirvectormax(vmax);
 	num1 := 2;
-	num2 := 8;
-	enrango(vrango, v, num1, num2);
-	imprimir(vrango, vmax);
+	num2 := 9;
+	rangovector(vrango, num1, num2, v);
+	imprimirvectorrango(vrango);
 end.
