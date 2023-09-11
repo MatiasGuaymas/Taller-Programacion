@@ -84,7 +84,7 @@ procedure agregarnodo(var a : arb; r : reclamo; dni : integer);
 begin
 	if(a = nil) then
 		begin
-			new(a); a^.hi := nil; a^.hd := nil; a^.dni := dni; new(a^.l); a^.l^.dato := r;
+			new(a); a^.hi := nil; a^.hd := nil; a^.dni := dni; a^.l:= nil;
 		end
 	else
 		begin

@@ -220,6 +220,20 @@ begin
 		write(' | ',v[i],' | ');
 end;
 
+procedure seleccion (var v: vecrango);
+var
+	i, j, pos, cant: integer; 
+begin
+	for i := 1 to LIM-1 do begin
+		pos:= i;
+		for j:= i + 1 to 10 do
+			if v[j] < v[pos] then pos:= j;
+		cant:= v[pos];
+		v[pos] := v[i];
+		v[i] := cant;
+	end;
+end;
+
 var
 	v : vec;
 	rubro : TIPO;
@@ -238,5 +252,8 @@ begin
 	num1 := 2;
 	num2 := 9;
 	rangovector(vrango, num1, num2, v);
+	imprimirvectorrango(vrango);
+	seleccion(vrango);
+	writeln('_________________________');
 	imprimirvectorrango(vrango);
 end.

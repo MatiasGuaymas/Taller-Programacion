@@ -89,8 +89,6 @@ begin
 		busquedadicotomica := 0;
 end;
 	
-	
-	
 procedure montototal(v : vec; var cant : integer; diml : integer);
 begin
     if(diml > 0) then 

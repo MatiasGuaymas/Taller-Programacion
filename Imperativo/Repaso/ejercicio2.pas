@@ -354,7 +354,6 @@ begin
 	arbl := nil;
 	cargageneral(a, arbl);
 	imprimirarbol(a);
-	writeln('listas');
 	imprimirarbollista(arbl);
 	marca := 'kia';
 	writeln('hay ', cantmarca(arbl, marca),' autos de la marca ',marca);
@@ -364,5 +363,5 @@ begin
 	imprimirfabricacion(listaf);
 	patente := 2;
 	writeln('el auto con la patente: ',patente,' es del modelo ',buscarpatente(a, patente));
-	writeln('el auto con la patente: ',patente,' es del modelo ',buscarpatentelistas(arbl, patente));
+	writeln('el auto con la patente: ',patente,' es del modelo ',buscarpatentelistas(arbl, patente));
 end.
