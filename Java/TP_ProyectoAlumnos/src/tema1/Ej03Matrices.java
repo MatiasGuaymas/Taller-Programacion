@@ -62,7 +62,10 @@ public class Ej03Matrices {
                     System.out.println("Fila: "+ i+ " Columna: "+ j);
                 else
                     System.out.println("No se encopntro el elemento");
-            }*/
+            }
+       
+        ESTA MUY MAL!!! BUSQUEDA ES SIN FOR, CON WHILE!!!
+        
         boolean encontre = false;
         
         int fila = 0, columna = 0;
@@ -79,6 +82,23 @@ public class Ej03Matrices {
         if(encontre) 
             System.out.println("Fila: "+ fila + " Columna: "+ columna);
         else
-             System.out.println("No se encontro el elemento");
+            System.out.println("No se encontro el elemento");
+        
+        */
+        int a,b;
+        a =0;
+        b = 0;
+        while ((a < 5) &&(matriz[a][b]!= valor)){
+            while((b < 5) && (matriz[a][b] != valor ))
+                b++;
+            if(b == 5){
+                b = 0;
+                a++;
+            } 
+        }
+        if(matriz[a][b] == valor)
+            System.out.println("Fila: "+ a + " Columna: "+ b);
+        else
+           System.out.println("No se encontro el elemento");
     }
 }
