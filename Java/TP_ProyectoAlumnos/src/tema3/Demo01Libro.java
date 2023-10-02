@@ -3,6 +3,8 @@
  */
 package tema3;
 
+import PaqueteLectura.GeneradorAleatorio;
+
 /**
  *
  * @author vsanz
@@ -17,7 +19,10 @@ public class Demo01Libro {
         libro.setTitulo("Java: A Beginner's Guide");
         libro.setEditorial("Mcgraw-Hill");
         libro.setAñoEdicion(2014);
-        libro.setPrimerAutor("Herbert Schildt");
+        Autor unAutor = new Autor();
+        unAutor.setBiografia(GeneradorAleatorio.generarString(10));
+        unAutor.setOrigen(GeneradorAleatorio.generarString(10));
+        unAutor.setNombre(GeneradorAleatorio.generarString(10));
         libro.setISBN("978-0071809252");
         libro.setPrecio(21.72);
         System.out.println(libro.toString());
