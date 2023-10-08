@@ -9,7 +9,7 @@ public class Sistema {
         this.matriz = new Paciente[cantDias][cantTurnos];
         for (int i=0; i < this.cantDias; i++ )
             for(int j = 0; j < this.cantTurnos; j++)
-                matriz[i][j] = null; //Todo vacio, no tengo pacientes
+                matriz[i][j] = null; //Todo vacio, no tengo pacientes.
     }
 
     public int getCantDias() {
