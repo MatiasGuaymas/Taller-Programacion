@@ -1,3 +1,6 @@
+//Una escuela de música necesita un sistema para realizar un concurso entre sus alumnos. El concurso está
+//dividido en cinco géneros musicales y en cada género se pueden inscribir hasta N alumnos como máximo. De
+//cada alumno registra su nombre, edad, el instrumento que toca y puntaje obtenido.
 //1- Genere las clases necesarias. Implemente constructores para iniciar el concurso sin alumnos inscriptos,
 //recibiendo N (el máximo de alumnos por género musical). Los alumnos deben instanciarse dando valor a todos
 //sus atributos y con puntaje -1.
