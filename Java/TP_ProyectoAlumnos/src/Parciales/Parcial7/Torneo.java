@@ -28,11 +28,11 @@ public class Torneo {
         return nombre;
     }
 
-    public Goleador[][] getTabla() {
+    private Goleador[][] getTabla() {
         return tabla;
     }
 
-    public int[] getCantGoleadores() {
+    private int[] getCantGoleadores() {
         return cantGoleadores;
     }
     

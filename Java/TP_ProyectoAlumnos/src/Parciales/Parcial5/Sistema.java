@@ -33,7 +33,7 @@ public class Sistema {
         return cantTurnos;
     }
 
-    public Paciente[][] getMatriz() {
+    private Paciente[][] getMatriz() {
         return matriz;
     }
     

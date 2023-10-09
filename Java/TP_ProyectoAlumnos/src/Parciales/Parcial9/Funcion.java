@@ -83,7 +83,7 @@ public class Funcion {
         return hora;
     }
 
-    public Butaca[][] getSala() {
+    private Butaca[][] getSala() {
         return sala;
     }
 

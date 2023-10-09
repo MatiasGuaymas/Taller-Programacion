@@ -35,7 +35,7 @@ public abstract class Compra {
         this.cantProductos = cantProductos;
     }
 
-    public Producto[] getProd() {
+    private Producto[] getProd() {
         return prod;
     }
 
@@ -66,11 +66,12 @@ public abstract class Compra {
         String aux = "";
         int i;
         for (i=0;i<this.getCantProductos();i++){
-            aux += "Codigo " + this.getProd()[i].getCodigo() +  " Precio: " + this.getProd()[i].getPrecio() + " Descripcion: " + this.getProd()[i].getDescripcion() + "\n";
+            aux += this.prod[i].toString();
         }
     return aux;
     }
     
+    @Override
     public String toString() {
         String aux;
         aux = "Nro: " + this.getNro() + " Lista de productos: " + this.concatenador() + " Precio a pagar: " + this.getMonto();

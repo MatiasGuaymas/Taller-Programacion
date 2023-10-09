@@ -15,15 +15,6 @@ public class Alumno {
     public int getCantMax() {
         return cantMax;
     }
-    
-    
-    public Alumno(int dni, String nom, int max){
-        this.dni = dni;
-        this.nombre = nom;
-        this.cantAprobadas = 0;
-        this.cantMax = max;
-        this.aprobadas = new Materia [cantMax];
-    }
 
     public void setDni(int dni) {
         this.dni = dni;
@@ -33,6 +24,14 @@ public class Alumno {
         this.nombre = nombre;
     }
 
+    
+    public Alumno(int dni, String nom, int max){
+        this.dni = dni;
+        this.nombre = nom;
+        this.cantAprobadas = 0;
+        this.cantMax = max;
+        this.aprobadas = new Materia [cantMax];
+    }
     public int getDni() {
         return dni;
     }
@@ -41,10 +40,9 @@ public class Alumno {
         return nombre;
     }
 
-    public Materia[] getAprobadas() {
+    private Materia[] getAprobadas() {
         return aprobadas;
     }
-    
     
     public boolean hayEspacio(){
         return this.cantMax != this.cantAprobadas;
@@ -71,7 +69,7 @@ public class Alumno {
         int i;
         String aux="";
         for(i=0;i<this.getCantAprobadas();i++){
-            aux = aux + " " + this.aprobadas[i].getNombre()+ ": " + Math.round(this.aprobadas[i].getNota()) + " " + this.getAprobadas()[i].getFecha() + " | " + "\n";
+            aux = aux + " " + this.aprobadas[i].toString();
         }
         return aux;
     }

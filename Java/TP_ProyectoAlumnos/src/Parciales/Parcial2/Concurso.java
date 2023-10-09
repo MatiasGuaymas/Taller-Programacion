@@ -19,12 +19,11 @@ public class Concurso {
         }
     }
 
-    public int[] getCantConcursantes() {
+    private int[] getCantConcursantes() {
         return cantConcursantes;
     }
     
-    
-    public Concursante[][] getMatriz() {
+    private Concursante[][] getMatriz() {
         return matriz;
     }
     
@@ -71,7 +70,7 @@ public class Concurso {
         String aux="";
         for(i=0; i<5; i++){
             for(j=0;j < this.cantConcursantes[i]; j++){
-                aux = aux  + "Genero: " + i + " Nombre: " +  this.matriz[i][j].getNombre()  + " Instrumento: " + this.matriz[i][j].getInstrumento() + " Edad: " + this.matriz[i][j].getEdad() + " Puntaje: " + this.matriz[i][j].getPuntaje() + "\n";
+                aux = aux  + "Genero: " + i + this.matriz[i][j].toString();
             }
         }
         return aux;

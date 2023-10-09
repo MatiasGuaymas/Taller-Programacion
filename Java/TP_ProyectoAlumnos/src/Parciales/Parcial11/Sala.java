@@ -9,7 +9,7 @@ public class Sala {
         return cantEspacios;
     }
 
-    public PC[][] getMatriz() {
+    private PC[][] getMatriz() {
         return matriz;
     }
     

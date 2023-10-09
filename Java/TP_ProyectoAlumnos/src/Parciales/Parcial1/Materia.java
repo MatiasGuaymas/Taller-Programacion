@@ -31,5 +31,9 @@ public class Materia {
         this.fecha = fecha;
     }
 
+    @Override
+    public String toString() {
+        return this.nombre + ": " + Math.round(this.nota) + " " + this.fecha + " | " + "\n";
+    }
     
 }   

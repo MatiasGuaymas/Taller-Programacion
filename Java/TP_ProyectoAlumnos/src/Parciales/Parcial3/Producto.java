@@ -34,6 +34,9 @@ public class Producto {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-    
+    @Override
+    public String toString(){
+        return "Codigo " + this.codigo +  " Precio: " + this.precio + " Descripcion: " + this.descripcion + "\n";
+    }
     
 }

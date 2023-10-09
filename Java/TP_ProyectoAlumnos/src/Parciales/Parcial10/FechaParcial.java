@@ -56,11 +56,11 @@ public class FechaParcial {
         return cantAlumnos;
     }
 
-    public Estudiante[][] getMatriz() {
+    private Estudiante[][] getMatriz() {
         return matriz;
     }
 
-    public int[] getVector() {
+    private int[] getVector() {
         return vector;
     }
     

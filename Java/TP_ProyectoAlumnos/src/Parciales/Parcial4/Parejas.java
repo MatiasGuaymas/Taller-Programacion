@@ -33,4 +33,11 @@ public class Parejas {
         else
             return this.part1.getEdad()-this.getPart2().getEdad();
     }
+    
+    @Override
+    public String toString() {
+        return "Nombre 1: " + this.part1.toString() + " Nombre 2: " + this.part2.toString();
+    }
+    
+    
 }

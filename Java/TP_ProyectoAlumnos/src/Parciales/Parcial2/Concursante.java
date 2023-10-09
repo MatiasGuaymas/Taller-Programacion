@@ -13,7 +13,6 @@ public class Concursante {
         this.nombre = nom;
         this.puntaje = -1;
     }
-  
     
     public String getNombre() {
         return nombre;
@@ -47,5 +46,7 @@ public class Concursante {
         this.puntaje = puntaje;
     }
     
-    
+    public String toString() {
+        return " Nombre: " +  this.getNombre() + " Instrumento: " + this.getInstrumento() + " Edad: " + this.getEdad() + " Puntaje: " + this.getPuntaje() + "\n";
+    }
 }

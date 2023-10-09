@@ -11,13 +11,13 @@ public class Concurso {
         this.cantParejas=cantParejas;
         this.parejasMax=parejasMax;
         this.pareja=new Parejas[this.parejasMax];
-        for(int i=0; i<this.parejasMax;i++){
+        for(int i=0; i<this.cantParejas;i++){
             Participante p=new Participante(GeneradorAleatorio.generarInt(9), GeneradorAleatorio.generarString(7),15);
             Participante p2=new Participante(GeneradorAleatorio.generarInt(9), GeneradorAleatorio.generarString(7),5);
             this.getPareja()[i]=new Parejas(p,p2,GeneradorAleatorio.generarString(5));
         }
     }
-    public Parejas[] getPareja() {
+    private Parejas[] getPareja() {
         return pareja;
     }
     public int getCantParejas() {
@@ -44,7 +44,7 @@ public class Concurso {
         return parmax;
     }
     public String toString(){
-        return "Nombre 1: " + this.maxDifEdad().getPart1().getNombre() + " Nombre 2: " + this.maxDifEdad().getPart2().getNombre();
+        return this.maxDifEdad().toString();
     }
 }
 

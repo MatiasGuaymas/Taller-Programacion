@@ -19,5 +19,9 @@ public class Participante {
     public int getEdad() {
         return edad;
     }
+    
+    public String toString() {
+        return this.nombre;
+    }
 }
 

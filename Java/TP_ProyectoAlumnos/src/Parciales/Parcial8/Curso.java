@@ -18,7 +18,7 @@ public abstract class Curso {
         return anio;
     }
 
-    public Alumno2[] getVector() {
+    private Alumno2[] getVector() {
         return vector;
     }
     
