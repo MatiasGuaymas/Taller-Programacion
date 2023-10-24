@@ -1,0 +1,77 @@
+programa Ejercicio2
+procesos
+  proceso juntarPapelEsquina(ES papeles: numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      papeles:= papeles+1
+  fin
+  proceso juntarPapeles
+  variables
+    papeles: numero
+  comenzar
+    papeles:= 0
+    repetir 19
+      juntarPapelEsquina(papeles)
+      mover
+    Informar(papeles)
+  fin
+areas
+  area1: AreaP(10, 11, 10, 29)
+  area2: AreaP(11, 30, 29, 30)
+  area3: AreaP(30, 11, 30, 29)
+  area4: AreaP(11, 10, 29, 10)   
+ {__________________________________} 
+  esq1: AreaPC(10, 10, 10, 10)
+  esq2: AreaPC(10, 30, 10, 30)
+  esq3: AreaPC(30, 30, 30, 30)
+  esq4: AreaPC(30, 10, 30, 10)
+robots
+  robot robot1
+  comenzar
+    juntarPapeles
+  fin
+  robot robot2
+  comenzar
+    derecha
+    juntarPapeles
+  fin
+  robot robot3
+  comenzar
+    repetir 2
+      derecha
+    juntarPapeles
+  fin
+  robot robot4
+  comenzar
+    repetir 3
+      derecha
+    juntarPapeles
+  fin
+variables
+  r1: robot1
+  r2: robot2
+  r3: robot3
+  r4: robot4
+comenzar
+  AsignarArea(r1, area1)
+  AsignarArea(r1, esq1)
+  AsignarArea(r1, esq2)
+{__________________________________} 
+  AsignarArea(r2, area2)
+  AsignarArea(r2, esq2)
+  AsignarArea(r2, esq3)
+{__________________________________}   
+  AsignarArea(r3, area3)
+  AsignarArea(r3, esq3)
+  AsignarArea(r3, esq4)
+{__________________________________}   
+  AsignarArea(r4, area4)
+  AsignarArea(r4, esq4)
+  AsignarArea(r4, esq1)
+{__________________________________}   
+  Iniciar(r1, 10, 10)
+  Iniciar(r2, 10, 30)
+  Iniciar(r3, 30, 30)
+  Iniciar(r4, 30, 10)  
+fin   

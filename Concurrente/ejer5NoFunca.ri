@@ -1,0 +1,127 @@
+programa Ejercicio5 
+procesos 
+  proceso juntarFlores(ES flores: numero) 
+  comenzar 
+    mientras(HayFlorEnLaEsquina) 
+      tomarFlor 
+      flores:= flores+1 
+  fin 
+  proceso juntarPapeles(ES papeles: numero) 
+  comenzar 
+    mientras(HayPapelEnLaEsquina) 
+      tomarPapel 
+      papeles:= papeles+1 
+  fin 
+  proceso recorrerAreaFlores(ES flores: numero) 
+  comenzar 
+    repetir 14 
+      juntarFlores(flores) 
+      mover 
+    juntarFlores(flores) 
+  fin 
+  proceso recorrerAreaPapeles(ES papeles: numero) 
+  comenzar 
+    repetir 9 
+      juntarPapeles(papeles) 
+      mover 
+    juntarPapeles(papeles) 
+  fin 
+  proceso depositarFlores(E flores: numero) 
+  comenzar 
+    repetir flores 
+      depositarFlor 
+  fin
+  proceso depositarPapeles(E papeles: numero) 
+  comenzar 
+    repetir papeles 
+      depositarPapel 
+  fin 
+areas 
+  area1: AreaP(1,75,15,75) 
+  area1_2: AreaP(1,80,15,80) 
+  area2: AreaP(75,80,75,99) 
+  area2_2: AreaP(80,80,80,99) 
+  area3: AreaP(70, 10, 99, 10) 
+  area3_2: AreaP(70, 15, 99, 15)  
+  area4: AreaP(10, 1, 10, 10) 
+  area4_2: AreaP(15, 1, 15, 10) 
+robots 
+  robot robot1 
+  variables 
+    flores: numero 
+  comenzar 
+    derecha 
+    flores:= 0 
+    recorrerAreaFlores(flores) 
+    depositarFlores(flores) 
+    Pos(1,80) 
+    recorrerAreaFlores(flores) 
+    depositarFlores(flores) 
+  fin 
+  robot robot2
+  variables
+    papeles: numero
+  comenzar
+    papeles:= 0
+    recorrerAreaPapeles(papeles)
+    mover
+    recorrerAreaPapeles(papeles)
+    Pos(75,80)
+    depositarPapeles(papeles)
+    Pos(80, 80)
+    recorrerAreaPapeles(papeles)
+    mover
+    recorrerAreaPapeles(papeles)
+    Pos(80, 80)
+    depositarPapeles(papeles)
+  fin
+  robot robot3 
+  variables
+    flores: numero 
+  comenzar 
+    derecha 
+    flores:= 0 
+    recorrerAreaFlores(flores)  
+    mover 
+    recorrerAreaFlores(flores) 
+    depositarFlores(flores)  
+    Pos(70, 15)  
+    recorrerAreaFlores(flores) 
+    mover 
+    recorrerAreaFlores(flores) 
+    depositarFlores(flores)
+  fin
+  robot robot4
+  variables 
+    papeles: numero 
+  comenzar 
+    papeles:= 0 
+    recorrerAreaPapeles(papeles) 
+    Pos(10,1) 
+    depositarPapeles(papeles) 
+    Pos(15, 1) 
+    recorrerAreaPapeles(papeles) 
+    Pos(15, 1) 
+    depositarPapeles(papeles) 
+  fin 
+variables
+  r1: robot1
+  r2: robot2
+  r3: robot3
+  r4: robot4
+comenzar
+  AsignarArea(r1, area1)
+  AsignarArea(r1, area1_2)
+  AsignarArea(r2, area2)
+  AsignarArea(r2, area2_2)
+  AsignarArea(r3, area3)
+  AsignarArea(r3, area3_2)
+  AsignarArea(r4, area4)
+  AsignarArea(r4, area4_2)
+  Iniciar(r1, 1, 75)
+  Iniciar(r2, 75, 80)
+  Iniciar(r3, 70, 10)
+  Iniciar(r4, 10, 1)
+fin
+  
+  

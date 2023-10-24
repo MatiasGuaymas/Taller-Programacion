@@ -60,7 +60,6 @@ public class Concurso {
                 encontre = true;
                 estudiante = canciones[i][pos].getGanador();
             }
-            
             i++;
         }
         return estudiante;
