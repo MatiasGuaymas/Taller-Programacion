@@ -1,0 +1,82 @@
+programa ejercicio2
+procesos
+  proceso izquierda
+  comenzar
+    repetir 3
+      derecha
+  fin
+  proceso juntarFlores(ES flores: numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:= flores+1
+  fin
+  proceso juntarPapeles(ES papeles: numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      papeles:= papeles+1
+  fin
+  proceso esquina(ES flores: numero; ES papeles: numero)
+  comenzar
+    si(HayFlorEnLaEsquina)
+      juntarFlores(flores)
+    si(HayPapelEnLaEsquina) 
+      juntarPapeles(papeles)
+  fin
+  proceso escalon(E alto: numero; ES cantEscalones: numero)
+  variables
+    flores, papeles: numero
+  comenzar
+    flores:= 0
+    papeles:= 0
+    repetir alto
+      esquina(flores, papeles)
+      mover
+    esquina(flores, papeles)
+    derecha
+    mover
+    izquierda
+    si(flores>papeles)
+      cantEscalones:= cantEscalones+1
+  fin
+areas
+  area1: AreaC(1,1,100,100)
+robots
+  robot robot1
+  variables
+    alto, cantEscalones: numero
+  comenzar
+    cantEscalones:= 0
+    repetir 4
+      Random(alto,1,5)
+      escalon(alto, cantEscalones)
+    EnviarMensaje(cantEscalones,rf)
+    {PREGUNTAR SI ESTA BIEN HECHA LA MANERA DE HACER ESCALONES Y DEVOLVER CANT ESCALONES, 
+    ME CONVIENE MAS HACER TODO LO DEL REPETIR 4 ADENTRO DEL PROC ESCALON Y AHI IR SUMANDO LA CANTESCALONES?}
+  fin
+  robot jefe
+  variables
+    suma, cantEsc: numero
+  comenzar
+    suma:= 0
+    repetir 3
+      RecibirMensaje(cantEsc,*)
+      suma:= suma + cantEsc
+    Informar('Suma',suma)
+  fin
+variables
+  r1: robot1
+  r2: robot1
+  r3: robot1
+  rf: jefe
+comenzar
+  AsignarArea(r1, area1)
+  AsignarArea(r2, area1)
+  AsignarArea(r3, area1)
+  AsignarArea(rf, area1)
+  Iniciar(rf,1,1)
+  Iniciar(r1,2,1)
+  Iniciar(r2,7,1)
+  Iniciar(r3,12,1)
+fin
