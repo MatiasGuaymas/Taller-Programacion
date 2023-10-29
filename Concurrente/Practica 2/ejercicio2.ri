@@ -52,8 +52,6 @@ robots
       Random(alto,1,5)
       escalon(alto, cantEscalones)
     EnviarMensaje(cantEscalones,rf)
-    {PREGUNTAR SI ESTA BIEN HECHA LA MANERA DE HACER ESCALONES Y DEVOLVER CANT ESCALONES, 
-    ME CONVIENE MAS HACER TODO LO DEL REPETIR 4 ADENTRO DEL PROC ESCALON Y AHI IR SUMANDO LA CANTESCALONES?}
   fin
   robot jefe
   variables

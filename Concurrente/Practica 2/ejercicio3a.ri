@@ -12,7 +12,6 @@ procesos
       tomarPapel
       papeles:= papeles+1
   fin
-  {PREGUNTAR SI ESTA BIEN USADO O SIRVE DE ALGO EL SI, MI CABEZA DICE QUE SI, PERO CREO Q ES INNECESARIO :c}
   proceso recorrerPapeles(ES papeles: numero)
   comenzar
     repetir 9

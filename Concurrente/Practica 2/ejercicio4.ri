@@ -1,0 +1,150 @@
+programa ejercicio4
+procesos
+  proceso limpiar(ES cant:numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      cant:= cant + 1
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      cant:= cant + 1
+  fin
+  proceso acceder(ES cant:numero)
+  variables
+    avIni, caIni, av, ca:numero
+  comenzar
+    avIni:= PosAv
+    caIni:= PosCa
+    Random(av, 25, 75)
+    Random(ca, 25, 75)
+    Pos(av, ca)  
+    limpiar(cant)
+    Pos(avIni, caIni)
+  fin
+  proceso inicializar(ES c1:numero; ES c2:numero; ES c3:numero; ES c4 :numero)
+  comenzar
+    c1 := 0
+    c2 := 0
+    c3 := 0
+    c4 := 0
+  fin 
+  proceso finalizar
+  comenzar
+    EnviarMensaje(F,robot1)
+    EnviarMensaje(F,robot2)
+    EnviarMensaje(F,robot3)
+    EnviarMensaje(F,robot4)
+  fin
+  proceso obtenerMas(E c1:numero; E c2:numero; E c3:numero; E c4:numero; ES maxRobot:numero)
+  variables
+    max:numero
+  comenzar
+    max:= -1
+    si c1 > max
+      max := c1
+      maxRobot := 1
+    si c2 > max
+      max := c2
+      maxRobot := 2
+    si c3 > max
+      max := c3
+      maxRobot := 3
+    si c4 > max
+      max := c4
+      maxRobot := 4
+  fin
+  proceso avisarRobot (E id:numero; E ok: boolean)
+  comenzar
+    si (id = 1)
+      EnviarMensaje(ok, robot1)
+    sino
+      si (id=2)
+        EnviarMensaje(ok, robot2)
+      sino
+        si (id=3)
+          EnviarMensaje(ok, robot3)
+        sino
+          EnviarMensaje(ok, robot4)
+  fin
+areas
+  cuadrante: AreaPC(25,25,75,75)
+  areaF: AreaP(1,1,1,1)
+  area1: AreaP(25,1,25,1)
+  area2: AreaP(30,1,30,1)
+  area3: AreaP(35,1,35,1)
+  area4: AreaP(40,1,40,1) 
+robots
+  robot tipo1
+  variables
+    ok, gane: boolean
+    cant: numero
+  comenzar
+    RecibirMensaje(ok,robotF)
+    mientras(ok)
+      RecibirMensaje(cant,robotF)
+      acceder(cant)
+      EnviarMensaje(cant,robotF)
+      RecibirMensaje(ok,robotF)
+    RecibirMensaje(gane,robotF)
+    si(gane)
+      Pos(50,50)
+  fin
+  robot jefe
+  variables
+    id, max:numero
+    c1, c2, c3, c4:numero
+    ok: boolean
+  comenzar
+    inicializar(c1,c2,c3,c4)
+    repetir 10
+      Random(id,1,4)
+      si id = 1
+        EnviarMensaje(V,robot1)
+        EnviarMensaje(c1,robot1)
+        RecibirMensaje(c1,robot1)
+      sino
+        si id = 2
+          EnviarMensaje(V,robot2)
+          EnviarMensaje(c2,robot2)
+          RecibirMensaje(c2,robot2)
+        sino
+          si id = 3
+            EnviarMensaje(V,robot3)
+            EnviarMensaje(c3,robot3)
+            RecibirMensaje(c3,robot3)
+          sino
+            si id = 4
+              EnviarMensaje(V,robot4)
+              EnviarMensaje(c4,robot4)
+              RecibirMensaje(c4,robot4)
+    finalizar        
+    obtenerMas(c1,c2,c3,c4,max)
+    id:=1
+    repetir 4
+      si(id = max)
+        ok:= V
+      sino
+        ok:= F
+      avisarRobot(id,ok)
+      id:= id+1  
+    Informar('Ganador',max)    
+  fin
+variables
+  robot1, robot2, robot3, robot4: tipo1
+  robotF: jefe
+comenzar
+  AsignarArea(robot1, cuadrante)
+  AsignarArea(robot1, area1)
+  AsignarArea(robot2, cuadrante)
+  AsignarArea(robot2, area2)
+  AsignarArea(robot3, cuadrante)
+  AsignarArea(robot3, area3)
+  AsignarArea(robot4, cuadrante)
+  AsignarArea(robot4, area4)
+  AsignarArea(robotF, areaF)
+  Iniciar(robot1, 25,1)
+  Iniciar(robot2, 30,1)
+  Iniciar(robot3, 35,1)
+  Iniciar(robot4, 40,1)
+  Iniciar(robotF, 1,1)
+fin
