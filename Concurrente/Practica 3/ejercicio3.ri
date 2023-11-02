@@ -1,0 +1,108 @@
+programa ejercicio3
+procesos
+  proceso envioMsg(E x: numero; E y: numero)
+  comenzar
+    EnviarMensaje(x,r1)
+    EnviarMensaje(y,r1)
+    EnviarMensaje(x,r2)
+    EnviarMensaje(y,r2)
+    EnviarMensaje(x,r3)
+    EnviarMensaje(y,r3)
+    EnviarMensaje(x,r4)
+    EnviarMensaje(y,r4)
+  fin
+  proceso maximo(E flores: numero;ES max: numero; ES ganador: numero; E id: numero)
+  comenzar
+    si (flores > max)
+      max:= flores
+      ganador := id
+  fin
+  proceso mandarIDs
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+    EnviarMensaje(4,r4)
+  fin
+  proceso procesarEsquina(ES flores: numero;E x: numero; E y: numero)
+  variables
+    avIni,caIni: numero
+  comenzar
+    avIni:= PosAv
+    caIni:= PosCa
+    BloquearEsquina(x,y)
+    Pos(x,y)
+    flores:= 0
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:= flores+1
+      Pos(avIni,caIni)
+      LiberarEsquina(x,y)
+      BloquearEsquina(x,y)
+      Pos(x,y)      
+    Pos(avIni,caIni)
+    LiberarEsquina(x,y)
+  fin
+areas
+  area: AreaPC(2,2,10,10)
+  areaJ: AreaP(1,1,1,1)
+  area1: AreaP(2,1,2,1)
+  area2: AreaP(3,1,3,1)
+  area3: AreaP(4,1,4,1)
+  area4: AreaP(5,1,5,1)
+robots
+  robot recolector
+  variables
+    id,x,y,flores: numero
+  comenzar
+    RecibirMensaje(id,rf)
+    RecibirMensaje(x,rf)
+    RecibirMensaje(y,rf)
+    procesarEsquina(flores,x,y)
+    EnviarMensaje(id,rf)
+    EnviarMensaje(flores,rf)
+  fin
+  robot jefe
+  variables
+    x, y, ganador, flores,id: numero
+    max: numero
+  comenzar
+    max:= -1
+    mandarIDs
+    Random(x,2,10)
+    Random(y,2,10)
+    envioMsg(x,y)
+    repetir 4
+      RecibirMensaje(id,*)
+      si (id=1)
+        RecibirMensaje(flores,r1)
+      sino
+        si(id=2)
+          RecibirMensaje(flores,r2)
+        sino
+          si(id=3)
+            RecibirMensaje(flores,r3)
+          sino
+            RecibirMensaje(flores,r4)
+      maximo(flores,max,ganador,id)
+    Informar(ganador)
+  fin
+variables
+  r1,r2,r3,r4: recolector
+  rf: jefe
+comenzar  
+  AsignarArea(r1,area) 
+  AsignarArea(r2,area) 
+  AsignarArea(r3,area) 
+  AsignarArea(r4,area) 
+  AsignarArea(rf,areaJ)  
+  AsignarArea(r1,area1)
+  AsignarArea(r2,area2)  
+  AsignarArea(r3,area3)
+  AsignarArea(r4,area4) 
+  Iniciar(r1, 2,1)
+  Iniciar(r2, 3,1)
+  Iniciar(r3, 4,1)
+  Iniciar(r4, 5,1)
+  Iniciar(rf, 1,1)
+fin
