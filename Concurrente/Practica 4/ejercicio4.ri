@@ -1,0 +1,113 @@
+programa ejercicio4
+{No compila}
+procesos
+  proceso recogerFlores
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+  fin
+  proceso recogerPapeles
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+  fin
+  proceso vaciarBolsa
+  comenzar
+    mientras(HayPapelEnLaBolsa)
+      depositarPapel
+    mientras(HayFlorEnLaBolsa)
+      depositarFlor
+  fin
+areas
+  areaJ : AreaP(1, 1, 1, 1)
+  area1: AreaP(2, 1, 2, 1)
+  area2 : AreaP(3, 1,3 ,1)
+  cuadrante: AreaPC(2, 2, 100, 100)
+robots
+  robot slave
+  variables
+    x, y : numero
+    posX, posY : numero
+    tarea : numero
+  comenzar
+    RecibirMensaje(tarea, rJefe)
+    posX := PosAv
+    posY := PosCa
+    mientras(tarea <> 4)
+      RecibirMensaje(x, rJefe)
+      RecibirMensaje(y, rJefe)
+      BloquearEsquina(x, y)
+      Pos(x, y)
+      si(tarea = 1) 
+        recogerFlores
+      sino
+        si(tarea = 2)
+          recogerPapeles
+        sino
+          vaciarBolsa
+      EnviarMensaje(V, rJefe)
+      Pos(posX, posY)
+      LiberarEsquina(x, y)
+      RecibirMensaje(tarea, rJefe)
+  fin
+  robot robotJefe
+  variables
+    ok1, ok2 : boolean
+    aux, idr, x, y : numero
+    cant : numero
+  comenzar
+    cant := 10
+    ok1 := V
+    ok2 := V
+    mientras(((ok1 = V) | (ok2 = V)) & (cant <> 0))
+      Random(idr, 1, 2)
+      si(idr = 1) & (ok1 = V)
+        Random(aux, 1, 4)
+        si(aux = 4)
+          ok1 := F
+          EnviarMensaje(aux, r1)
+          cant := cant - 1
+        sino
+          EnviarMensaje(aux, r1)
+          Random(x, 2, 100)
+          Random(y, 2, 100)
+          EnviarMensaje(x, r1)
+          EnviarMensaje(y, r1)
+          RecibirMensaje(ok1, r1)
+          cant := cant - 1
+      sino
+        si(ok2 = V)
+          si(aux = 4)
+            ok2 := F
+            EnviarMensaje(aux, r2)
+            cant := cant - 1
+          sino
+            EnviarMensaje(aux, r2)
+            Random(x, 2, 100)
+            Random(y, 2, 100)
+            EnviarMensaje(x, r2)
+            EnviarMensaje(y, r2)
+            RecibirMensaje(ok2, r1)
+            cant := cant - 1
+    si(cant = 0)
+      EnviarMensaje(4, r1)
+      EnviarMensaje(4, r2)
+  fin
+variables
+  r1 : slave
+  r2 : slave
+  rJefe : robotJefe
+comenzar
+  AsignarArea(rJefe, areaJ)
+  AsignarArea(r1, area1)
+  AsignarArea(r2, area2)
+  AsignarArea(r1, cuadrante)
+  AsignarArea(r2, cuadrante)
+  Iniciar(rJefe, 1, 1)
+  Iniciar(r1, 2, 1)
+  Iniciar(r2, 3, 1)
+fin
+    
+
+    
+    
