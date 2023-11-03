@@ -1,0 +1,86 @@
+programa ejercicio2
+procesos
+  proceso recorrerAv
+  variables
+    p, x, y : numero
+    ok : boolean
+  comenzar
+    repetir 99
+      x := PosAv 
+      y := PosCa
+      mientras(HayPapelEnLaEsquina)
+        ok := V
+        mientras(HayPapelEnLaEsquina) & (ok)
+          tomarPapel
+          p := p + 1 
+          si(p = 5)
+            ok := F
+            p := 0
+            BloquearEsquina(50, 50)
+            Pos(50, 50)
+            repetir 5
+              depositarPapel
+            Pos(x, y)
+            LiberarEsquina(50, 50)
+      mover
+  fin
+areas
+  area1 : AreaP(5, 1, 5, 100)
+  area2 : AreaP(10, 1, 10, 100)
+  esquina : AreaC(50, 50, 50, 50)
+  areaC1 : AreaP(11, 1, 11, 1)
+  areaC2 : AreaP(12, 1, 12 ,1)
+robots
+  robot productor
+  comenzar
+    recorrerAv
+  fin
+  robot consumidor
+  variables
+    aux, cant, p : numero
+    ok : boolean
+    x, y : numero
+  comenzar
+    x := PosAv
+    y := PosCa
+    mientras(aux <> 8)
+      BloquearEsquina(50, 50)
+      Pos(50, 50)
+      Random(cant, 2, 5)
+      ok := V
+      mientras(cant <> 0) & (ok)
+        p := 0
+        si(HayPapelEnLaEsquina)
+          tomarPapel
+          p := p + 1
+          cant := cant - 1
+        sino
+          ok := F
+          aux := aux + 1
+          repetir p
+            depositarPapel
+      Pos(x, y)
+      LiberarEsquina(50, 50)
+      si(ok = V)
+        aux := 0
+  fin
+variables
+  p1 : productor
+  p2 : productor
+  c1 : consumidor
+  c2 : consumidor
+comenzar
+  AsignarArea(p1, area1)
+  AsignarArea(p2, area2)
+  AsignarArea(c1, areaC1)
+  AsignarArea(c2, areaC2)
+  AsignarArea(p1, esquina)
+  AsignarArea(p2, esquina)
+  AsignarArea(c1, esquina)
+  AsignarArea(c2, esquina)  
+  
+  Iniciar(p1, 5, 1)
+  Iniciar(p2, 10, 1)
+  Iniciar(c1, 11, 1)
+  Iniciar(c2, 12, 1)
+fin

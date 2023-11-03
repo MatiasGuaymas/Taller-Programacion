@@ -1,0 +1,110 @@
+programa ejercicio1
+procesos
+  proceso juntarFlor
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+  fin
+  proceso identificar
+  comenzar
+    EnviarMensaje(1, r1)
+    EnviarMensaje(2, r2)
+    EnviarMensaje(3, r3)
+  fin
+areas
+  areaS : AreaP(100, 100, 100, 100)
+  area1 : AreaPC(1, 1, 1, 100)
+  area2 : AreaPC(2, 1, 2, 100)
+  area3 : AreaPC(3, 1, 3, 100)
+robots
+  robot servidor
+  variables
+    id, flores, x, y : numero
+    ok1, ok2, ok3 : boolean
+  comenzar
+    ok1 := V
+    ok2 := V
+    ok3 := V
+    identificar
+    juntarFlor
+    mientras(ok1) | (ok2) | (ok3)
+      RecibirMensaje(id, *)
+      si(id = 1)
+        RecibirMensaje(flores, r1)
+        si(flores <> 0)
+          RecibirMensaje(x, r1)
+          RecibirMensaje(y, r1) 
+          Pos(x, y)
+          repetir flores
+            depositarFlor
+          Pos(100, 100)
+          EnviarMensaje(V, r1)
+        sino
+          ok1 := F
+      sino
+        si(id = 2)
+          RecibirMensaje(flores, r2)
+          si(flores <> 0)
+            RecibirMensaje(x, r2)
+            RecibirMensaje(y, r2)
+            Pos(x, y)
+            repetir flores
+              depositarFlor
+            Pos(100, 100)
+            EnviarMensaje(V, r2)
+          sino
+            ok2 := F
+        sino
+          RecibirMensaje(flores, r3)
+          si(flores <> 0)
+            RecibirMensaje(x, r3)
+            RecibirMensaje(y, r3)
+            Pos(x, y)
+            repetir flores
+              depositarFlor
+            Pos(100, 100)
+            EnviarMensaje(V, r3)
+          sino
+            ok3 := F
+  fin
+  robot cliente
+  variables
+    aux : numero
+    ok : boolean
+    id, x, y : numero
+  comenzar
+    RecibirMensaje(id, serv)
+    repetir 99
+      Random(aux, 1, 4)
+      EnviarMensaje(id, serv)
+      EnviarMensaje(aux, serv)
+      x := PosAv
+      y := PosCa + 1 
+      EnviarMensaje(x, serv)
+      EnviarMensaje(y, serv)
+      RecibirMensaje(ok, serv)
+      mover
+      mientras(HayFlorEnLaEsquina)
+        tomarFlor
+      depositarFlor
+    EnviarMensaje(id, serv)
+    EnviarMensaje(0, serv)
+  fin
+variables
+  r1 : cliente
+  r2 : cliente
+  r3 : cliente
+  serv : servidor
+comenzar
+  AsignarArea(r1, area1)
+  AsignarArea(r2 ,area2)
+  AsignarArea(r3, area3)
+  AsignarArea(serv, areaS)
+  AsignarArea(serv, area1)
+  AsignarArea(serv, area2)
+  AsignarArea(serv, area3)  
+  Iniciar(r1, 1 ,1)
+  Iniciar(r2, 2, 1)
+  Iniciar(r3, 3, 1)
+  Iniciar(serv, 100, 100)
+fin  
