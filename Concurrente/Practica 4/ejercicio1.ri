@@ -11,6 +11,12 @@ procesos
     EnviarMensaje(2, r2)
     EnviarMensaje(3, r3)
   fin
+  proceso avanzarDejandoFlores
+  comenzar
+    mientras ((HayFlorEnLaBolsa) & (PosCa<100))
+      depositarFlor
+      mover
+  fin
 areas
   areaS : AreaP(100, 100, 100, 100)
   area1 : AreaPC(1, 1, 1, 100)
@@ -26,7 +32,6 @@ robots
     ok2 := V
     ok3 := V
     identificar
-    juntarFlor
     mientras(ok1) | (ok2) | (ok3)
       RecibirMensaje(id, *)
       si(id = 1)
@@ -74,7 +79,7 @@ robots
     id, x, y : numero
   comenzar
     RecibirMensaje(id, serv)
-    repetir 99
+    mientras(PosCa<99)
       Random(aux, 1, 4)
       EnviarMensaje(id, serv)
       EnviarMensaje(aux, serv)
@@ -83,10 +88,12 @@ robots
       EnviarMensaje(x, serv)
       EnviarMensaje(y, serv)
       RecibirMensaje(ok, serv)
-      mover
+      Pos(x,y)
       mientras(HayFlorEnLaEsquina)
         tomarFlor
       depositarFlor
+      Pos(x,y-1)
+      avanzarDejandoFlores
     EnviarMensaje(id, serv)
     EnviarMensaje(0, serv)
   fin
