@@ -1,4 +1,4 @@
-programa ejercicio4
+programa ejercicio3
 procesos
   proceso vaciarBolsa(ES florE : numero)
   variables
