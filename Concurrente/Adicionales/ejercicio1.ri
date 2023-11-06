@@ -1,0 +1,144 @@
+programa ej1
+procesos
+  proceso juntarF(ES flores : numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores := flores + 1
+  fin
+  proceso juntarP(ES papeles : numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      papeles := papeles + 1
+  fin
+  proceso recorrerAv(ES flores : numero)
+  variables  
+    x : numero
+  comenzar
+    x := PosAv
+    repetir 96
+      juntarF(flores)
+      mover
+    juntarF(flores)
+    BloquearEsquina(x, 98)
+    mover
+    juntarF(flores)
+    BloquearEsquina(x, 99)
+    mover
+    LiberarEsquina(x, 98)  
+    juntarF(flores)
+    mover
+    LiberarEsquina(x, 99)
+    juntarF(flores)
+  fin
+  proceso recorrerCa(ES papeles : numero)
+  variables
+    y : numero
+  comenzar
+    y := PosCa
+    juntarP(papeles)
+    BloquearEsquina(2, y)
+    mover
+    juntarP(papeles)
+    BloquearEsquina(3, y)
+    mover
+    LiberarEsquina(2, y)
+    juntarP(papeles)
+    mover
+    LiberarEsquina(3, y)
+    repetir 96
+      juntarP(papeles)
+      mover
+    juntarP(papeles)
+  fin
+areas
+  esquinas : AreaPC(2, 98, 3, 99)
+  areaR1 : AreaP(2, 1, 2, 97)
+  areaR1_A : AreaP(2, 100, 2, 100)
+  areaR2 : AreaP(3, 1, 3, 97)
+  areaR2_A : AreaP(3, 100, 3, 100)
+  areaA1_A : AreaP(1, 98, 1, 98)
+  areaA1 : AreaP(4, 98, 100, 98)
+  areaA2_A : AreaP(1, 99, 1, 99)
+  areaA2 : AreaP(4, 99, 100, 99)
+  areaC : AreaP(4, 4, 4, 4)
+robots
+  robot robotC
+  variables
+    id, ca, cr, aux : numero
+  comenzar
+    EnviarMensaje(1, r1)
+    EnviarMensaje(2, r2)
+    EnviarMensaje(3, a1)
+    EnviarMensaje(4, a2)
+    ca := 0
+    cr := 0
+    repetir 4
+      RecibirMensaje(id, *)
+      si(id = 1)
+        RecibirMensaje(aux, r1)
+        cr := cr + aux
+      sino
+        si(id = 2)
+          RecibirMensaje(aux, r2)
+          cr := cr + aux
+        sino
+          si(id = 3)
+            RecibirMensaje(aux, a1)
+            ca := ca + aux
+          sino
+            RecibirMensaje(aux, a2)
+            ca := ca + aux
+    si(ca > cr)
+      Informar(2)
+    sino
+      Informar(1)
+  fin
+  robot robotR
+  variables
+    f,id : numero
+  comenzar
+    RecibirMensaje(id, RJ)
+    f := 0 
+    recorrerAv(f)
+    EnviarMensaje(id, RJ)
+    EnviarMensaje(f, RJ)
+  fin
+  robot robotA
+  variables
+    p, color, id : numero
+  comenzar
+    derecha
+    RecibirMensaje(id, RJ)
+    p := 0
+    recorrerCa(p)
+    EnviarMensaje(id, RJ)
+    EnviarMensaje(p, RJ)
+  fin
+variables
+  r1 : robotR
+  r2 : robotR
+  a1 : robotA
+  a2 : robotA
+  RJ : robotC
+comenzar
+  AsignarArea(r1, esquinas)
+  AsignarArea(r1, areaR1)
+  AsignarArea(r1, areaR1_A)
+  AsignarArea(r2, esquinas)
+  AsignarArea(r2, areaR2)
+  AsignarArea(r2, areaR2_A)
+  AsignarArea(a1, esquinas)
+  AsignarArea(a1, areaA1)
+  AsignarArea(a1, areaA1_A)
+  AsignarArea(a2, esquinas)
+  AsignarArea(a2, areaA2)
+  AsignarArea(a2, areaA2_A)
+  AsignarArea(RJ, areaC)
+  Iniciar(r1, 2, 1)
+  Iniciar(r2, 3, 1)
+  Iniciar(a1, 1, 98)
+  Iniciar(a2, 1, 99)
+  Iniciar(RJ, 4, 4)
+fin 
