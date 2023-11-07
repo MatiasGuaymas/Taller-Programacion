@@ -1,4 +1,4 @@
-programa ejercicio3
+programa ejercicio3 {Cambiamos la consigna con por lo menos hay una flor por esquina asi llego a florE = 10 y evaluo esa condicion}
 procesos
   proceso vaciarBolsa(ES florE : numero)
   variables
