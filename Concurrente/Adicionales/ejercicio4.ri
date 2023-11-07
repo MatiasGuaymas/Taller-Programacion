@@ -73,7 +73,6 @@ robots
     repetir 3
       RecibirMensaje(flores, *)
       fTotal:= fTotal + flores
-    Pos(10,10)
     Informar(fTotal)
   fin
 variables
