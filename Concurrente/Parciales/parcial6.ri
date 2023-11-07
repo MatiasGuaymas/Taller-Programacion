@@ -1,0 +1,94 @@
+programa parcial6
+procesos
+  proceso lado(ES cant : numero; E long : numero)
+  variables
+    f, p : numero
+    aux1, aux2 : numero
+    x, y : numero
+  comenzar
+    repetir long
+      Random(aux1, 1, 3)
+      Random(aux2, 1, 3)
+      repetir aux1
+        x := PosAv
+        y := PosCa
+        BloquearEsquina(21, 21)
+        Pos(21, 21)
+        tomarFlor
+        cant := cant + 1
+        Pos(x, y)
+        LiberarEsquina(21, 21)
+        depositarFlor
+      repetir aux2
+        BloquearEsquina(22, 22)
+        Pos(22, 22)
+        tomarPapel
+        cant := cant + 1
+        Pos(x, y)
+        LiberarEsquina(22, 22)
+        depositarPapel
+      mover
+  fin
+areas
+  area1 : AreaP(1, 1, 20, 20)
+  area2 : AreaP(21, 1, 40, 20)
+  areaC : AreaP(23, 23, 23, 23)
+  esquinaF : AreaPC(21, 21, 21, 21)
+  esquinaP : AreaPC(22, 22, 22, 22)
+robots
+  robot robot1
+  variables
+    id, long, ancho, cant : numero
+  comenzar
+    RecibirMensaje(id, rJefe)
+    RecibirMensaje(long, rJefe)
+    RecibirMensaje(ancho, rJefe)
+    cant := 0
+    repetir 2
+      lado(cant, long)
+      derecha
+      lado(cant, ancho)
+      derecha
+    EnviarMensaje(id, rJefe)
+    EnviarMensaje(cant, rJefe)
+  fin
+  robot robotC
+  variables
+    id, long, ancho, c1,c2, ganador : numero
+  comenzar
+    EnviarMensaje(1, r1)
+    EnviarMensaje(2, r2)
+    Random(long,1,19)
+    Random(ancho,1,19)
+    EnviarMensaje(long, r1)
+    EnviarMensaje(long, r2)
+    EnviarMensaje(ancho, r1)
+    EnviarMensaje(ancho, r2)
+    RecibirMensaje(id, *)
+    si(id = 1)
+      ganador := 1
+      RecibirMensaje(c1, r1)
+    sino
+      ganador := 2
+      RecibirMensaje(c1, r2)
+    RecibirMensaje(id, *)
+    RecibirMensaje(c2, *)
+    Informar(ganador)
+    Informar(c1)
+  fin
+variables
+  r1 : robot1
+  r2 : robot1
+  rJefe : robotC
+comenzar
+  AsignarArea(r1, area1)
+  AsignarArea(r1, esquinaF)
+  AsignarArea(r1, esquinaP)
+  AsignarArea(r2, area2)
+  AsignarArea(r2, esquinaF)
+  AsignarArea(r2, esquinaP)
+  AsignarArea(rJefe, areaC)
+  Iniciar(r1, 1, 1)
+  Iniciar(r2, 21, 1)
+  Iniciar(rJefe, 23, 23)
+fin
