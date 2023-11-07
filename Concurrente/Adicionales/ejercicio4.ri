@@ -1,4 +1,4 @@
-programa ejercicio4v2
+programa ejercicio4
 procesos
   proceso juntarFlores(ES flores:numero)
   comenzar
@@ -37,7 +37,6 @@ robots
       juntarFlores(flores)
       Pos(posAvIni,posCaIni)
       LiberarEsquina(x,y)
-      EnviarMensaje(flores, robotF)
       RecibirMensaje(ok,robotF)
     BloquearEsquina(10,10)
     Pos(10,10)
@@ -45,7 +44,7 @@ robots
       depositarFlor
     Pos(posAvIni,posCaIni)
     LiberarEsquina(10,10)
-    EnviarMensaje(V, robotF)
+    EnviarMensaje(flores, robotF)
   fin
   robot fiscalizador
   variables
@@ -70,13 +69,12 @@ robots
           EnviarMensaje(V,robot3)
           EnviarMensaje(x,robot3)
           EnviarMensaje(y,robot3)
-      RecibirMensaje(flores, *)
-      fTotal:= fTotal + flores
     finalizar        
     repetir 3
-      RecibirMensaje(ok,*)
+      RecibirMensaje(flores, *)
+      fTotal:= fTotal + flores
     Pos(10,10)
-    Informar(flores)
+    Informar(fTotal)
   fin
 variables
   robot1, robot2, robot3: florero

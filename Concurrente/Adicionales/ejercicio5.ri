@@ -52,7 +52,7 @@ robots
         Pos(100,1)
         tomarPapel
         Pos(avIni,caIni)
-        LiberarEsquina {Consultar si esta bien que libere aca, puede pasar que libere y entre el robot server y ponga mas, #Concurrencia}
+        LiberarEsquina(100,1)
         depositarPapel  
   fin
 variables
