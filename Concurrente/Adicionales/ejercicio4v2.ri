@@ -1,0 +1,100 @@
+programa ejercicio4v2
+procesos
+  proceso juntarFlores(ES flores:numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      flores:= flores+1
+  fin
+  proceso finalizar
+  comenzar
+    EnviarMensaje(F,robot1)
+    EnviarMensaje(F,robot2)
+    EnviarMensaje(F,robot3)
+  fin
+areas
+  cuadrante: AreaPC(40,40,60,60)
+  esquina: AreaC(10,10,10,10)
+  area1: AreaP(1,1,1,1)
+  area2: AreaP(2,1,2,1)
+  area3: AreaP(3,1,3,1)
+  areaF: AreaP(4,1,4,1)
+robots
+  robot florero
+  variables
+    flores, posAvIni, posCaIni, x, y: numero
+    ok: boolean
+  comenzar
+    RecibirMensaje(ok,robotF)
+    flores:= 0
+    posAvIni:= PosAv
+    posCaIni := PosCa
+    mientras(ok)
+      RecibirMensaje(x,robotF)
+      RecibirMensaje(y,robotF)
+      BloquearEsquina(x,y)
+      Pos(x,y)
+      juntarFlores(flores)
+      Pos(posAvIni,posCaIni)
+      LiberarEsquina(x,y)
+      EnviarMensaje(flores, robotF)
+      RecibirMensaje(ok,robotF)
+    BloquearEsquina(10,10)
+    Pos(10,10)
+    mientras(HayFlorEnLaBolsa)
+      depositarFlor
+    Pos(posAvIni,posCaIni)
+    LiberarEsquina(10,10)
+    EnviarMensaje(V, robotF)
+  fin
+  robot fiscalizador
+  variables
+    flores, fTotal, id, x, y: numero
+    ok: boolean
+  comenzar
+    fTotal:= 0
+    repetir 8
+      Random(id,1,3)
+      Random(x, 40, 60)
+      Random(y, 40,60)
+      si id = 1
+        EnviarMensaje(V,robot1)
+        EnviarMensaje(x,robot1)
+        EnviarMensaje(y,robot1)
+      sino
+        si id = 2
+          EnviarMensaje(V,robot2)
+          EnviarMensaje(x,robot2)
+          EnviarMensaje(y,robot2)
+        sino
+          EnviarMensaje(V,robot3)
+          EnviarMensaje(x,robot3)
+          EnviarMensaje(y,robot3)
+      RecibirMensaje(flores, *)
+      fTotal:= fTotal + flores
+    finalizar        
+    repetir 3
+      RecibirMensaje(ok,*)
+    Pos(10,10)
+    Informar(flores)
+  fin
+variables
+  robot1, robot2, robot3: florero
+  robotF: fiscalizador
+comenzar
+  AsignarArea(robot1, cuadrante)
+  AsignarArea(robot1, area1)
+  AsignarArea(robot1, esquina)
+  AsignarArea(robot2, cuadrante)
+  AsignarArea(robot2, area2)
+  AsignarArea(robot2, esquina)
+  AsignarArea(robot3, cuadrante)
+  AsignarArea(robot3, area3)
+  AsignarArea(robot3, esquina)
+  AsignarArea(robotF, areaF)
+  AsignarArea(robotF, esquina)
+  Iniciar(robot1, 1,1)
+  Iniciar(robot2, 2,1)
+  Iniciar(robot3, 3,1)
+  Iniciar(robotF, 4,1)
+fin
