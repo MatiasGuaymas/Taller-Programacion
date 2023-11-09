@@ -1,0 +1,117 @@
+programa parcial11
+procesos
+  proceso juntarF(ES f : numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      f := f + 1
+  fin
+  proceso maximo(E c1 : numero; E c2 : numero; E c3 : numero; ES idMax : numero)
+  variables
+    max : numero
+  comenzar
+    max := -1
+    si(max < c1)
+      max := c1
+      idMax := 1
+    si(max < c2)
+      max := c2
+      idMax := 2
+    si(max < c3)
+      max := c3
+      idMax := 3
+  fin
+  proceso lado(E cant: numero; ES total: numero)
+  variables
+    f, x, y: numero
+  comenzar
+    f:= 0
+    repetir cant
+      juntarF(f)
+      mover
+    x:= PosAv
+    y:= PosCa
+    total:= total + f
+    BloquearEsquina(25,25)
+    Pos(25,25)
+    repetir f
+      depositarFlor
+    Pos(x,y)
+    LiberarEsquina(25,25)
+    derecha
+  fin
+areas
+  area1 : AreaP(1, 1, 6, 11)
+  area2 : AreaP(7, 1, 12, 11)
+  area3 : AreaP(13, 1, 18, 11)
+  areaF : AreaP(24, 24, 24, 24)
+  esquina : AreaPC(25, 25, 25, 25)
+robots
+  robot robot1
+  variables
+    f : numero
+    id : numero
+    x, y : numero
+    l, a : numero
+    total : numero
+  comenzar
+    RecibirMensaje(id, rJefe)
+    RecibirMensaje(l, rJefe)
+    RecibirMensaje(a, rJefe)
+    total := 0
+    repetir 2
+      lado(l, total)
+      lado(a, total)
+    EnviarMensaje(id, rJefe)
+    EnviarMensaje(total, rJefe)
+  fin
+  robot robotJ
+  variables
+    id, c1, c2, c3 : numero
+    a, l : numero
+  comenzar
+    EnviarMensaje(1, r1)
+    EnviarMensaje(2, r2)
+    EnviarMensaje(3, r3)
+    Random(a, 1, 5)
+    Random(l, 1, 10)
+    EnviarMensaje(l, r1)
+    EnviarMensaje(a, r1)
+    Random(a, 1, 5)
+    Random(l, 1, 10)
+    EnviarMensaje(l, r2)
+    EnviarMensaje(a, r2)
+    Random(a, 1, 5)
+    Random(l, 1, 10)
+    EnviarMensaje(l, r3)
+    EnviarMensaje(a, r3)
+    repetir 3
+      RecibirMensaje(id, *)
+      si(id = 1)
+        RecibirMensaje(c1, r1)
+      sino
+        si(id = 2)
+          RecibirMensaje(c2, r2)
+        sino
+          RecibirMensaje(c3, r3)
+    maximo(c1, c2, c3, id)
+    Informar(id)
+  fin
+variables
+  r1 : robot1
+  r2 : robot1
+  r3 : robot1
+  rJefe : robotJ
+comenzar
+  AsignarArea(r1, area1)
+  AsignarArea(r2, area2)
+  AsignarArea(r3, area3)
+  AsignarArea(rJefe, areaF)
+  AsignarArea(r1, esquina)
+  AsignarArea(r2, esquina)
+  AsignarArea(r3, esquina)
+  Iniciar(r1, 1, 1)
+  Iniciar(r2, 7, 1)
+  Iniciar(r3, 13, 1)
+  Iniciar(rJefe, 24,24)
+fin
