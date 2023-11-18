@@ -23,7 +23,6 @@ type
 			end;
 			
 		
-		
 procedure leer(var r : reclamo; var dni : integer);
 begin
 	r.code := random(10) - 1;
