@@ -1,1 +1,0 @@
-new(a^.l); a^.l^.dato := r;
