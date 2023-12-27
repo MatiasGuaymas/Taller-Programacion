@@ -1,5 +1,4 @@
-{ EJERCICIO 3
-3. Implementar un programa que contenga:
+{3. Implementar un programa que contenga:
 a. Un módulo que lea información de alumnos de Taller de Programación y los almacene en
 una estructura de datos. De cada alumno se lee legajo, DNI, año de ingreso y los códigos y
 notas de los finales rendidos. La estructura generada debe ser eficiente para la búsqueda por
@@ -11,135 +10,342 @@ c. Un módulo que reciba la estructura generada en a. y retorne el legajo más g
 d. Un módulo que reciba la estructura generada en a. y retorne el DNI más grande.
 e. Un módulo que reciba la estructura generada en a. y retorne la cantidad de alumnos con
 legajo impar.
-e. Un módulo que reciba la estructura generada en a. y retorne el legajo y el promedio del
+f. Un módulo que reciba la estructura generada en a. y retorne el legajo y el promedio del
 alumno con mayor promedio.
-f.
-Un módulo que reciba la estructura generada en a. y un valor entero. Este módulo debe
-retornar los legajos y promedios de los alumnos cuyo promedio supera el valor ingresado.
-}
+g. Un módulo que reciba la estructura generada en a. y un valor entero. Este módulo debe
+retornar los legajos y promedios de los alumnos cuyo promedio supera el valor ingresado.}
 
-prg
+program ejercicio3;
 type
-	producto = record
-		cant : integer;
-		monto : real;
-		codep : integer;
-		end;
-		
-	venta = record
-		code : integer;
-		codep: integer;
-		cant : integer;
-		precio : real;
-		end;
-		
-	arb = ^nodo
-	
-	nodo = record
-		p : producto;
-		hi : arb;
-		hd : arb;
-		end;
-		
-procedure leer(var v : venta);
-begin
-	read(v.code);
-	read(v.codep);
-	read(v.cant);
-	read(v.precio);
+	tipoFinal = record
+		codigo: integer;
+		nota: integer;
+	end;
+	final = ^nodoFinales;
+	nodoFinales = record
+		dato: tipoFinal;
+		sig: final;
+	end;
+	alumno = record
+		legajo: integer;
+		dni: integer;
+		anio: integer;
+		finales: final;
+	end;
+	arbol = ^nodoArbol;
+	nodoArbol = record
+		dato: alumno;
+		hi: arbol;
+		hd: arbol;
+	end;
+	alumnoB = record
+		dni: integer;
+		anio: integer;
+	end;
+	arbolB = ^nodoArbolB;
+	nodoArbolB = record
+		dato: alumnoB;
+		hi: arbolB;
+		hd: arbolB;
+	end;
+	aluProm = record
+		legajo: integer;
+		prom: real;
+	end;
+	lista = ^nodoLista;
+	nodoLista = record
+		dato: aluProm;
+		sig: lista;
+	end;
+
+procedure agregarAdelante(var alu:alumno;f:tipoFinal);
+var 
+    aux:final;
+begin 
+    new(aux);
+    aux^.dato:=f;
+    aux^.sig:=alu.finales;
+    alu.finales:=aux;
 end;
 
+procedure finalRandom(var final:tipoFinal);
+begin 
+    final.codigo:=random(200)+1;
+    final.nota:=random(10)+1;
+end;
 
-procedure agregar(var a : arb; elem : venta);
-Var
-	aux : producto
+procedure alumnoRandom(var alu:alumno);
+var 
+    final:tipoFinal;
+    i:integer;
 begin
-	aux.cant := elem.cant;
-	aux.codep := elem.codep;
-	aux.monto := elem.precio *elem.cant;
+    alu.legajo:=random(1000)+1;
+    alu.dni:=random(500)+1;
+    alu.anio:=random(24)+2000;
+    alu.finales:=nil;
+    for i:=1 to Random(5)+4 do 
+        begin 
+            finalRandom(final);
+            agregarAdelante(alu,final);
+        end;
+end;
+
+procedure agregarAlumno(var a: arbol; alu: alumno);
+begin
 	if(a = nil) then
 		begin
-			new(a); a^.hi := nil, a^.hd := nil; a^.p := aux;
-		end;
+			new(a);
+			a^.dato:= alu;
+			a^.hi:= nil;
+			a^.hd:= nil;
+		end
 	else
-		if(elem.code = a^.p.code) then
-			begin
-				a^.p.cant := a^.p.cant + aux.cant;
-				a^.p.monto := aux.monto
-		if(elem.code < a^.p.code) then
-			agregar(a^.hi, elem);
-		else
-			agregar(a^.hd, elem);
-end;
-	
-
-
-
-procedure cargararbol(var a : arb);
-var
-	aux : venta;
-begin
-	leer(aux);
-	if(aux.code <> -1) then
 		begin
-			agregar(a, aux);
-			leer(aux);
-			cargararbol(a);
-		end;
-end;
-
-
-procedure preorden(a : arb);
-begin
-	if(a <> nil) then
-		begin
-			writeln(a^.p.cant);
-			writeln(a^.p.monto);
-			writeln(a^.p.codep);
-			preorden(a^.hi);
-			preorden(a^.hd);
-		end;
-end;
-
-
-function maximo(num1, num2): integer;
-begin
-	if (a = nil) then
-		maximo := -1;
-	else
-		if(a^.p.ca
-end;
-
-procedure  maxproducto(a : arb; var max : integer; var codemax : integer);
-begin
-	if(a <> nil) then
-		begin
-			maxproducto(a^.hi, max, codemax);
-			maxproducto(a^.hd, max, codemax);
-			if(a^.p.cant > max) then
-				begin
-					codemax := a^.p.code;
-					max := a^.p.cant;
-				end;
-		end;
-	else
-		maxproducto := -1;
-end;
-
-
-procedure menores(a : arb; var cant : integer; code : integer) : integer;
-begin
-	if(a <> nil) then
-		begin
-			if(a^.p.code < code) then
-				begin
-					cant := cant + 1;
-					menores(a^.hi, cant, code);
-					menores(a^.hd, cant, code);
-				end;
+			if(alu.legajo <= a^.dato.legajo) then
+				agregarAlumno(a^.hi, alu)
 			else
-				menores(a^.hi, cant, code);
+				agregarAlumno(a^.hd, alu);
 		end;
 end;
 
-procedure entredosvalores
+procedure agregarAlumnoB(var a: arbolB; alu: alumnoB);
+begin
+	if(a = nil) then
+		begin
+			new(a);
+			a^.dato:= alu;
+			a^.hi:= nil;
+			a^.hd:= nil;
+		end
+	else
+		begin
+			if(alu.dni <= a^.dato.dni) then
+				agregarAlumnoB(a^.hi, alu)
+			else
+				agregarAlumnoB(a^.hd, alu);
+		end;
+end;
+
+procedure cargarArbol(var a: arbol);
+var
+	i: integer;
+	alu: alumno;
+begin
+	writeln('Carga del arbol A:');
+	for i:= 1 to Random(10)+3 do
+		begin
+			alumnoRandom(alu);
+			agregarAlumno(a,alu);
+		end;
+end;
+
+procedure imprimirAlu(a: alumno);
+begin
+	writeln();
+	write('Legajo=',a.legajo,' DNI=',a.dni,' Anio=',a.anio);
+	while(a.finales<>nil) do
+		begin
+			write(' |Cod=', a.finales^.dato.codigo,' N=',a.finales^.dato.nota, '| ');
+			a.finales:= a.finales^.sig;
+		end;
+end;
+
+procedure imprimirAluB(a: alumnoB);
+begin
+	writeln('DNI=', a.dni, ' ANIO=', a.anio);
+end;
+
+procedure imprimir(a: arbol);
+begin
+	if(a<>nil) then
+		begin
+			imprimir(a^.hi);
+			imprimirAlu(a^.dato);
+			imprimir(a^.hd);
+		end;
+end;
+
+procedure imprimirB(a: arbolB);
+begin
+	if(a<>nil) then
+		begin
+			imprimirB(a^.hi);
+			imprimirAluB(a^.dato);
+			imprimirB(a^.hd);
+		end;
+end;
+
+procedure menores(arb:arbol;var arbB:arbolB;legajo:integer);
+var 
+    aluB:alumnoB;
+begin 
+    if (arb<>nil) then 
+        begin 
+            if (arb^.dato.legajo < legajo) then 
+                begin
+					aluB.dni:= arb^.dato.dni;
+					aluB.anio:= arb^.dato.anio;
+                    agregarAlumnoB(arbB , aluB);
+                    menores(arb^.HI,arbB,legajo);
+                    menores(arb^.HD,arbB,legajo);
+                end
+            else
+                menores(arb^.HI,arbB,legajo);
+        end;
+end;
+
+function numLegajoMasGrande(a: arbol; numLegajoMax: integer): integer;
+begin
+	if (a=nil) then
+		numLegajoMasGrande:= numLegajoMax
+	else
+		begin
+			if(a^.dato.legajo > numLegajoMax) then
+				numLegajoMax:= a^.dato.legajo;
+			numLegajoMasGrande:= numLegajoMasGrande(a^.HD, numLegajoMax);
+		end;
+end;
+
+procedure maxDni(a: arbol; var max:integer);
+begin 
+    if (a <> nil) then 
+        begin 
+            if (a^.dato.dni > max) then 
+                max:=a^.dato.dni;
+            maxDni(a^.hi,max);
+            maxDni(a^.hd,max);
+        end;
+end;
+
+function cantAluImpares(a : arbol; total : integer) : integer;
+begin
+	if(a = nil) then
+		cantAluImpares:= 0
+	else
+		begin
+			cantAluImpares:= cantAluImpares(a^.hi, total) + cantAluImpares(a^.hd, total);
+			if((a^.dato.legajo mod 2)=1) then
+				cantAluImpares := cantAluImpares + 1;
+		end;
+end;
+
+function obtenerPromedio(a: alumno): real;
+var
+	total, cant: integer;
+begin
+	total:= 0;
+	cant:= 0;
+	while(a.finales <> nil) do
+		begin
+			cant:= cant+1;
+			total:= total + a.finales^.dato.nota;
+			a.finales := a.finales^.sig;
+		end;
+	obtenerPromedio:= (total/cant);
+end;
+
+procedure mejorProm (a:arbol; var legajo: integer; var promMax: real);
+var
+	promedioActual: real;
+begin 
+    if (a<>nil) then 
+        begin 
+			promedioActual:= obtenerPromedio(a^.dato);
+            if (promedioActual > promMax) then 
+				begin
+					promMax:= promedioActual;
+					legajo:= a^.dato.legajo;
+				end;
+            mejorProm(a^.hi,legajo, promMax);
+            mejorProm(a^.hd,legajo, promMax);
+        end;
+end;
+
+procedure agregarProm(var l: lista; a: aluProm);
+var
+	aux: lista;
+begin
+	new(aux);
+	aux^.dato:= a;
+	aux^.sig:= l;
+	l:= aux;
+end;
+
+procedure imprimirLista(l: lista);
+begin
+	while(l<>nil) do
+		begin
+			writeln('Legajo=', l^.dato.legajo, ' Promedio=', l^.dato.prom:0:2);
+			l:= l^.sig;
+		end;
+end;
+
+procedure promMayorANum(a: arbol; var l: lista; num: integer);
+var
+	promActual: real;
+	alu: aluProm;
+begin
+	if(a<>nil) then
+		begin
+			promActual:= obtenerPromedio(a^.dato);
+			if(promActual > num) then
+				begin
+					alu.prom:= promActual;
+					alu.legajo:= a^.dato.legajo;
+					agregarProm(l, alu);
+					promMayorANum(a^.hi, l, num);
+					promMayorANum(a^.hd, l, num);
+				end
+			else
+				promMayorANum(a^.hd, l, num);
+		end;
+end;
+
+var
+	a: arbol;
+	aB: arbolB;
+	l: lista;
+	num, max, cant, legajo: integer;
+	promMax: real;
+begin
+	Randomize;
+	a:= nil;
+	aB:= nil;
+	l:= nil;
+	cargarArbol(a); //A
+	imprimir(a);
+
+	writeln();
+	writeln('-------------------');
+	writeln('Ingrese un numero de legajo: ');
+	readln(num);
+	menores(a, aB, num); 
+	writeln('Los alumnos con legajo menor a ', num, ' son:');
+	imprimirB(aB); //B
+
+	writeln('-------------------');
+	max:= -1;
+	writeln('El numero de legajo mas grande de todos los alumnos es: ',  numLegajoMasGrande(a, max)); //C
+
+	writeln('-------------------');
+	max:= -1;
+	maxDni(a, max); //D
+	writeln('El DNI mas grande de todos los alumnos es: ', max); //D
+
+	writeln('-------------------');
+	cant:= 0;
+	writeln('La cantidad de alumnos con legajo impar es: ', cantAluImpares(a, cant)); //E
+
+	writeln('-------------------');
+	legajo:= 0;
+	promMax:= -1;
+	mejorProm(a, legajo, promMax);
+	writeln('El legajo del alumno con mayor promedio es: ', legajo, ' con un promedio de ', promMax:0:2); //F
+
+	writeln('-------------------');
+	writeln('Ingrese un valor entero: ');
+	readln(num);
+	promMayorANum(a, l, num);
+	writeln('Los alumnos cuyo promedio supera el valor ingresado (' , num , ') son: '); //G
+	imprimirLista(l);
+end.

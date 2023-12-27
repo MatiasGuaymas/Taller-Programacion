@@ -1,5 +1,4 @@
-{ EJERCICIO1
-1. Escribir un programa que:
+{1. Escribir un programa que:
 a. Implemente un módulo que lea información de socios de un club y las almacene en un árbol
 binario de búsqueda. De cada socio se lee número de socio, nombre y edad. La lectura finaliza
 con el número de socio 0 y el árbol debe quedar ordenado por número de socio.
@@ -20,41 +19,8 @@ vii. Informe la cantidad de socios. Debe invocar a un módulo recursivo que reto
 cantidad.
 viii. Informe el promedio de edad de los socios. Debe invocar al módulo recursivo del inciso
 vii e invocar a un módulo recursivo que retorne la suma de las edades de los socios.
-ix. Informe, a partir de dos valores que se leen, la cantidad de socios en el árbol cuyo
-número de socio se encuentra entre los dos valores ingresados. Debe invocar a un módulo
-recursivo que reciba los dos valores leídos y retorne dicha cantidad.
-x. Informe los números de socio en orden creciente.
-xi. Informe los números de socio pares en orden decreciente.
-}
-
-{ EJERCICIO1
-1. Escribir un programa que:
-a. Implemente un módulo que lea información de socios de un club y las almacene en un árbol
-binario de búsqueda. De cada socio se lee número de socio, nombre y edad. La lectura finaliza
-con el número de socio 0 y el árbol debe quedar ordenado por número de socio.
-b. Una vez generado el árbol, realice módulos independientes que reciban el árbol como
-parámetro y que :
-i. Informe el número de socio más grande. Debe invocar a un módulo recursivo que
-retorne dicho valor.
-ii. Informe los datos del socio con el número de socio más chico. Debe invocar a un módulo
-recursivo que retorne dicho socio.
-iii. Informe el número de socio con mayor edad. Debe invocar a un módulo recursivo que
-retorne dicho valor.
-iv. Aumente en 1 la edad de todos los socios.
-v. Lea un valor entero e informe si existe o no existe un socio con ese valor. Debe invocar a
-un módulo recursivo que reciba el valor leído y retorne verdadero o falso.
-vi. Lea un nombre e informe si existe o no existe un socio con ese nombre. Debe invocar a
-un módulo recursivo que reciba el nombre leído y retorne verdadero o falso.
-vii. Informe la cantidad de socios. Debe invocar a un módulo recursivo que retorne dicha
-cantidad.
-viii. Informe el promedio de edad de los socios. Debe invocar al módulo recursivo del inciso
-vii e invocar a un módulo recursivo que retorne la suma de las edades de los socios.
-ix. Informe, a partir de dos valores que se leen, la cantidad de socios en el árbol cuyo
-número de socio se encuentra entre los dos valores ingresados. Debe invocar a un módulo
-recursivo que reciba los dos valores leídos y retorne dicha cantidad.
-x. Informe los números de socio en orden creciente.
-xi. Informe los números de socio pares en orden decreciente.
-}
+xi. Informe los números de socio en orden creciente.
+x. Informe los números de socio pares en orden decreciente.}
 
 program ejercicio1;
 type
@@ -75,7 +41,7 @@ begin
 	a:= nil;
 end;
 
-procedure leerSocio(var s: socio);
+{procedure leerSocio(var s: socio);
 begin
 	writeln('Ingrese el numero de socio: ');
 	read(s.numero);
@@ -88,9 +54,21 @@ begin
 		end;
 end;
 
-//i
+procedure cargarArbol(var a: arbol);
+var
+	s: socio;
+begin
+	leerSocio(s);
+	while(s.numero <> 0) do
+		begin
+			agregar(a,s);
+			leerSocio(s);
+		end;
+end;}
 
-procedure cargarArbol(var a: arbol; s: socio);
+//A
+
+procedure agregar(var a: arbol; s: socio);
 begin
 	if(a = nil) then
 		begin
@@ -98,23 +76,45 @@ begin
 			a^.dato:= s; a^.HI:= nil; a^.HD:= nil;
 		end
 		else
-			if(num < a^.dato.numero) then
-				cargarArbol(a^.HI, s)
-			else if(s.numSocio > a^.dato.numSocio) then
-				cargarArbol(a^.HD, s);
+			if(s.numero <= a^.dato.numero) then 
+				agregar(a^.HI, s)
+			else 
+				agregar(a^.HD, s);
+end;
+
+procedure cargarArbol(var a: arbol);
+var
+	s: socio;
+	st: string;
+	i: integer;
+begin
+	for i:= 1 to Random(10)+5 do
+		begin
+			s.numero:=random(200)+1;
+    		Str(s.numero,st);
+    		s.nombre:='Socio '+st;
+    		s.edad:=random(70)+10;
+			agregar(a, s);
+		end;
+end;
+
+//IX
+
+procedure imprimirSocio(s: socio);
+begin
+	writeln('Codigo= ',s.numero,' Nombre=', s.nombre,' Edad=', s.edad);
 end;
 
 procedure imprimir(a: arbol);
 begin
 	if (a <> nil) then begin
 		imprimir(a^.HI);
-		write(a^.dato.numero);
-		write(a^.dato.edad);
+		imprimirSocio(a^.dato);
 		imprimir(a^.HD);
 	end;
 end;
 
-//ii
+//I
 
 function numSocioMasGrande(a: arbol; numSocioMax: integer): integer;
 begin
@@ -128,42 +128,33 @@ begin
 		end;
 end;
 
-//iii
+//II
 
-function buscarSocioChico(a: arbol;numSocioMin: integer): arbol;
-begin
-  if(a = nil)then
-    buscarSocioChico:= a
-  else
-    begin
-      if(a^.dato.numSocio < numSocioMin)then
-        numSocioMin:= a^.dato.numSocio;
-      if(a^.hi= nil)then
-        buscarSocioChico:= a
-      else
-        buscarSocioChico:= buscarSocioChico(a^.hi,numSocioMin);
-    end;
+procedure codigoMinimo (arbol:arbol;var minimo: socio);
+begin 
+    if (arbol<>nil) then 
+        begin 
+            if (arbol^.HI=nil) then 
+                minimo:=arbol^.dato
+            else 
+                codigoMinimo(arbol^.HI,minimo);
+        end;
 end;
 
-procedure informarDatosSocioMasChico(a: arbol);
-var
-  nodoBuscado: arbol;
-  numSocioMin: integer;
-begin
-  numSocioMin:= 9999;
-  nodoBuscado:= buscarSocioChico(a,numSocioMin);
-  if(nodoBuscado <> nil)then
-    // imprimir()
-    begin
-      Writeln('num socio: ',nodoBuscado^.dato.numero);
-      Writeln('nombre socio: ',nodoBuscado^.dato.nombre);
-      Writeln('edad socio: ',nodoBuscado^.dato.edad);
-    end
-  else
-    Writeln('Arbol vacio / algun error');
+//III
+
+procedure masEdad (a:arbol;var s:socio);
+begin 
+    if (a<>nil) then 
+        begin 
+            if (a^.dato.edad>s.edad) then 
+                s:=a^.dato;
+            masEdad(a^.HI,s);
+            masEdad(a^.HD,s);
+        end;
 end;
 
-//iv
+//IV
 
 procedure aumentar(a: arbol);
 begin
@@ -175,7 +166,7 @@ begin
 		end;
 end;
 
-//v
+//V
 
 function esta(a : arbol; num : integer) : boolean;
 begin
@@ -184,65 +175,60 @@ begin
 			esta := true
 		else
 			begin
-				esta(a^.hi, num);
-				esta(a^.hd, num);
-			end;
+				if (num < a^.dato.numero) then
+					esta:= esta(a^.hi, num)
+				else
+					esta:= esta(a^.hd, num);
+			end
 	else
 		esta := false;
 end;
 
-//vi
+//VI
 
 function nombreesta(a : arbol; nom : string) : boolean;
 begin
 	if(a <> nil) then
 		if(a^.dato.nombre = nom) then
-			nombreesta := true;
+			nombreesta := true
 		else
-			begin
-				nombreesta(a^.hi, nom);
-				nombreesta(a^.hd, nom);
-			end;
+			nombreesta:= nombreesta(a^.hi, nom) or nombreesta(a^.hd, nom)
 	else
 		nombreesta := false;
 end;
 
-//vii
+//VII
 
 function cantidadsocios(a : arbol; total : integer) : integer;
 begin
 	if(a<>nil) then
 		begin
-			total := total + 1;
-			cantidadsocios(a^.hi, total);
-			cantidadsocios(a^.hd, total);
+			total := cantidadsocios(a^.hi, total) + cantidadsocios(a^.hd, total) + 1;
 		end;
 	cantidadsocios := total;
 end;
 
-//viii
+//VIII
 
-function edadtotal(a : arbol; total : integer) : integer;
+function edadTotal(a : arbol; total : integer) : integer;
 begin
 	if(a<>nil) then
 		begin
-			total := a^.dato.edad + total;
-			edadtotal(a^.hi, total);
-			edadtotal(a^.hd, total);
+			total:= a^.dato.edad + edadTotal(a^.hi, total) + edadTotal(a^.hd, total) + total;
 		end;
-	edadtotal := total;
+	edadTotal := total;
 end;
 
-procedure edadsocios(a : arb; prom : real);
+function edadProm(a : arbol): real;
 var
-	total, cant : integer;
+	total, t, cant, sumaEdades : integer;
 begin
-	cantidadsocios(a, cant);
-	edadtotal(a, total);
-	edadsocios(total / cant);
+	t:= 0;
+	cant:= cantidadsocios(a, t);
+	total:= 0;
+	sumaEdades:= edadTotal(a, total);
+	edadProm:= (sumaEdades/cant);
 end;
-
-//ix
 
 function dosvalores(num1, num2, dato : integer) : boolean;
 var
@@ -255,65 +241,94 @@ begin
 			num2 := aux;
 		end;
 	if(dato >= num1) and (dato <= num2) then
-		dosvalores := true;
+		dosvalores := true
 	else
 		dosvalores := false;
 end;
 
 
-function entredosvalores(a : arb; num1, num2, cant : integer);
+function entredosvalores(a : arbol; num1, num2: integer): integer;
 begin
-	if(a<>nil) then
+	if(a = nil) then 
+		entredosvalores:= 0
+	else
 		begin
-			if(dosvalores(num1, num2, a^.s.num) then
-				cant := cant + 1;
-			entredosvalores(a^.hi, num1, num2, cant);
-			entredosvalores(a^.hd, num1, num2, cant);
-		end;
-	entredosvalores := cant;
-end;
-
-//x
-procedure imprimirOrden(a: arbol);
-begin
-	if(a<> nil) then
-		begin
-			write(a^.dato.numero);
-			imprimirOrden(a^.hi);
-			imprimirOrden(a^.hd);
+			entredosvalores:= entredosvalores(a^.hi, num1, num2) + entredosvalores(a^.hd, num1, num2);
+			if(dosvalores(num1, num2, a^.dato.numero)) then
+				entredosvalores := entredosvalores + 1;
 		end;
 end;
 
-procedure imprimirInOrder(a: arbol);
+//X
+procedure imprimirPares(a: arbol);
 begin
-  if(a <> nil)then
-    begin
-      imprimirInOrder(a^.hi);
-      Writeln('In Order: de menor a mayor',a^.dato);
-      imprimirInOrder(a^.hd);
-    end;
+  	if(a <> nil)then
+    	begin
+      		imprimirPares(a^.hd);
+      		if((a^.dato.numero mod 2) = 0)then
+				imprimirSocio(a^.dato);
+      		imprimirPares(a^.hi);
+    	end;
 end;
 
-//xi
-procedure imprimirInOrder2(a: arbol);
+var
+	a: arbol;
+	s: socio;
+	max, num, num1, num2: integer;
+	nom: string;
 begin
-  if(a <> nil)then
-    begin
-      imprimirInOrder2(a^.hd);
-      if(a^.dato mod 2= 0)then
-        Writeln('In Order: de mayor a menor',a^.dato);
-      imprimirInOrder2(a^.hi);
-    end;
-end;
+	Randomize;
+	writeln('-----------------------');
+	inicializarArbol(a); 
+	cargarArbol(a);	//A
 
-procedure postorden(a : arb);
-begin
-    if(a <> nil) then  
-        begin
-        postorden(a^.hi);
-        postorden(a^.hd);
-        writeln(a^.s.num);
-        end;
-end;
+	imprimir(a); //B - IX
 
-//IMPLEMENTAR EL PROGRAMA PRINCIPAL
+	writeln('-----------------------');
+	max:= -1;
+	writeln('El numero de socio mas grande es ', numSocioMasGrande(a,max)); //B - I
+
+	writeln('-----------------------');
+	s.numero:= 999;
+	codigoMinimo(a, s); //B - II
+	write('El socio con numero de socio mas chico es: ');
+	imprimirSocio(s);
+
+	writeln('-----------------------');
+	s.edad := -1;
+	masEdad(a, s); //B - III
+	writeln('El numero de socio con mayor edad es : ', s.numero);
+
+	writeln('-----------------------');
+	writeln('Se aumenta en 1 la edad de todos los socios: ');
+	aumentar(a); //B - IV
+	imprimir(a); 
+
+	writeln('-----------------------');
+	writeln('Ingrese un numero de socio a buscar: ');
+	readln(num);
+	writeln('EXISTE NUMERO?: ', esta(a, num)); //B - V
+
+	writeln('-----------------------');
+	writeln('Ingrese un nombre : ');
+	readln(nom);
+	writeln('EXISTE NOMBRE?: ', nombreesta(a, nom)); //B - VI 
+
+	writeln('-----------------------');
+	num:= 0;
+	writeln('La cantidad de socios es: ', cantidadsocios(a, num)); //B - VII
+
+	writeln('-----------------------');
+	writeln('La edad promedio de todos los socios es: ', edadProm(a):0:2); //B - VIII
+
+	writeln('-----------------------');
+	writeln('Los socios con numero par son: ');
+	imprimirPares(a); //B - X
+
+	writeln('-----------------------');
+	writeln('Ingrese un primer numero de socio como limite izquierdo: ');
+	readln(num1);
+	writeln('Ingrese un primer numero de socio como limite derecho: ');
+	readln(num2);
+	writeln('La cantidad de socios que se encuentran entre esos dos limites es: ', entredosvalores(a, num1, num2)); //ESTA ERA EL INCISO IX, ANTES.
+end.
