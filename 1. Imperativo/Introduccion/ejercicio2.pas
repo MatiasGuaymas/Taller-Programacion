@@ -1,123 +1,109 @@
-program ej2;
+{2.- Implementar un programa que procese información de propiedades que están a la venta
+en una inmobiliaria.
+Se pide:
+a) Implementar un módulo para almacenar en una estructura adecuada, las propiedades
+agrupadas por zona. Las propiedades de una misma zona deben quedar almacenadas
+ordenadas por tipo de propiedad. Para cada propiedad debe almacenarse el código, el tipo de
+propiedad y el precio total. De cada propiedad se lee: zona (1 a 5), código de propiedad, tipo
+de propiedad, cantidad de metros cuadrados y precio del metro cuadrado. La lectura finaliza
+cuando se ingresa el precio del metro cuadrado -1.
+b) Implementar un módulo que reciba la estructura generada en a), un número de zona y un tipo de
+propiedad y retorne los códigos de las propiedades de la zona recibida y del tipo recibido.}
+
+program ejercicio2;
 type
-
-	z = 1..5;
-
-	propiedad = record
-		zona : z;
-		codeP : integer;
-		tipo : string;
-		metros : real;
-		precio : real;
-		end;
-		
-	lis = ^nodo;
-	
-	
-	nodo = record
-		p : propiedad;
-		sig : lis;
-		end;
-		
-		
-	lista2 = ^nodo2
-	
-	nodo2 = record
-		codeprop : integer;
-		sig : lista2;
-		end;
-		
-
-procedure leer(var p : propiedad);
-begin
-	read(p.zona);
-	read(p.codeP);
-	read(p.tipo);
-	read(p.metros);
-	read(.precio);
-end;
-
-
-procedure insertar (var l : lis; elem : propiedad);
+    subZona = 1..5;
+    propiedad = record
+        codigo: integer;
+        tipo: string;
+        precioTotal: real;
+    end;
+    propLectura = record
+        zona: subZona;
+        codigo: integer;
+        tipo: string;
+        cantMetros: real;
+        precio: real;
+    end;
+    lista = ^nodo;
+    nodo = record
+        dato: propiedad;
+        sig: lista;
+    end;
+    vecProp = array [1..5] of lista;
+procedure inicializarVector(var v: vecProp);
 var
-	aux, ant, act : lis;
+    i: subZona;
 begin
-	new(aux); aux^.sig := nil; aux^.p := elem;
-	if (l = nil) then
-		l := aux;
-	else
-		begin
-			act := l;
-			ant := act;
-			
-			while (act <> nil) and (act^.p.zona < aux^.p.zona) and (act^.p.tipo <> aux^.p.tipo) 
-				begin
-					ant := act;
-					act := act^.sig;
-				end;
-		end;
-		
-	if(act = l) then
-		begin
-			aux^.sig := l;
-			l := aux;
-		end;
-	
-	else
-		begin
-			ant^.sig := aux;
-			aux^.sig := act;
-		end;
+    for i:= 1 to 5 do v[i]:= nil;
 end;
-
-
-procedure cargarLista(var l : lis);
+procedure leerPropiedad(var p: propLectura);
+begin
+    writeln('Ingrese precio por metro cuadrado:');
+    readln(p.precio);
+    if (p.precio <> -1) then 
+        begin
+            writeln('Ingrese numero de zona:');
+            readln(p.zona);
+            writeln('Ingrese codigo de propiedad:');
+            readln(p.codigo);
+            writeln('Ingrese tipo de propiedad:');
+            readln(p.tipo);
+            writeln('Ingrese cantidad de metros cuadrados:');
+            readln(p.cantMetros);
+        end;
+end;
+procedure insertar(var l: lista; p: propiedad);
 var
-	aux := propiedad;
+    ant, act, aux: lista;
 begin
-	l := nil;
-	leer(aux);
-	while (aux.metro <> -1) do
-		begin
-			insertar(l, aux);
-			leer(aux);
-		end;
+    new(aux); aux^.dato:= p; act:= l;
+    while(act<>nil) and (act^.dato.tipo < p.tipo) do
+        begin
+            ant:= act;
+            act:= act^.sig;
+        end;
+    if(act = l) then
+        l:= aux
+    else
+        ant^.sig:= aux;
+    aux^.sig:= act;
 end;
-
-
-procedure agregar ( var pri : lista2, elem : integer);
+procedure cargarProp(var v: vecProp);
 var
-	aux : lista2;
+    p: propiedad;
+    prop: propLectura;
 begin
-	new(aux); aux^.sig := nil; aux^.codeprop := elem;
-	if (pri = nil) then
-		pri := aux;
-	else
-		begin
-			aux^.sig := pri;
-			pri := aux;			
-		end;
+    leerPropiedad(prop);
+    while(prop.precio <> -1) do
+        begin
+            p.codigo:= prop.codigo;
+            p.tipo:= prop.tipo;
+            p.precioTotal:= prop.cantMetros * prop.precio;
+            insertar(v[prop.zona], p);
+            leerPropiedad(prop);
+        end;
 end;
-
-procedure procesar (l : lis; numz : z; tipo : string; var pri : lista2);
+procedure imprimir(v: vecProp; zona: subZona; tipo: string);
 begin
-	while( l <> nil) do
-		begin
-			if (l^.p.zona = numz) and (l^.p.tipo = tipo) then
-				agregar(pri, l^.p.codep);
-		end;
+    writeln('Para el codigo de propiedad de tipo ', tipo, ' en la zona ', zona, ' se encontraron estos codigos: ');
+    while(v[zona] <> nil) do
+        begin
+            if(v[zona]^.dato.tipo = tipo) then 
+                writeln(' - ', v[zona]^.dato.codigo);
+            v[zona]:= v[zona]^.sig;
+        end;
 end;
-
-
 var
-	l : lis;
-	pri : lista2;
-	numerozona : integer;
-	tipo : string;
+    v: vecProp;
+    zona: integer;
+    tipo: string;
 begin
-	pri := nil;
-	cargarLista(l);
-	read(numerozona);
-	read(tipo);
-	procesar(l,numerozona,tipo,pri);
-end;
+    inicializarVector(v);
+    cargarProp(v);
+    writeln('Ingrese numero de zona:');
+    readln(zona);
+    writeln('Ingrese tipo de propiedad:');
+    readln(tipo);
+    imprimir(v, zona, tipo);
+end.
