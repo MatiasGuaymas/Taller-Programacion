@@ -1,13 +1,11 @@
-{EJERCICIO 3
-3.- Escribir un programa que:
+{3.- Escribir un programa que:
 a. Implemente un módulo recursivo que genere una lista de números enteros “random”
 mayores a 0 y menores a 100. Finalizar con el número 0.
 b. Implemente un módulo recursivo que devuelva el mínimo valor de la lista.
 c. Implemente un módulo recursivo que devuelva el máximo valor de la lista.
 d. Implemente un módulo recursivo que devuelva verdadero si un valor determinado se
-encuentra en la lista o falso en caso contrario.
-}
- 
+encuentra en la lista o falso en caso contrario.}
+
 program ejercicio3;
 type
 	lista = ^nodo;
@@ -32,7 +30,7 @@ procedure cargarLista(var l: lista);
 var
 	num: integer;
 begin
-	num:= random(101); //101 ES
+	num:= random(101);
 	if(num <> 0) then
 		begin
 			agregarAdelante(l, num);
@@ -83,12 +81,10 @@ begin
 	Randomize;
 	l:= nil;
 	cargarLista(l); //A
-	writeln();
-	WriteLn('_________');
 	min:= 999;
 	WriteLn('El valor minimo es: ', MinimoValor(l,min));//B
 	max:= -1;
-	WriteLn('El valor Maximo es: ', MaximoValor(l,max));//C
+	WriteLn('El valor maximo es: ', MaximoValor(l,max));//C
 	Writeln('Ingrese el numero buscado ');
 	readln(valor);
 	WriteLn('Encontro: ', buscar(l,valor));//D

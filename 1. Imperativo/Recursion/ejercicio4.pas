@@ -1,17 +1,14 @@
-{ EJERCICIO4
-4.- Escribir un programa con:
+{4.- Escribir un programa con:
 a. Un módulo recursivo que retorne un vector de 20 números enteros “random” mayores a 0 y
 menores a 100.
 b. Un módulo recursivo que devuelva el máximo valor del vector.
-c. Un módulo recursivo que devuelva la suma de los valores contenidos en el vector.
-}
+c. Un módulo recursivo que devuelva la suma de los valores contenidos en el vector.}
 
 program ejercicio4;
 const
 	DIMF = 20;
 type
 	vecNum = array [1..DIMF] of integer;
-
 procedure generarVector(var v: vecNum; dimL: integer);
 var
     num: integer;
@@ -19,10 +16,17 @@ begin
 	if(dimL < DIMF) then
 		begin
 			dimL:= dimL + 1;
-			num:= random(101); //MAYORES A 0 Y MENORES A 100, ENTONCES RANDOM 100 O RANDOM 101? O OTRO?
+			num:= random(99)+1; 
 			v[dimL] := num;
 			generarVector(v, dimL);
 		end;
+end;
+procedure imprimirVector(v: vecNum);
+var
+	i:integer;
+begin
+	for i:= 1 to DIMF do
+		writeln('En la posicion: ', i, ', el valor actual es ', v[i]);
 end;
 
 function Encontrar_Maximo(v:vecNum; max, i:integer):integer;
@@ -51,7 +55,6 @@ begin
   else
     suma:= total;
 end;
-//REVISAR DIML, PORQUE CLARAMENTE NO FUNCIONA, CONSULTAR
 
 var
 	v: vecNum;
@@ -60,6 +63,7 @@ begin
 	Randomize;
 	dimL:= 0;
 	generarVector(v, dimL); //A
+	imprimirVector(v);
 	max:= -1;
 	dimL:= 0;
 	WriteLn('El valor maximo es: ', Encontrar_Maximo(v,max,dimL));//B

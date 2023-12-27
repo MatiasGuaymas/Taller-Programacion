@@ -1,12 +1,10 @@
-{
-5.- Implementar un módulo que realice una búsqueda dicotómica en un vector, utilizando elsiguiente encabezado:
+{ 5.- Implementar un módulo que realice una búsqueda dicotómica en un vector, utilizando el siguiente encabezado:
 Procedure busquedaDicotomica (v: vector; ini,fin: indice; dato:integer; var pos: indice);
-Nota: El parámetro “pos” debe retornar la posición del dato o -1 si el dato no se encuentraen el vector.h    
-}
+Nota: El parámetro “pos” debe retornar la posición del dato o -1 si el dato no se encuentra en el vector.}
 
 program ej5;
 const
-	lim = 5;
+	lim = 10;
 type
 
 	vec = array[1..lim] of integer;
@@ -17,8 +15,9 @@ var
 begin
 	if(diml < lim) then
 		begin
-			writeln('ingrese num.');
-			readln(aux);
+			//writeln('Ingrese num.');
+			//readln(aux);
+			aux:= Random(20);
 			if(aux <> 0) then
 				begin
 				    diml := diml + 1;
@@ -28,35 +27,47 @@ begin
 		end;
 end;
 
-
 procedure imprimir (v : vec; diml : integer);
 begin
 	if(diml > 0) then
 		begin   
 			imprimir(v, diml - 1);
-			writeln(v[diml]);
+			writeln(diml, '. ', v[diml]);
 		end;
 end;
 
-procedure busquedaD(v : vec; ini, fin, dato : integer; var pos : integer);
+procedure seleccion(var v: vec; dimL: integer);
+var
+	i, j, pos, item: integer;
 begin
-	if(ini < fin) then
-		begin
-			pos := (fin + ini) div 2;
-			if(dato > v[pos]) then
-				begin
-					ini := pos;
-					busquedaD(v, ini, fin, dato, pos);
-				end
-			else
-				if(dato < v[pos]) then
-					begin
-						fin := pos;
-						busquedaD(v,ini,fin,dato,pos);
-					end;
-		end
-	else
-		pos := -1;
+	for i:= 1 to dimL - 1 do begin
+		pos:= i;
+		for j:= i + 1 to dimL do
+			if (v[j] < v[pos]) then pos:= j;
+		item:= v[pos];
+		v[pos] := v[i];
+		v[i]:= item;
+	end;
+end;
+
+procedure buscar (vector:vec;indiceI,indiceD,n:integer;var indiceN:integer);
+var 
+    medio:integer;
+begin 
+    medio:=(indiceI+indiceD) div 2;
+    writeln('IndiceI: ',indiceI,' IndiceD: ',indiceD,' N: ',n,' IndiceN: ',indiceN,' Medio:',medio);
+    if (indiceI<=indiceD) then 
+        begin 
+            if (vector[medio]=n) then 
+                indiceN:=medio
+            else 
+                if (vector[medio]>n) then 
+                    buscar(vector,indiceI,medio-1,n,indiceN)
+                else
+                    buscar(vector,medio+1,indiceD,n,indiceN);
+        end 
+    else 
+        indiceN:=-1;
 end;
 
 function encontro(pos : integer) : boolean;
@@ -67,16 +78,17 @@ begin
         encontro := true;
 end;
 
-
 var
 	v : vec;
 	diml,  ini, fin, dato, pos : integer;
 begin
+	Randomize;
     ini := 1;
-    fin := 5;
 	dato := 5;
 	cargarvector(v, diml);
+	fin:= diml;
+	seleccion(v, diml);
 	imprimir(v, diml);
-	busquedaD(v,ini, fin, dato, pos);
-	write('se encontro: ', encontro(pos));
+	buscar(v,ini, fin, dato, pos);
+	if(encontro(pos)) then writeln ('Se encontro el dato (', dato ,') en la posicion: ', pos, ' del vector') else writeln('No se pudo encontar el dato');
 end.

@@ -1,5 +1,4 @@
-{
-1.- Implementar un programa que invoque a los siguientes módulos.
+{ 1.- Implementar un programa que invoque a los siguientes módulos.
 a. Un módulo recursivo que permita leer una secuencia de caracteres terminada en punto, los
 almacene en un vector con dimensión física igual a 10 y retorne el vector.
 b. Un módulo que reciba el vector generado en a) e imprima el contenido del vector.
@@ -11,8 +10,7 @@ retorne una lista con los caracteres leídos.
 f. Un módulo recursivo que reciba la lista generada en e) e imprima los valores de la lista en el
 mismo orden que están almacenados.
 g. Implemente un módulo recursivo que reciba la lista generada en e) e imprima los valores de
-la lista en orden inverso al que están almacenados.
-}
+la lista en orden inverso al que están almacenados. }
 
 program ejercicio1;
 const
@@ -37,6 +35,7 @@ procedure cargarEstructura(var v: vecChar; var dimL: integer);
 var
 	c: char;
 begin
+    leerCaracter(c);
 	if(dimL < DIMF) and (c <> '.') then
 	begin
 		dimL:= dimL + 1;
@@ -52,10 +51,10 @@ var
 	i:integer;
 begin
 	for i:= 1 to dimL do
-		write('En la posicion: ', i, ' el valor actual es ', v[i]);
+		writeln('En la posicion: ', i, ', el valor actual es ', v[i]);
 end;
 
-//C PREGUNTAR SI ESTA BIEN LA DIML
+//C
 
 procedure impVectorRecursivo(v: vecChar; dimL: integer);
 begin
@@ -63,20 +62,24 @@ begin
 	if(dimL > 0) then
 		begin
 			impVectorRecursivo(v,dimL-1);
-			Writeln('Pos actual: ',dimL,' valor actual: ',v[dimL]);
+			Writeln(dimL,'. Valor actual= ',v[dimL]);
 		end;
 end;
 
 //D
 
-function leerYretornarCantCaract(v:vecChar): integer;
+function leerYretornarCantCaract(): integer;
 var
-  dimL: integer;
+    c: char;
 begin
-  dimL:= 0;
-  cargarEstructura(v,dimL);
-  leerYretornarCantCaract:= dimL;
+    leerCaracter(c);
+    if(c<>'.') then
+        leerYretornarCantCaract:= leerYretornarCantCaract()+1
+    else
+        leerYretornarCantCaract:= 0;
 end;
+
+//E 
 
 procedure agregarAdelante(var l: lista; c: char);
 var
@@ -90,8 +93,6 @@ begin
 	end;
 end;
 
-//E ES CORRECTO USAR LA CONDICION c <> '.' O USO OTRA CONDICION?
-
 procedure cargarLista(var l: lista);
 var 
 	c: char;
@@ -104,7 +105,7 @@ begin
 		end;
 end;
 
-//F ESTA BIEN USADO L^.SIG?
+//F 
 
 procedure imprimirLista(L: lista);
 begin
@@ -115,14 +116,14 @@ begin
     end;
 end;
 
-//G SI MUEVO EL PROCEDIMIENTO ARRIBA, SE SUPONE QUE IMPRIMO L EN ORDEN INVERSO, NO? :c
+//G 
 
 procedure imprimirListaInverso(L: lista);
 begin
   if(L <> nil)then
     begin
       imprimirListaInverso(L^.sig);
-      Writeln('Lo que esta contendio en la lista es: ',L^.dato);
+      Writeln('Lo que esta contenido en la lista es: ',L^.dato);
     end;
 end;
 
@@ -134,12 +135,17 @@ begin
 	dimL:= 0;
 	cargarEstructura(v, dimL);
 	imprimirVector(v, dimL);
+    writeln();
     Writeln('Recursivo');
 	impVectorRecursivo(v, dimL);
-	resultado:= leerYretornarCantCaract(v);
-	 Writeln('La cantidad de caracteres leidos es: ', resultado);
+	resultado:= leerYretornarCantCaract();
+	Writeln('La cantidad de caracteres leidos es: ', resultado);
 	l:= nil;
 	cargarLista(l);
+    writeln();
+    Writeln('Orden Normal');
 	imprimirLista(l);
+    writeln();
+    Writeln('Orden Inverso');
 	imprimirListaInverso(l);
 end.
