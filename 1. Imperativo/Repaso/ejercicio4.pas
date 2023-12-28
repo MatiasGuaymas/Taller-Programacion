@@ -1,4 +1,16 @@
-program ej4;
+{4. Una oficina requiere el procesamiento de los reclamos de las personas. De cada reclamo
+se lee código, DNI de la persona, año y tipo de reclamo. La lectura finaliza con el código de
+igual a -1. Se pide:
+a) Un módulo que retorne estructura adecuada para la búsqueda por DNI. Para cada DNI
+se deben tener almacenados cada reclamo y la cantidad total de reclamos que realizó.
+b) Un módulo que reciba la estructura generada en a) y un DNI y retorne la cantidad de
+reclamos efectuados por ese DNI.
+c) Un módulo que reciba la estructura generada en a) y dos DNI y retorne la cantidad de
+reclamos efectuados por todos los DNI comprendidos entre los dos DNI recibidos.
+d) Un módulo que reciba la estructura generada en a) y un año y retorne los códigos de
+los reclamos realizados en el año recibido.}
+
+program ejercicio4;
 type
 	reclamo = record
 		code : integer;
@@ -27,8 +39,7 @@ type
 	nodofecha = record
 		sig : listafecha;
 		code : integer;
-		end;
-		
+		end;		
 		
 procedure leer(var r : reclamo; var dni : integer);
 begin
@@ -42,7 +53,6 @@ begin
     readln(dni);
 end;
 
-		
 procedure buscar(a : arb; var ok : boolean; var nodo : arb; dni : integer);
 begin
 	if(a <> nil) then
@@ -65,7 +75,6 @@ begin
 		nodo := nil;
 end;
 					
-
 procedure agregaradelante(var l : lis; r : reclamo);
 var
 	aux : lis;
@@ -94,9 +103,7 @@ begin
 				agregarnodo(a^.hd, r, dni);
 		end;
 end;
-					
-
-		
+						
 procedure cargararbol(var a : arb; r : reclamo; dni : integer);		
 var
 	ok : boolean;
@@ -109,8 +116,6 @@ begin
 		agregarnodo(a, r, dni);
 end;
 	
-	
-
 procedure cargageneral(var a : arb);
 var
 	r : reclamo;
@@ -123,8 +128,7 @@ begin
 			cargageneral(a);
 		end;
 end;
-					
-			
+							
 procedure procesarlista(l : lis; var cant : integer);
 begin
 	while(l <> nil) do
@@ -133,8 +137,7 @@ begin
 			l := l^.sig;
 		end;
 end;
-			
-					
+						
 function cantreclamos(a : arb; dni : integer) : integer;
 var
 	cant : integer;
@@ -158,8 +161,6 @@ begin
 	else
 		cantreclamos := 0;
 end;
-					
-
 					
 function enrango(numero, num1, num2 : integer) : boolean;
 var
@@ -197,8 +198,7 @@ begin
 				end;
 		end
 end;
-			
-			
+				
 procedure agregaratras(var l : listafecha; code : integer);
 var
 	aux, ult : listafecha;
@@ -216,7 +216,6 @@ begin
 			ult^.sig := aux;
 		end;
 end;
-
 		
 procedure procesarlista(l : lis; fecha : integer; var listaf : listafecha);
 begin
@@ -227,7 +226,6 @@ begin
 			l := l^.sig;
 		end;
 end;
-
 
 procedure procesararbol(a : arb; var l : listafecha; fecha : integer);
 begin
@@ -247,7 +245,6 @@ begin
 			l := l^.sig;
 		end;
 end;
-
 
 var
 	l : listafecha;

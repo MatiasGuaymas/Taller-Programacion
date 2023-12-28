@@ -1,4 +1,7 @@
-program ej5;
+{5. Realizar el punto a) del ejercicio anterior, pero sabiendo que todos los reclamos de un
+mismo DNI se leen de forma consecutiva (no significa que vengan ordenados los DNI)}
+
+program ejercicio5;
 type
 	reclamo = record
 			code : integer;
@@ -22,6 +25,7 @@ type
 			hi : arb;
 			end;
 			
+		
 		
 procedure leer(var r : reclamo; var dni : integer);
 begin
