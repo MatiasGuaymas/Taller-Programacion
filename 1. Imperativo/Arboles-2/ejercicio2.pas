@@ -1,56 +1,83 @@
-program ej2;
+{2. Una biblioteca nos ha encargado procesar la información de los préstamos realizados
+durante el año 2021. De cada préstamo se conoce el ISBN del libro, el número de socio, día
+y mes del préstamo y cantidad de días prestados. Implementar un programa con:
+a. Un módulo que lea préstamos y retorne 2 estructuras de datos con la información de
+los préstamos. La lectura de los préstamos finaliza con ISBN -1. Las estructuras deben
+ser eficientes para buscar por ISBN.
+i. En una estructura cada préstamo debe estar en un nodo.
+ii. En otra estructura, cada nodo debe contener todos los préstamos realizados al ISBN.
+(prestar atención sobre los datos que se almacenan).
+b. Un módulo recursivo que reciba la estructura generada en i. y retorne el ISBN más
+grande.
+c. Un módulo recursivo que reciba la estructura generada en ii. y retorne el ISBN más
+pequeño.
+d. Un módulo recursivo que reciba la estructura generada en i. y un número de socio. El
+módulo debe retornar la cantidad de préstamos realizados a dicho socio.
+e. Un módulo recursivo que reciba la estructura generada en ii. y un número de socio. El
+módulo debe retornar la cantidad de préstamos realizados a dicho socio.
+f. Un módulo que reciba la estructura generada en i. y retorne una nueva estructura
+ordenada ISBN, donde cada ISBN aparezca una vez junto a la cantidad total de veces
+que se prestó.
+g. Un módulo que reciba la estructura generada en ii. y retorne una nueva estructura
+ordenada ISBN, donde cada ISBN aparezca una vez junto a la cantidad total de veces
+que se prestó.
+h. Un módulo recursivo que reciba la estructura generada en h. y muestre su contenido.
+i. Un módulo recursivo que reciba la estructura generada en i. y dos valores de ISBN. El
+módulo debe retornar la cantidad total de préstamos realizados a los ISBN
+comprendidos entre los dos valores recibidos (incluidos).
+j. Un módulo recursivo que reciba la estructura generada en ii. y dos valores de ISBN. El
+módulo debe retornar la cantidad total de préstamos realizados a los ISBN
+comprendidos entre los dos valores recibidos (incluidos).}
+
+program ejercicio2;
 type
 	prestamo = record
-			isbn : integer;
-			num ; integer;
-			dia : integer;
-			mes : integer;
-			cant : integer;
-			end;
-		
-		arb = ^nodo;
-		
-		nodo = record
-			dato : prestamo;
-			hi : arb;
-			hd : arb;
-			end;
-			
+		isbn : integer;
+		num : integer;
+		dia : integer;
+		mes : integer;
+		cant : integer;
+	end;
+	arb = ^nodo;
+	nodo = record
+		dato : prestamo;
+		hi : arb;
+		hd : arb;
+	end;
+
 	prestamo2 = record
 		num : integer;
 		dia : integer;
 		mes : integer;
 		cant : integer;
-		end;
-			
-		lis = ^nodo2
-		
-		nodo2 = record
-			dato : prestamo2;
-			sig : lis;
-			end;
-		
-	
-		arboldelistas= ^nodo3;
-	
-		nodo3 = record
-			l : lis;
-			isbn : integer;
-			hi : arboldelistas;
-			hd : arboldelistas;
-			end;
-			
-			
-		arboldeisbn = ^nodo4; 
-		
-		nodo4 = record
-			isbn : integer;
-			cant : integer;
-			hi : arboldeisbn;
-			hd : arboldeisbn;
-			end;
+	end;	
+	lis = ^nodo2;
+	nodo2 = record
+		dato : prestamo2;
+		sig : lis;
+	end;
+	pres = record
+		isbn: integer;
+		l: lis;
+	end;
+	arboldelistas= ^nodo3;
+	nodo3 = record
+		dato: pres;
+		hi : arboldelistas;
+		hd : arboldelistas;
+	end;	
 
-procedure leer(var p : prestamo);
+	tipoCant = record
+		isbn: integer;
+		cant: integer;
+	end;
+	listaISBN = ^nodo4; 
+	nodo4 = record
+		dato: tipoCant;
+		sig: listaISBN;
+	end;
+
+{procedure leer(var p : prestamo);
 begin
 	writeln('ingrese isbn');
 	readln(p.isbn);
@@ -74,298 +101,332 @@ begin
 	readln(p.mes);
 	writeln('ingrese cant');
 	readln(p.cant);
+end;}
+
+procedure prestamoRandom(var p:prestamo);
+begin 
+    p.isbn:=random(10)+1;
+    p.num:=random(30)+1;
+    p.dia:=random(31)+1;
+    p.mes:=random(12)+1;
+    p.cant:=random(20)+1;
 end;
 
+procedure imprimirPrestamo(p:prestamo);
+begin 
+    writeln('ISBN=',p.isbn,' Socio=',p.num,' Dia=',p.dia,' Mes=',p.mes,' Dias=',p.cant);
+end;
 
-procedure agregar(var a : arb; p : prestamo); //carga arbol comun y corriente
+//A - I
+procedure agregar(var a : arb; p : prestamo); //Carga arbol comun y corriente
 begin
 	if(a=nil) then
 		begin
-			new(a); a^.hi:= nil; a^.hd:= nil; a^.dato := p;
+			new(a);
+			a^.hi:= nil; 
+			a^.hd:= nil; 
+			a^.dato := p;
 		end
 	else
-		if(p.isnb <= a^.dato.isbn) theb
-			agregar(a^.hi, p);
+		if(p.isbn <= a^.dato.isbn) then
+			agregar(a^.hi, p)
 		else
 			agregar(a^.hd, p);
 end;
 
+procedure imprimirArbol(a:arb);
+begin 
+    if (a<>nil) then 
+        begin
+            imprimirArbol(a^.hi);
+            imprimirPrestamo(a^.dato); 
+            imprimirArbol(a^.hd);
+        end;
+end; 
 
-procedure buscar(a : arboldelistas; var ok : boolean; var nodo : arboldelistas; isbn : integer): //te dice si el isbn que busca esta, te devuelve el nodo, si no con la variable ok te dice si no esta.
+// A - II
+procedure agregarPrestamo(var l:lis; p: prestamo);
+var 
+    aux:lis;
+begin 
+    new(aux);
+    aux^.dato.num:=p.num;
+    aux^.dato.dia:=p.dia;
+    aux^.dato.mes:=p.mes;
+    aux^.dato.cant:=p.cant;
+    aux^.sig:=l;
+    l:=aux;
+end;
+
+procedure agregarII(var a: arboldelistas; p:prestamo); //Carga arbol de listas
+begin 
+    if (a<>nil) then 
+        begin 
+            if (p.isbn=a^.dato.isbn) then 
+                begin 
+                    agregarPrestamo(a^.dato.l, p);
+                end
+            else
+                begin       
+                    if (p.isbn<=a^.dato.isbn) then 
+                        agregarII(a^.hi,p)
+                    else 
+                        agregarII(a^.hd,p);
+                end
+        end 
+    else 
+        begin 
+            new(a);
+            a^.dato.isbn:=p.isbn;
+            agregarPrestamo(a^.dato.l,p);
+            a^.hi:=nil;
+            a^.hd:=nil;
+        end;
+end;
+
+procedure imprimirPorISBN(p: pres);
 begin
-	if(a <> nil) then
+	write('ISBN=', p.isbn);
+	while(p.l <> nil) do
 		begin
-			if(a^.isbn = isbn) then
-				begin
-					ok := true;
-					nodo := a;
-				end
-			else
-				begin
-					buscar(a^.hi, ok, nodo. isbn);
-					buscar(a^.hd, ok, nodo, isbn);
-				end
-		end
-	else
-		begin
-			ok := false;
-			nodo := nil;
+			write('| Socio=', p.l^.dato.num,' Dia=',p.l^.dato.dia,' Mes=',p.l^.dato.mes,' Dias=',p.l^.dato.cant);
+			p.l:= p.l^.sig;
 		end;
 end;
 
-
-procedure agregarnodo(var a : arboldelistas; isbn : integer; p : prestamo2)//agrega una hoja si el isbn no estaba ya en el arbol.
+procedure imprimirArbolII(a: arboldelistas);
 begin
-	if(a=nil) then
+	if(a<>nil)then
 		begin
-			new(a); a^.hi:= nil; a^.hd:= nil; new(a^.l);a^.l^.sig := nil; a^.isbn := isbn; a^.l^.dato := p;
-		end
-	else
-		if(isnb <= a^.isbn) theb
-			agregar(a^.hi, isbn, p);
-		else
-			agregar(a^.hd, isbn, p);
+			imprimirArbolII(a^.hi);
+			imprimirPorISBN(a^.dato);
+			writeln();
+			imprimirArbolII(a^.hd);
+		end;
 end;
 
-
-procedure agregaradelante(var l : lis; prestamo : prest2);
+procedure cargarArboles(var a1: arb; var a2: arboldelistas);
 var
-	aux : lis;
+	i: integer;
+	p: prestamo;
 begin
-	new(aux); aux^.sig := nil; aux^.dato := prestamo;
-	if(l = nil) then
-		l := aux
-	else
+	for i:= 1 to Random(10)+4 do
 		begin
-			aux^.sig = l;
-			l := aux;
+			prestamoRandom(p);
+			write(i, ': ');
+			imprimirPrestamo(p);
+			agregar(a1, p);
+			agregarII(a2, p);
 		end;
 end;
 
+function isbnMax(a: arb): integer;
+begin
+	if(a^.hd = nil) then
+		isbnMax:= a^.dato.isbn
+	else
+		isbnMax:= isbnMax(a^.hd);
+end;
 
-procedure cargararbol(var a : arboldelistas);//carga del arbol de listas.
-var
-	prest2 : prestamo2;
-	isbn : integer;
-	ok : boolean;
-	nodo : arboldelistas
-begin	
-	writeln('ingrese ISBN: ');
-	readln(isbn);
-	if(isbn <> -1) then
+function isbnMin(a: arboldelistas): integer;
+begin
+	if(a^.hi = nil) then
+		isbnMin:= a^.dato.isbn
+	else
+		isbnMin:= isbnMin(a^.hi);
+end;
+
+function cantPrestamosA1(a : arb; num: integer) : integer;
+begin
+	if(a = nil) then
+		cantPrestamosA1:= 0
+	else
 		begin
-			leer2(prest2);
-			buscar(a, ok, nodo, isbn));
-			if(ok = false) then
-				agregarnodo(a, isbn, prest2)
-			else
-				agregaradelante(nodo^.l, prest2);
-			cargararbol(a);
+			cantPrestamosA1:= cantPrestamosA1(a^.hi, num) + cantPrestamosA1(a^.hd, num);
+			if(a^.dato.num = num) then
+				cantPrestamosA1 := cantPrestamosA1 + 1;
 		end;
 end;
 
-function maximo(num1, num2 : integer) : integer;
-begin
-	if(num1 > num2 ) then
-		maximo := num1
-	else
-		maximo := num2;
-end;
-
-function minimo(num1, num2 : integer) : integer;
-begin
-	if(num1 < num2 ) then
-		minimo := num1
-	else
-		minimo := num2;
-end;
-
-
-function isbnmax(a : arb) : integer;
-begin
-	if(a <> nil) then
-		begin
-			isbnmax := isbnmax(maximo(a^.dato.isbn, maximo(a^.hi.dato.isbn, a^.hd.dato.isbn)));
-		end
-	else
-		isbnmax := -1;
-end;
-
-function isbnmini(a : arboldelistas) : integer;
-begin
-	if(a <> nil) then
-		begin
-			isbnmin := isbnmin(minimo(a^.isbn, minimo(a^.hi.isbn, a^.hd.isbn)));
-		end;
-	else
-		isbnmin := 99999999999;
-end;
-
-function prestamossocio(a : arb; numsocio : integer) : integer
+{Esta solucion tambien es correcta, solo estaba probando, es un poco mas eficiente en tiempo, pero es minima la diferencia
+	
+function prestamossocio(a : arb; numsocio : integer) : integer;
 begin
 	if(a <> nil) then
 		begin
 			if(a^.dato.num = numsocio) then
-				prestamosocio := prestamossocio(a^.hi, numsocio) + prestamossocio(a^.hd, numsocio) + 1)
+				prestamossocio := prestamossocio(a^.hi, numsocio) + prestamossocio(a^.hd, numsocio) + 1
 			else
-				begin
-					prestamossocio(a^.hi, numsocio);
-					prestamossocio(a^.hd, numsocio);
-				end
-		else
-			prestamossocio := 0;
-end;
-				
-		
-procedure prestamossociolistas(a : arboldelistas; numsocio : integer; var cant : integer);
-begin
-	if(a <> nil) then
-		begin
-			while(a^.l <> nil) do
-				begin
-					if(a^.l.dato.num = numsocio) then
-						begin
-							cant := cant + 1;
-							a^.l := a^l.sig;
-						end;
-					else
-						a^.l := a^.l.sig;
-				end;
-			prestamossociolistas(a^.hi, numsocio, cant);
-			prestamossociolistas(a^.hd, numsocio, cant);
-		end;
-end;
-				
-
-function contador(a : arb; actual : integer) : integer;
-begin
-	if(a <> nil) then
-		begin
-			if(a^.dato.isbn = actual) then
-				contador := contador(a^.hd) + contador(a^.hi) + 1;
-			else
-				contador := 0;
-		end;
-	contador := 0;
-end;
-			
-procedure agregararbolisbn(var a : arboldeisbn; isbn, cant : integer); //carga arbol comun y corriente
-begin
-	if(a=nil) then
-		begin
-			new(a); a^.hi:= nil; a^.hd:= nil; a^.isbn := isbn; a^.cant := cant;
+				prestamossocio:= prestamossocio(a^.hi, numsocio) + prestamossocio(a^.hd, numsocio);
 		end
 	else
-		if(isbn <= a^.isbn) theb
-			agregar(a^.hi, isbn, cant);
-		else
-			agregar(a^.hd, isbn, cant);
-end;	
+		prestamossocio := 0;
+end;}
 			
 
-procedure cargararbolisbn(var arbolisbn: arboldeisbn; a : arb);
+procedure cantPrestamosA2(a : arboldelistas; num: integer; var cant: integer);
 var
-	cant : integer;
+	aux: lis;
 begin
-	if(a <> nil) then
+	if(a<>nil)then
 		begin
-			cant := contador(a, a^.dato.isbn);
-			agregararbolisbn(arbolisbn, a^.dato.isbn, cant);
-			cargararbolisbn(a^.hd, a);
-			cargararbolisbn(a^.hi, a);
+			aux:= a^.dato.l;
+			while(aux<>nil) do
+				begin
+					if(aux^.dato.num = num) then
+						cant:= cant+1;
+					aux:= aux^.sig;
+				end;
+			cantPrestamosA2(a^.hi, num, cant);
+			cantPrestamosA2(a^.hd, num, cant);
 		end;
-end;
-			
-		
-procedure cargararbolisbnlistas(var arbolisbn : arbolisbn, a : arboldelistas);
+end;				
+	
+procedure agregarCant(var l: listaISBN; tipoC: tipoCant);
 var
-	cant : integer;
+	aux, ant, act: listaISBN;
 begin
-	if(a <> nil) then
+	act:= l;
+	new(aux);
+	aux^.dato:= tipoC;
+	while(act<>nil) and (act^.dato.isbn < tipoC.isbn) do
 		begin
-			cant := 0;
-			while(a^.l <> nil) do
-				begin
-					cant := cant + 1;
-					a^.l :+ a^.l.sig;
-				end;
-			agregararbolisbn(arbolisbn, a^.isbn, cant);
-			cargararbolisbnlistas(a^.hi, a);
-			cargararbolisbnlistas(a^.hd, a);
+			ant:= act;
+			act:= act^.sig;
 		end;
+	if(act = l) then 
+		l:= aux
+	else
+		ant^.sig:= aux;
+	aux^.sig:= act;
 end;
-	
-	
-procedure imprimir(a : arb);
+
+procedure actualizarCant(var l: listaISBN; tipoC: tipoCant);
+var
+	aux: listaISBN;
+	sigo: boolean;
 begin
-	if(a <> nil) then
+	sigo:= false;
+	aux:= l;
+	while(aux<>nil) and (not sigo) do
 		begin
-			writeln(a^.dato.isbn);
-			writeln(a^.dato.num);
-			writeln(a^.dato.dia);
-			writeln(a^.dato.mes);
-			writeln(a^.dato.cant);
-			imprimir(a^.hi);
-			imprimir(a^hd);
-		end;
-end;
-	
-	
-procedure imprimirlistas(a: arboldelistas);
-begin
-	if(a <> nil) then
-		begin
-			while( a^.l <> nil) then
+			if(aux^.dato.isbn = tipoC.isbn) then
 				begin
-					writeln(a^.l.dato.num);
-					writeln(a^.l.dato.dia);
-					writeln(a^.l.dato.mes);
-					writeln(a^.l.dato.cant);
-					a^.l := a^.l.sig;
+					aux^.dato.cant:= aux^.dato.cant+tipoC.cant;
+					sigo:= true;
 				end;
-			imprimirlistas(a^.hi);
-			imprimirlistas(a^.hd);
+			aux:= aux^.sig;
+		end;
+	if(not sigo) then
+		agregarCant(l, tipoC);
+end;
+
+procedure generarListaF(a: arb; var l: listaISBN);
+var
+	tipoC: tipoCant;
+begin
+	if(a<>nil)then
+		begin
+			tipoC.cant:= 1;
+			tipoC.isbn:= a^.dato.isbn;
+			actualizarCant(l, tipoC);
+			generarListaF(a^.hi, l);
+			generarListaF(a^.hd, l);
 		end;
 end;
 
-function entredosnum(numero, num1, num2 : integer) : boolean;
-var
-	aux : integer;
+procedure imprimirLista(l: listaISBN);
 begin
-	if(num1 > num2) then
+	while(l<>nil) do
 		begin
-			num1 := aux;
+			writeln('ISBN=', l^.dato.isbn, ' Cantidad=', l^.dato.cant);
+			l:= l^.sig;
+		end;
+end;
+
+procedure generarListaG(a: arboldelistas; var l: listaISBN);
+var
+	tipoC: tipoCant;
+	aux: lis;
+begin
+	if(a<>nil) then
+		begin
+			tipoC.isbn:= a^.dato.isbn;
+			tipoC.cant:= 0;
+			aux:= a^.dato.l;
+			while(aux<>nil) do
+				begin
+					tipoC.cant:= tipoC.cant+1;
+					aux:= aux^.sig;
+				end;
+			actualizarCant(l, tipoC);
+			generarListaG(a^.hi, l);
+			generarListaG(a^.hd,l);
+		end;
+end;
+
+procedure verificar(var num1, num2: integer);
+var
+    aux: integer;
+begin
+    if(num1 > num2) then
+		begin
+			aux := num1;
 			num1 := num2;
 			num2 := aux;
 		end;
-	if(numero >= num1) and (numero <= num2) then
-		entredosnum := true;
-	else
-		entredosnum := false;
 end;
 
-
-function rango(a : arb; num1, num2 : integer) : integer;
+function dosvalores(num1, num2, dato : integer) : boolean;
 begin
-	if(a <> nil) then
+	if(dato >= num1) and (dato <= num2) then
+		dosvalores := true
+	else
+		dosvalores := false;
+end;
+
+function entredosvaloresI(a : arb; num1, num2: integer): integer;
+begin
+	if(a = nil) then 
+		entredosvaloresI:= 0
+	else
 		begin
-			if(entredosnum(a^.dato.isbn, num1, num2)) then
+			if(dosvalores(num1, num2, a^.dato.isbn)) then
+				entredosvaloresI := entredosvaloresI(a^.hi, num1, num2) + entredosvaloresI(a^.hd, num1, num2) + 1
+            else
+                if(a^.dato.isbn > num1) then
+                    entredosvaloresI:= entredosvaloresI(a^.hi, num1, num2)
+                else
+                    entredosvaloresI:= entredosvaloresI(a^.hd, num1, num2);
+		end;
+end;
+
+procedure entredosvaloresII(a: arboldelistas; num1, num2: integer; var cant: integer);
+var
+	aux: lis;
+begin
+	if(a<>nil) then
+		begin
+			if(dosvalores(num1, num2, a^.dato.isbn)) then
 				begin
-					rango := rango(a^.hi, num1, num2) + rango(a^.hd, num1, num2) + 1;
+					aux:= a^.dato.l;
+					while (aux <> nil) do
+						begin
+							cant:= cant+1;
+							aux:= aux^.sig;
+						end;
+					entredosvaloresII(a^.hi, num1, num2, cant);
+					entredosvaloresII(a^.hd, num1, num2, cant);
 				end
 			else
-				begin
-					if(num1 > a^.dato.isbn) then
-						rango(a^.hd, num1, num2)
-					else
-						rango(a^.hi, num1, num2);
-				end;
-		end
-	else
-		rango := 0;
+				if(a^.dato.isbn > num1) then
+					entredosvaloresII(a^.hi, num1, num2, cant)
+				else
+					entredosvaloresII(a^.hd, num1, num2, cant);
+		end;
 end;
-			
-			
+
+{		
 function rango(a : arboldelistas; num1, num2 : integer) : integer;
 var
 	cant : integer;
@@ -392,18 +453,80 @@ begin
 		end
 	else
 		rango := 0;
-end;
-				
+end;}
 
 var
-	p : prestamo
-	a : arb;
-	arbol2 : arboldelistas;
+	a1 : arb;
+	a2 : arboldelistas;
+	listaF, listaG: listaISBN;
+	num, cant, num1, num2: integer;
 begin
-	leer(p);
-	while(p.isbn <> -1) do
-		begin
-			agregar(a, p);
-			leer(p);
-		end;
-	cargararbol(arbol2);
+	Randomize;
+	a1:= nil;
+	a2:= nil;
+	listaF:= nil;
+	listaG:= nil;
+	cargarArboles(a1, a2); //A
+
+	writeln('-----------------------');
+	writeln('Arbol A-I: ');
+	imprimirArbol(a1);
+
+	writeln('-----------------------');
+	writeln('Arbol A-II: ');
+	imprimirArbolII(a2);
+
+	writeln('-----------------------');
+	if(a1<>nil) then
+		writeln('El ISBN mas grande es: ', isbnMax(a1)) //B
+	else
+		writeln('El arbol esta vacio');
+
+	writeln('-----------------------');
+	if(a2<>nil) then
+		writeln('El ISBN mas chico es: ', isbnMin(a2)) //C
+	else
+		writeln('El arbol esta vacio');
+		
+	writeln('-----------------------');
+	writeln('Ingrese un numero de socio: ');
+	readln(num);
+	writeln('El socio con numero ', num, ' realizo ', cantPrestamosA1(a1, num) , ' prestamos'); //D
+	//writeln('2. El socio con numero ', num, ' realizo ', prestamossocio(a1, num) , ' prestamos');
+
+	writeln('-----------------------');
+	writeln('Ingrese otro numero de socio: ');
+	readln(num);
+	cant:= 0;
+	cantPrestamosA2(a2, num, cant);
+	writeln('El socio con numero ', num, ' realizo ', cant, ' prestamos'); //E
+
+	writeln('-----------------------');
+	writeln('Lista inciso F:');
+	generarListaF(a1, listaF); //F
+	imprimirLista(listaF);
+
+	writeln('-----------------------');
+	writeln('Lista inciso G:');
+	generarListaG(a2, listaG); //G
+	imprimirLista(listaG);
+
+	writeln('-----------------------');
+	writeln('Ingrese un primer ISBN como limite izquierdo: ');
+	readln(num1);
+	writeln('Ingrese un segundo ISBN como limite derecho: ');
+	readln(num2);
+    verificar(num1, num2);
+	writeln('La cantidad total de prestamos realizados a los ISBN comprendidos entre: ', num1, ' y ', num2, ' es: ', entredosvaloresI(a1, num1, num2)); //I
+
+	writeln('-----------------------');
+	cant:= 0;
+	writeln('Ingrese otro ISBN como limite izquierdo: ');
+	readln(num1);
+	writeln('Ingrese otro ISBN como limite derecho: ');
+	readln(num2);
+    verificar(num1, num2);
+	entredosvaloresII(a2, num1, num2, cant);
+	writeln('La cantidad total de prestamos realizados a los ISBN comprendidos entre: ', num1, ' y ', num2, ' es: ', cant); //I
+	
+end.
