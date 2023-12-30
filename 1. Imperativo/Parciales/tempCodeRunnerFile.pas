@@ -1,2 +1,0 @@
-
-			writeln(' | ', a^.dato.num, ' | ');
