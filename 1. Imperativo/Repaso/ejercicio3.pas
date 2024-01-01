@@ -9,264 +9,264 @@ c) Implementar un módulo que reciba la estructura generada en a), y retorne, pa
 rubro, el código y stock del producto con mayor código.
 d) Implementar un módulo que reciba la estructura generada en a), dos códigos y
 retorne, para cada rubro, la cantidad de productos con códigos entre los dos valores
-ingresados.
-}
-program ejercicio3;
-const
-	LIM = 10;
+ingresados.}
+
+program ejercicio3; 
 type
-
-	TIPO = 1..10;
-	
+	subRubro = 1..10;
 	producto = record
-		code : integer;
-		precio : real;
-		stock : integer;
-		rubro : TIPO;
-		end;
-		
-	informacion = record
-		code : integer;
-		precio : real;
-		stock : integer;
-		end;
-		
-	arb = ^nodo;
-
-	
+		codigo: integer;
+		rubro: subRubro;
+		stock: integer;
+		precio: real;
+	end;
+	prodRubro = record
+		codigo: integer;
+		stock: integer;
+		precio: real;
+	end;
+	arbol = ^nodo;
 	nodo = record
-		hi : arb;
-		hd : arb;
-		dato : informacion;
-		end;
-		
-	vec = array[TIPO] of arb;
-	
-	maxcode = record
-		code : integer;
-		stock : integer;
-		end;
-	
-	vecmaxcode= array[TIPO] of maxcode;
-	
-	vecrango = array[TIPO] of integer;
-	
-procedure leer(var p : producto);
-begin
-	{writeln('ingresar code: ');
-	readln(p.code);}
-	p.code := random(11) - 1;
-	p.precio := random(100)+1;
-	p.stock := random(100)+1;
-	p.rubro := random(10) + 1;
-	{writeln('ingrese rubro: ');
-	readln(p.rubro);}
-end;
-
-procedure inicializarvector(var v : vec);
+		dato: prodRubro;
+		hi: arbol;
+		hd: arbol;
+	end;
+	vecArboles = array[subRubro] of arbol;
+	prodMaxCode = record
+		codigo: integer;
+		stock: integer;
+	end;
+	vecMaxCode = array[subRubro] of prodMaxCode;
+	vecCant = array[subRubro] of integer;
+procedure inicializarVector(var v: vecArboles);
 var
-	i : integer;
+	i: subRubro;
 begin
-	for i := 1 to LIM do
-		v[i] := nil;
+	for i:= 1 to 10 do v[i]:= nil;
 end;
-
-procedure agregarnodo(var a : arb; i : informacion);
+procedure leerProducto(var p: producto);
+begin
+	p.codigo:= Random(30)-1;
+	if(p.codigo <> -1) then
+		begin
+			p.rubro:= Random(10)+1;
+			p.stock:= Random(50);
+			p.precio:= (Random(20)+1)*p.rubro;
+		end;
+end;
+procedure imprimirProducto(p: producto);
+begin
+	writeln('CODIGO=', p.codigo, ' RUBRO=',p.rubro, ' STOCK=', p.stock, ' PRECIO=', p.precio:0:2);
+end;
+procedure cargarArbol(var a: arbol; p: prodRubro);
 begin
 	if(a = nil) then
 		begin
-			new(a); a^.hi := nil; a^.hd := nil; a^.dato := i;
+			new(a);
+			a^.hi:= nil;
+			a^.hd:= nil;
+			a^.dato:= p;
 		end
-	else	
-		begin
-			if(i.code <= a^.dato.code) then
-				agregarnodo(a^.hi, i)
-			else
-				agregarnodo(a^.hd, i);
-		end;
+	else
+		if(p.codigo <= a^.dato.codigo) then
+			cargarArbol(a^.hi, p)
+		else
+			cargarArbol(a^.hd, p);
 end;
-
-procedure cargarvector(var v : vec);
+procedure cargarVector(var v: vecArboles);
 var
-	p : producto;
-	i : informacion;
+	p: producto;
+	prod: prodRubro;
 begin
-	leer(p);
-	if(p.code <> -1) then
+	leerProducto(p);
+	imprimirProducto(p);
+	while(p.codigo <> -1 ) do
 		begin
-			i.stock := p.stock;
-			i.code := p.code;
-			i.precio := p.precio;
-			agregarnodo(v[p.rubro], i);
-			cargarvector(v);
+			prod.codigo:= p.codigo;
+			prod.stock:= p.stock;
+			prod.precio:= p.precio;
+			cargarArbol(v[p.rubro], prod);
+			leerProducto(p);
+			imprimirProducto(p);
 		end;
 end;
-
-procedure imprimirarbol(a : arb);
+procedure imprimirProdArb(p: prodRubro);
+begin
+	write(' | CODIGO=', p.codigo, ' STOCK=', p.stock, ' PRECIO=', p.precio:0:2);
+end;
+procedure imprimirArbol(a: arbol);
 begin
 	if(a<>nil) then
 		begin
-			writeln(a^.dato.code);
-			imprimirarbol(a^.hd);
-			imprimirarbol(a^.hi);
+			imprimirArbol(a^.hi);
+			imprimirProdArb(a^.dato);
+			imprimirArbol(a^.hd);
 		end;
 end;
-
-
-procedure imprimirvector(v : vec);
+procedure imprimirVector(v: vecArboles);
 var
-	i : integer;
+	i: subRubro;
 begin
-	for i := 1 to LIM do
+	for i:= 1 to 10 do
 		begin
-			imprimirarbol(v[i]);
+			write(i, '. ');
+			imprimirArbol(v[i]);
+			writeln();
 		end;
 end;
-
-function buscararbol(a : arb; codigo : integer) : boolean;
+procedure buscarProducto(a: arbol; codigo: integer; var ok: boolean);
 begin
-	if(a <> nil) then
+	if(a<>nil) then
 		begin
-			if(a^.dato.code = codigo) then
-				buscararbol := true
+			if(a^.dato.codigo = codigo) then
+				ok:= true
 			else
-				begin
-					if(codigo > a^.dato.code) then
-						buscararbol := buscararbol(a^.hd, codigo)
-					else
-						buscararbol := buscararbol(a^.hi, codigo);
-				end;
-		end
-	else
-		buscararbol := false;	
-end;
-			
-
-
-function codigoexiste(v : vec; rubro : TIPO; codigo : integer) : boolean;
-begin
-	codigoexiste := buscararbol(v[rubro], codigo);
+				if(codigo < a^.dato.codigo) then
+					buscarProducto(a^.hi, codigo, ok)
+				else
+					buscarProducto(a^.hd, codigo, ok);
+		end;
 end;
 
-
-procedure maxcodearbol(a : arb; var codemax, maxstock : integer);
+function existeProducto(v: vecArboles; rubro: subRubro; codigo: integer): boolean;
+var
+	ok: boolean;
 begin
-	if(a <> nil) then
+	ok:= false;
+	buscarProducto(v[rubro], codigo, ok);
+	existeProducto:= ok;
+end;
+
+procedure obtenerProdMaxCode(a: arbol; var p: prodMaxCode);
+begin
+	if(a<>nil) then
 		begin
-			if(codemax < a^.dato.code) then
-				begin
-					codemax := a^.dato.code;
-					maxstock := a^.dato.stock;
-					maxcodearbol(a^.hd, codemax, maxstock);
-				end
+			p.codigo:= a^.dato.codigo;
+			p.stock:= a^.dato.stock;
+			obtenerProdMaxCode(a^.hd, p);
+		end;
+end;
+
+procedure obtenerRubroMaximos(v: vecArboles; var vecMax: vecMaxCode);
+var
+	i: subRubro;
+	p: prodMaxCode;
+begin
+	for i:= 1 to 10 do 
+		begin
+			p.codigo:= -1;
+			p.stock:= 0;
+			obtenerProdMaxCode(v[i], p);
+			vecMax[i]:= p;
+		end;
+end;
+
+procedure imprimirVecMax(v: vecMaxCode);
+var
+	i: subRubro;
+begin
+	for i:= 1 to 10 do
+		begin
+			if(v[i].codigo <> -1) then
+				writeln(i, '. CODIGO=', v[i].codigo, ' STOCK=', v[i].stock)
 			else
-				maxcodearbol(a^.hd, codemax, maxstock);
+				writeln(i, '. No habia productos para analizar en este rubro');
 		end;
 end;
 
-procedure codigomaximo(var vm : vecmaxcode; v : vec; var codemax, stockmax : integer);
+procedure inicializarVectorCant(var v: vecCant);
 var
-	i : integer;
+	i: subRubro;
 begin
-	for i := 1 to LIM do
-		begin
-			codemax := 0;
-			stockmax := 0;
-			maxcodearbol(v[i], codemax, stockmax);
-			vm[i].code := codemax;
-			vm[i].stock := stockmax;
-		end;
-end;
-			
-procedure imprimirvectormax(v : vecmaxcode);
-var
-	i : integer;
-begin
-	for i := 1 to LIM do
-		writeln(v[i].code);
+	for i:= 1 to 10 do v[i]:= 0;
 end;
 
-function enrango(numero, num1, num2 : integer) : boolean;
+procedure verificar(var num1, num2: integer);
 var
-	aux : integer;
+	aux: integer;
 begin
 	if(num1 > num2) then
 		begin
-			aux := num1;
-			num1 := num2;
-			num2 := num1;
+			aux:= num1;
+			num1:= num2;
+			num2:= aux;
 		end;
-	if(numero >= num1) and (numero <= num2) then
-		enrango := true
-	else
-		enrango := false;
 end;
 
-function rango(a : arb; num1, num2 : integer) : integer;
+procedure entreDosValoresArb(a: arbol; var cant: integer; codigo1, codigo2: integer);
 begin
-    if(a <> nil) then  
-        begin
-        	if(enrango(a^.dato.code, num1, num2)) then	
-        	    begin
-        		    rango := rango(a^.hd, num1, num2) + rango(a^.hi, num1, num2) + 1;
-        		end;
-        end
-    else
-        rango := 0;
-end;
-        
-procedure rangovector(var vecr : vecrango; num1, num2 : integer; v : vec);
-var
-	i : integer;
-begin
-	for i := 1 to LIM do
+	if(a<>nil) then
 		begin
-			vecr[i] := rango(v[i], num1, num2);
+			if(a^.dato.codigo >= codigo1) and (a^.dato.codigo <= codigo2) then
+				begin
+					cant:= cant+1;
+					entreDosValoresArb(a^.hi, cant, codigo1, codigo2);
+					entreDosValoresArb(a^.hd, cant, codigo1, codigo2);
+				end
+			else
+				if(a^.dato.codigo > codigo1) then
+					entreDosValoresArb(a^.hi, cant, codigo1, codigo2)
+				else
+					entreDosValoresArb(a^.hd, cant, codigo1, codigo2);
 		end;
 end;
 
-procedure imprimirvectorrango(v : vecrango);
+procedure entreDosValoresVecArb(v: vecArboles; var vecCant: vecCant; codigo1, codigo2: integer);
 var
-	i : integer;
+	cant: integer;
+	i: subRubro;
 begin
-	for i := 1 to LIM do
-		write(' | ',v[i],' | ');
+	for i:= 1 to 10 do
+		begin
+			cant:= 0;
+			entreDosValoresArb(v[i], cant, codigo1, codigo2);
+			vecCant[i]:= cant;
+		end;
 end;
 
-procedure seleccion (var v: vecrango);
+procedure imprimirVecCant(v: vecCant);
 var
-	i, j, pos, cant: integer; 
+	i: subRubro;
 begin
-	for i := 1 to LIM-1 do begin
-		pos:= i;
-		for j:= i + 1 to 10 do
-			if v[j] < v[pos] then pos:= j;
-		cant:= v[pos];
-		v[pos] := v[i];
-		v[i] := cant;
-	end;
+	for i:= 1 to 10 do
+		begin
+			writeln(i, '. CANTIDAD=', v[i]);
+		end;
 end;
 
 var
-	v : vec;
-	rubro : TIPO;
-	num1, num2, codemax, stockmax, codigo : integer;
-	vmax : vecmaxcode;
-	vrango : vecrango;
+	v: vecArboles;
+	vecMax: vecMaxCode;
+	vecCantidades: vecCant;
+	rubro: subRubro;
+	codigo, codigo1, codigo2: integer;
 begin
-	randomize;
-	cargarvector(v);
-	imprimirvector(v);
-	rubro := 2;
-	codigo := 7;
-	writeln(codigoexiste(v, rubro, codigo));
-	codigomaximo(vmax, v, codemax, stockmax);
-	imprimirvectormax(vmax);
-	num1 := 2;
-	num2 := 9;
-	rangovector(vrango, num1, num2, v);
-	imprimirvectorrango(vrango);
-	seleccion(vrango);
-	writeln('_________________________');
-	imprimirvectorrango(vrango);
+	Randomize;
+	inicializarVector(v);
+	cargarVector(v);
+
+	writeln('----------------');
+	imprimirVector(v);
+
+	writeln('----------------');
+	writeln('Ingrese un rubro'); //Se supone que el usuario ingresa un numero mayor o igual a 1 y menor o igual a 10
+	readln(rubro);
+	writeln('Ingrese un codigo de producto');
+	readln(codigo);
+	if(existeProducto(v, rubro, codigo)) then writeln('Existe el producto con el rubro ', rubro, ' y codigo ', codigo) else writeln('No existe el producto con el rubro ', rubro, ' y codigo ', codigo);
+
+	writeln('----------------');
+	obtenerRubroMaximos(v, vecMax);
+	imprimirVecMax(vecMax);
+
+	writeln('----------------');
+	inicializarVectorCant(vecCantidades);
+	writeln('Ingrese un codigo');
+	readln(codigo1);
+	writeln('Ingrese otro codigo');
+	readln(codigo2);
+	verificar(codigo1, codigo2);
+	entreDosValoresVecArb(v, vecCantidades, codigo1, codigo2);
+	writeln('----------------');
+	imprimirVecCant(vecCantidades);
 end.

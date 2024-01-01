@@ -13,257 +13,238 @@ los reclamos realizados en el año recibido.}
 program ejercicio4;
 type
 	reclamo = record
-		code : integer;
-		fecha : integer;
-		tipo : integer;
-		end;
-		
-	arb = ^nodo;
-	
-	lis = ^nodolista;
-	
-	nodolista = record
-		dato : reclamo;
-		sig : lis;
-		end;
-	
+		codigo: integer;
+		dni: integer;
+		anio: integer;
+		tipo: integer;
+	end;
+	reclamo2 = record
+		codigo: integer;
+		anio: integer;
+		tipo: integer;
+	end;
+	lista = ^nodo;
 	nodo = record
-		l : lis;
-		dni : integer;
-		hd : arb;
-		hi : arb;
-		end;
-		
-	listafecha = ^nodofecha;
-	
-	nodofecha = record
-		sig : listafecha;
-		code : integer;
-		end;		
-		
-procedure leer(var r : reclamo; var dni : integer);
+		dato: reclamo2;
+		sig: lista;
+	end;
+	dniReclamo = record
+		dni: integer;
+		cant: integer;
+		l: lista;
+	end;
+	arbol = ^nodoArbol;
+	nodoArbol = record
+		dato: dniReclamo;
+		hi: arbol;
+		hd: arbol;
+	end;
+	listaAnio = ^nodoLista;
+	nodoLista = record
+		dato: integer;
+		sig: listaAnio;
+	end;
+procedure leerReclamo(var r: reclamo);
 begin
-	//r.code := random(10) - 1;
-	writeln('ingrese codigo: ');
-	readln(r.code);
-	writeln('ingrese anio: ');
-	readln(r.fecha);
-	r.tipo := random(11);
-    writeln('ingresa dni: ');
-    readln(dni);
-end;
-
-procedure buscar(a : arb; var ok : boolean; var nodo : arb; dni : integer);
-begin
-	if(a <> nil) then
+	r.codigo:= Random(30)-1;
+	if(r.codigo <> -1) then
 		begin
-			if(a^.dni = dni) then
-				begin
-					ok := true;
-					nodo := a;
-				end
-			else
-				begin
-					if(dni > a^.dni) then
-						buscar(a^.hd, ok, nodo, dni)
-					else
-						buscar(a^.hi, ok, nodo, dni);
-				end;
-		end
-	else
-		ok := false;
-		nodo := nil;
+			r.dni:= Random(15)+1;
+			r.anio:= Random(25)+2000;
+			r.tipo:= Random(5)+1;
+		end;
 end;
-					
-procedure agregaradelante(var l : lis; r : reclamo);
+procedure imprimirReclamo(r: reclamo);
+begin
+	writeln('CODIGO=', r.codigo, ' DNI=', r.dni, ' ANIO=', r.anio, ' TIPO=', r.tipo);
+end;
+procedure agregarAdelante(var l: lista; r: reclamo2);
 var
-	aux : lis;
+	aux: lista;
 begin
-	new(aux); aux^.sig := nil; aux^.dato := r;
-	if(l = nil) then
-		l := aux
-	else
-		begin
-			aux^.sig := l;
-			l := aux;
-		end;
+	new(aux);
+	aux^.sig:= l;
+	l:= aux;
+	aux^.dato:= r;
 end;
-
-procedure agregarnodo(var a : arb; r : reclamo; dni : integer);
+procedure agregarArbol(var a: arbol; r: reclamo);
+var
+	rec: reclamo2;
 begin
 	if(a = nil) then
 		begin
-			new(a); a^.hi := nil; a^.hd := nil; a^.dni := dni; a^.l:= nil;
+			new(a);
+			a^.hi:= nil;
+			a^.hd:= nil;
+			a^.dato.l:= nil;
+			a^.dato.cant:= 1;
+			a^.dato.dni:= r.dni;
+			rec.codigo:= r.codigo;
+			rec.anio:= r.anio;
+			rec.tipo:= r.tipo;
+			agregarAdelante(a^.dato.l, rec);
 		end
 	else
-		begin
-			if(dni <= a^.dni) then
-				agregarnodo(a^.hi, r, dni)
+		if(a^.dato.dni = r.dni) then
+			begin
+				a^.dato.cant:= a^.dato.cant + 1;
+				rec.codigo:= r.codigo;
+				rec.anio:= r.anio;
+				rec.tipo:= r.tipo;
+				agregarAdelante(a^.dato.l, rec);
+			end
+		else
+			if(r.dni < a^.dato.dni) then
+				agregarArbol(a^.hi, r)
 			else
-				agregarnodo(a^.hd, r, dni);
+				agregarArbol(a^.hd, r)
+end;
+procedure cargarArbol(var a: arbol);
+var
+	r: reclamo;
+begin
+	leerReclamo(r);
+	imprimirReclamo(r);
+	while(r.codigo <> -1) do
+		begin
+			agregarArbol(a, r);
+			leerReclamo(r);
+			imprimirReclamo(r);
 		end;
 end;
-						
-procedure cargararbol(var a : arb; r : reclamo; dni : integer);		
-var
-	ok : boolean;
-	nodo : arb;
+procedure imprimirLista(l: lista);
 begin
-	buscar(a, ok, nodo, dni);
-	if(ok = true) then
-		agregaradelante(nodo^.l, r)
-	else
-		agregarnodo(a, r, dni);
-end;
-	
-procedure cargageneral(var a : arb);
-var
-	r : reclamo;
-	dni : integer;
-begin
-    leer(r,dni);
-	if(r.code <> -1) then
+	while(l<>nil) do
 		begin
-			cargararbol(a, r, dni);
-			cargageneral(a);
+			write(' | CODIGO=', l^.dato.codigo, ' ANIO=', l^.dato.anio, ' TIPO=', l^.dato.tipo);
+			l:= l^.sig;
 		end;
 end;
-							
-procedure procesarlista(l : lis; var cant : integer);
+procedure imprimirDNIReclamo(r: dniReclamo);
 begin
-	while(l <> nil) do
+	write('DNI=', r.dni, ' CANT=', r.cant);
+	imprimirLista(r.l);
+	writeln();
+end;
+procedure imprimirArbol(a: arbol);
+begin
+	if(a<>nil) then
 		begin
-			cant := cant + 1;
-			l := l^.sig;
+			imprimirArbol(a^.hi);
+			imprimirDNIReclamo(a^.dato);
+			imprimirArbol(a^.hd);
 		end;
 end;
-						
-function cantreclamos(a : arb; dni : integer) : integer;
-var
-	cant : integer;
+procedure contarCantDNI(a: arbol; dni: integer; var cant: integer);
 begin
-	if(a <> nil) then
+	if(a<>nil) then
 		begin
-			cant := 0;
-			if(a^.dni = dni) then
+			if(a^.dato.dni = dni) then
+				cant:= a^.dato.cant
+			else
+				if(dni < a^.dato.dni) then
+					contarCantDNI(a^.hi, dni, cant)
+				else
+					contarCantDNI(a^.hd, dni, cant);
+		end;
+end;
+procedure entreDosDNI(a: arbol; dni1, dni2: integer; var cant: integer);
+begin
+	if (a<>nil) then
+		begin
+			if(a^.dato.dni >= dni1) and (a^.dato.dni <= dni2) then
 				begin
-					procesarlista(a^.l, cant);
-					cantreclamos := cant;
+					cant:= a^.dato.cant + cant;
+					entreDosDNI(a^.hi, dni1, dni2, cant);
+					entreDosDNI(a^.hd, dni1, dni2, cant);
 				end
 			else
-				begin
-					if(dni > a^.dni) then
-						cantreclamos := cantreclamos(a^.hd, dni)
-					else
-						cantreclamos := cantreclamos(a^.hi, dni);
-				end;
-		end
-	else
-		cantreclamos := 0;
+				if(a^.dato.dni > dni1) then
+					entreDosDNI(a^.hi, dni1, dni2, cant)
+				else
+					entreDosDNI(a^.hd, dni1, dni2, cant);
+		end;
 end;
-					
-function enrango(numero, num1, num2 : integer) : boolean;
+procedure verificar(var num1, num2: integer);
 var
-	aux : integer;
+	aux: integer;
 begin
 	if(num1 > num2) then
 		begin
-			aux := num1;
-			num1 := num2;
-			num2 := aux;
+			aux:= num1;
+			num1:= num2;
+			num2:= aux;
 		end;
-	if(numero > num1) and (numero < num2) then
-		enrango := true
-	else
-		enrango := false;
-end;	
-
-
-procedure rango(a : arb; num1, num2 : integer; var total : integer);//total incializado en 0
-begin
-	if(a <> nil) then
-		begin
-			if(enrango(a^.dni, num1, num2)) then
-				begin
-					procesarlista(a^.l, total);
-					rango(a^.hi, num1, num2, total);
-					rango(a^.hd, num1, num2, total);
-				end
-			else
-				begin
-					if(num1 > a^.dni) then
-						rango(a^.hd, num1, num2, total)
-					else
-						rango(a^.hi, num1, num2, total);
-				end;
-		end
 end;
-				
-procedure agregaratras(var l : listafecha; code : integer);
+procedure agregarAdelanteII(var l: listaAnio; codigo: integer);
 var
-	aux, ult : listafecha;
+	aux: listaAnio;
 begin
-	new(aux); aux^.sig := nil; aux^.code := code;
-	if(l = nil) then
-		l := aux
-	else
-		begin
-			ult := l;
-			while(ult^.sig <> nil) do	
-				begin
-					ult := ult^.sig;
-				end;
-			ult^.sig := aux;
-		end;
+	new(aux);
+	aux^.sig:= l;
+	l:= aux;
+	aux^.dato:= codigo;
 end;
-		
-procedure procesarlista(l : lis; fecha : integer; var listaf : listafecha);
+procedure generarListaAnioDNI(l: lista; anio: integer; var lis: listaAnio);
 begin
 	while(l <> nil) do
 		begin
-			if(l^.dato.fecha = fecha) then
-				agregaratras(listaf, l^.dato.code);
-			l := l^.sig;
+			if(l^.dato.anio = anio) then
+				agregarAdelanteII(lis, l^.dato.codigo);
+			l:= l^.sig;
 		end;
 end;
-
-procedure procesararbol(a : arb; var l : listafecha; fecha : integer);
+procedure generarListaAnioArb(a: arbol; anio: integer; var l: listaAnio);
 begin
-	if(a <> nil) then
+	if(a<>nil) then
 		begin
-			procesarlista(a^.l, fecha, l);
-			procesararbol(a^.hi, l, fecha);
-			procesararbol(a^.hd, l, fecha);
+			generarListaAnioDNI(a^.dato.l, anio, l);
+			generarListaAnioArb(a^.hi, anio, l);
+			generarListaAnioArb(a^.hd, anio, l);
 		end;
 end;
-
-procedure imprimirlistas(l : listafecha);
+procedure imprimirListaAnio(l: listaAnio);
 begin
-	while (l <> nil) do
+	while(l<>nil) do
 		begin
-			write(l^.code);
-			l := l^.sig;
+			write(' | CODIGO=', l^.dato);
+			l:= l^.sig;
 		end;
 end;
-
 var
-	l : listafecha;
-	a : arb;
-	num1, num2, cant,total, fecha, dni : integer;
+	a: arbol;
+	cant, dni, dni1, dni2, anio: integer;
+	l: listaAnio;
 begin
-	randomize;
-	a := nil;
-	l := nil;
-	num1 := random(10) + 1;
-	num2 := random(10) + 1;
-	dni := random(10) + 1;
-	cant := 0;
-	total := 0;
-	fecha := 2018;
-	cargageneral(a);
-	writeln('la cantidad de reclamos del dni: ', dni,' fueron ',cantreclamos(a, dni));
-	rango(a, num1, num2, total);
-	writeln('el total de reclamos entre todos los dnis entre ', num1 , ' y ',num2,' es ', total);
-	procesararbol(a, l, fecha);
-	imprimirlistas(l);
+	Randomize;
+	a:= nil;
+	cargarArbol(a);
+
+	writeln('-----------------');
+	imprimirArbol(a);
+
+	writeln('-----------------');
+	writeln('Ingrese un DNI');
+	readln(dni);
+	cant:= 0;
+	contarCantDNI(a, dni, cant);
+	writeln('La persona con DNI ', dni, ' realizo ', cant, ' reclamos');
+
+	writeln('-----------------');
+	writeln('Ingrese un primer DNI');
+	readln(dni1);
+	writeln('Ingrese un segundo DNI');
+	readln(dni2);
+	verificar(dni1, dni2);
+	cant:= 0;
+	entreDosDNI(a, dni1, dni2, cant);
+	writeln('La cantidad de reclamos total efectuados por las personas entre el DNI ', dni1, ' y DNI ', dni2, ' es: ', cant);
+	
+	writeln('-----------------');
+	writeln('Ingrese un anio');
+	readln(anio);
+	l:= nil;
+	generarListaAnioArb(a, anio, l);
+	write('Lista para el anio ', anio, ': ');
+	imprimirListaAnio(l);
 end.

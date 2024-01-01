@@ -16,41 +16,37 @@ d) Un módulo recursivo que retorne el monto total de las expensas.}
 
 program ejercicio1;
 const
-	LIM = 3;
+	LIM = 300;
 type
 	oficina = record
 		code : integer;
 		dni : integer;
-		monto : integer;
+		monto : real;
 		end;
 		
-	vec = array[1..LIM] of oficina;
-	
+	vecOficinas = array[1..LIM] of oficina;
 
-procedure leer(var o : oficina);
+procedure leerOficina(var o : oficina);
 begin
-	writeln('ingresar codigo: ');
-	readln(o.code);
-	writeln('ingrese dni: ');
-	readln(o.dni);
-	writeln ('ingrese valor: ');
-	readln(o.monto);
+	o.code:= Random(700)-1;
+	o.dni:= Random(1000)+300;
+	o.monto:= o.dni * (Random(30)+1);
 end;
 
-
-procedure cargarvector(var v : vec; var diml : integer; o : oficina);
+procedure cargarVector(var v : vecOficinas; var diml : integer);
+var
+	o: oficina;
 begin	
-	if(diml < LIM) and (o.code <> -1) then
+	leerOficina(o);
+	while (diml < LIM) and (o.code <> -1) do
 		begin
 			diml := diml + 1;
 			v[diml] := o;
-			leer(o);
-			cargarvector(v, diml, o);
+			leerOficina(o);
 		end;
 end;
 	
-
-procedure seleccion(var v : vec; diml : integer);
+procedure seleccion(var v : vecOficinas; diml : integer);
 var
 	pos, i, j  : integer;
 	o : oficina;
@@ -61,12 +57,8 @@ begin
 				begin
 					pos := i;
 					for j := i + 1 to diml do
-						begin
-							if(v[j].code < v[pos].code) then
-								begin
-									pos := j;
-								end;
-						end;
+						if(v[j].code < v[pos].code) then
+							pos := j;
 					o := v[pos];
 					v[pos] := v[i];
 					v[i] := o;
@@ -74,29 +66,21 @@ begin
 		end;
 end;
 
-
-function busquedadicotomica(v : vec; codigo : integer; diml, pri, fin: integer) : integer;
+function busquedadicotomica(v : vecOficinas; codigo : integer; diml, pri, fin: integer) : integer;
 var
 	medio: integer;
 begin
 	if(diml > 0) then
 		begin
-			medio:= (pri + fin) div 2;
-			if(pri < fin) then
+			if(pri <= fin) then
 				begin
-					if(codigo < v[medio].code) then
-						begin
-							fin := medio;
-							busquedadicotomica := busquedadicotomica(v, codigo, diml, pri, fin);
-						end
-					else
-						if(codigo > v[medio].code) then
-							begin	
-								pri := medio;
-								busquedadicotomica := busquedadicotomica(v, codigo, diml, pri, fin);
-							end;
+					medio:= (pri + fin) div 2;
 					if(v[medio].code = codigo) then
-						busquedadicotomica := medio;
+						busquedadicotomica := medio
+					else if(codigo < v[medio].code) then
+						busquedadicotomica := busquedadicotomica(v, codigo, diml, pri, medio-1)
+					else
+						busquedadicotomica := busquedadicotomica(v, codigo, diml, medio+1, fin);
 				end
 			else
 				busquedadicotomica := 0;
@@ -105,43 +89,48 @@ begin
 		busquedadicotomica := 0;
 end;
 	
-procedure montototal(v : vec; var cant : integer; diml : integer);
-begin
-    if(diml > 0) then 
-        begin
-            cant := v[diml].monto + cant;
-            montototal(v, cant, diml -1);
-        end;
-end;
-
-
-function montotalfd(v : vec; diml : integer): integer;
+function montoTotal(v : vecOficinas; diml : integer): real;
 begin
 	if(diml > 0) then
 		begin
-			montotalfd := v[diml].monto + montotalfd(v, diml - 1); 
+			montoTotal := v[diml].monto + montoTotal(v, diml - 1); 
 		end
 	else
-		montotalfd := 0;
+		montoTotal := 0;
+end;
+
+procedure imprimirVector(v: vecOficinas; diml: integer);
+var
+	i: integer;
+begin
+	for i:= 1 to diml do writeln(i, '. CODIGO=', v[i].code, ' DNI=', v[i].dni, ' MONTO=', v[i].monto:0:2);
 end;
 
 var
-	v : vec;
-	aux,codigo, pri, fin, diml : integer;
+	v : vecOficinas;
+	aux, codigo, pri, fin, diml : integer;
 	o : oficina;
 begin
+	Randomize;
 	diml := 0;
-	codigo := 01;
-	leer(o);
-	cargarvector(v, diml, o);
-	writeln(diml);
+	cargarvector(v, diml);
+	imprimirVector(v, diml);
+
+	writeln('--------------');
 	seleccion(v, diml);
+	imprimirVector(v, diml);
+
+	writeln('--------------');
+	writeln('Ingrese un codigo de identificacion de oficina');
+	readln(codigo);
 	pri := 1;
-	fin := LIM;
+	fin := diml;
 	aux := busquedadicotomica(v, codigo, diml, pri, fin);
 	if(aux = 0)then
-		writeln('no se encontro el elemento')
+		writeln('No se encontro la oficina con el codigo de identificacion ', codigo, ' en el vector')
 	else
-        writeln(v[aux].dni);
-	writeln('monto total: ',montotalfd(v,diml));
+		writeln('Se encontro la oficina con el codigo de identificacion ', codigo, ' en la posicion ', aux, ' del vector, su DNI es: ', v[aux].dni);
+	
+	writeln('--------------');
+	writeln('El monto total de las expensas es: ', montoTotal(v,diml):0:2);
 end.

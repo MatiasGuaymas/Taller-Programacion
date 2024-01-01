@@ -16,370 +16,378 @@ modelo del auto con dicha patente.
 f) Invoque a un módulo que reciba el árbol generado en a) ii y una patente y devuelva el
 modelo del auto con dicha patente.}
 
-program ejercicio2;
+program ejercicio2;  
 type
-
-	ANIO = 2010..2018;
-	
-	auto = record
-		patente : integer;
-		fecha : ANIO;
-		marca : string;
-		modelo : string;
-		end;
-		
-	
-	automarca = record
-		patente : integer;
-		fecha : ANIO;
-		modelo : string;
-		end;
-	
-	
-	arbpatente = ^nodopatente;
-	
-	nodopatente = record
-		hi : arbpatente;
-		hd : arbpatente;
-		dato : auto;
-		end;
-	
-	
-	lis = ^nodolista;
-	
-	nodolista = record
-		sig :lis;
-		dato : automarca;
-		end;
-	
-	arboldelista = ^nodoarbollista;
-	
-	nodoarbollista = record
-		hi : arboldelista;
-		hd : arboldelista;
-		marca : string;
-		l : lis;
-		end;
-		
-		
-	infofabricacion = record
-			marca : string;
-			modelo : string;
-			patente : integer;
-			end;
-	
-	listafabricacion = ^nodofabricacion;
-	
-	nodofabricacion = record
-		sig : listafabricacion;
-		fecha : ANIO;
-		info : infofabricacion;
-		end;
-	
-	
-procedure leer(var a : auto);
+    subAnio = 2010..2018;
+    auto = record
+        patente: integer;
+        anio: subAnio;
+        marca: string;
+        modelo: string;
+    end;
+    arbol1 = ^nodoArbol1;
+    nodoArbol1 = record
+        dato: auto;
+        hi: arbol1;
+        hd: arbol1;
+    end;
+    
+    auto2= record
+        patente: integer;
+        anio: subAnio;
+        modelo: string;
+    end;
+    
+    lista = ^nodo;
+    nodo = record
+        dato: auto2;
+        sig: lista;
+    end;
+    
+    autoMarca = record
+        marca: string;
+        l: lista;
+    end;
+    
+    arbol2 = ^nodoArbol2;
+    nodoArbol2 = record 
+        dato: autoMarca;
+        hi: arbol2;
+        hd: arbol2;
+    end;
+    
+    auto3= record
+        patente: integer;
+        marca: string;
+        modelo: string;
+    end;
+    
+    listaAnio = ^nodoAnio;
+    nodoAnio = record
+        dato: auto3;
+        sig: listaAnio;
+    end;
+    
+    autoAnio = record
+        anio: subAnio;
+        l: listaAnio;
+    end;
+    
+    arbol3 = ^nodoArbol3;
+    nodoArbol3 = record
+        dato: autoAnio;
+        hi: arbol3;
+        hd: arbol3;
+    end;
+procedure imprimirAuto(a: auto);
 begin
-	writeln('ingrese patente: ');
-	readln(a.patente);
-	writeln('ingrese marca: ');
-	readln(a.marca);
-	writeln('ingrese modelo: ');
-	readln(a.modelo);
-	writeln('ingrese fecha: ');
-	readln(a.fecha);
+	writeln('PATENTE=', a.patente, ' ANIO=', a.anio, ' MARCA=', a.marca, ' MODELO=', a.modelo);
 end;
-
-
-procedure buscar(a : arboldelista; marca : string; var ok : boolean; var nodo : arboldelista);
+procedure leerAuto(var a: auto);
 begin
-	if(a <> nil) then
-		begin
-			if(a^.marca = marca) then
-				begin
-					ok := true;
-					nodo := a;
-				end
-			else
-				begin
-					if(marca > a^.marca) then
-						buscar(a^.hd, marca, ok ,nodo)
-					else
-						buscar(a^.hi, marca, ok ,nodo);
-				end;
-		end
-	else
-		begin
-			ok := false;
-			nodo := nil;
-		end;
-end;
-					
-procedure agregaradelante(var l : lis; a : automarca);
-var
-    aux : lis;
-begin
-    new(aux); aux^.sig := nil; aux^.dato := a;
-    if(l = nil) then
-        l := aux
-    else
+    writeln('Ingrese una patente');
+    readln(a.patente);
+    if(a.patente <> 0) then
         begin
-            aux^.sig := l;
-            l := aux;
+            a.anio:= Random(9)+2010;
+            writeln('Ingrese una marca de auto');
+            readln(a.marca);
+            a.modelo:= 'zzz';
         end;
 end;
-
-procedure agregarnodolista(var a : arboldelista; aux : auto);
+procedure agregarArbolI(var a: arbol1; au: auto);
+begin
+    if(a = nil) then
+        begin
+            new(a);
+            a^.hi:= nil;
+            a^.hd:= nil;
+            a^.dato:= au;
+        end
+    else
+        if(au.patente <= a^.dato.patente) then
+            agregarArbolI(a^.hi, au)
+        else
+            agregarArbolI(a^.hd, au);
+end;
+procedure agregarAdelante(var l: lista; a: auto2);
 var
-	autom : automarca;
+    aux: lista;
 begin
-	if(a = nil) then
-		begin
-			autom.patente := aux.patente;
-			autom.fecha := aux.fecha;
-			autom.modelo := aux.modelo;
-			new(a); a^.hi := nil; a^.hd := nil;a^.marca := aux.marca; a^.l:= nil;
-			agregaradelante(a^.l, autom);
-		end
-	else
-		begin
-			if(aux.marca > a^.marca) then
-				agregarnodolista(a^.hd, aux)
-			else
-				agregarnodolista(a^.hi, aux);
-		end;
+    new(aux);
+    aux^.sig:= l;
+    aux^.dato:= a;
+    l:= aux;
 end;
-
-
-procedure agregarnodo(var a : arbpatente; aux : auto);
-begin
-	if(a = nil) then
-		begin
-			new(a);a^.hi := nil;a^.hd := nil; a^.dato := aux;
-		end
-	else
-		begin
-			if(aux.patente <= a^.dato.patente) then
-				agregarnodo(a^.hi, aux)
-			else
-				agregarnodo(a^.hd, aux);
-		end;
-end;
-
-
-procedure cargararboles(var a : arbpatente;var arbl : arboldelista; aux : auto);
+procedure agregarArbolII(var a: arbol2; au: auto);
 var
-	ok : boolean;
-	nodo : arboldelista;
-	autom : automarca;
+    aux: auto2;
 begin
-	agregarnodo(a, aux);
-	buscar(arbl, aux.marca, ok, nodo);
-	if(ok = true) then
-		begin
-			autom.fecha := aux.fecha;
-			autom.modelo := aux.modelo;
-			autom.patente := aux.patente;
-			agregaradelante(nodo^.l, autom);
-		end
-	else
-		agregarnodolista(arbl, aux);
+    if(a = nil) then
+        begin
+            new(a);
+            a^.hi:= nil;
+            a^.hd:= nil;
+            a^.dato.marca:= au.marca;
+            a^.dato.l:= nil;
+            aux.patente:= au.patente;
+            aux.anio:= au.anio;
+            aux.modelo:= au.modelo;
+            agregarAdelante(a^.dato.l, aux);
+        end
+    else
+        if(a^.dato.marca = au.marca) then
+            begin
+                aux.patente:= au.patente;
+                aux.anio:= au.anio;
+                aux.modelo:= au.modelo;
+                agregarAdelante(a^.dato.l, aux);
+            end
+        else
+            if(au.marca < a^.dato.marca) then
+                agregarArbolII(a^.hi, au)
+            else
+                agregarArbolII(a^.hd, au);
 end;
-
-procedure cargageneral(var a : arbpatente; var arbl : arboldelista);
+procedure cargarEstructuras(var a1: arbol1; var a2: arbol2);
 var
-	aux : auto;
+    au: auto;
 begin
-	leer(aux);
-	if(aux.patente <> 0) then
-		begin
-			cargararboles(a, arbl, aux);
-			cargageneral(a, arbl);
-		end;
+    leerAuto(au);
+	imprimirAuto(au);
+    while(au.patente <> 0) do
+        begin
+            agregarArbolI(a1, au);
+            agregarArbolII(a2, au);
+            leerAuto(au);
+			imprimirAuto(au);
+        end;
 end;
-
-
-procedure imprimirarbol(a : arbpatente);
+procedure cantAutoMarcaI(a: arbol1; marca: string; var cant: integer);
 begin
-	if(a <> nil) then
-		begin
-			writeln(a^.dato.patente);
-			imprimirarbol(a^.hd);
-			imprimirarbol(a^.hi);
-		end;
+    if(a <> nil) then
+        begin
+            if(a^.dato.marca = marca) then
+                cant:= cant + 1;
+            cantAutoMarcaI(a^.hi, marca, cant);
+            cantAutoMarcaI(a^.hd, marca, cant);
+        end;
 end;
-
-procedure imprimirlistas(l : lis);
+procedure contarCantLista(l: lista; var cant: integer);
 begin
-	while(l <> nil) do
-		begin
-			writeln(l^.dato.patente);
-			l := l^.sig;
-		end;
+    while(l<>nil) do
+        begin
+            cant:= cant+1;
+            l:= l^.sig;
+        end;
 end;
-
-procedure imprimirarbollista(a : arboldelista);
+procedure cantAutoMarcaII(a: arbol2; marca: string; var cant: integer);
 begin
-	if(a <> nil) then
-		begin
-		    writeln(a^.marca);
-			imprimirlistas(a^.l);
-			imprimirarbollista(a^.hd);
-			imprimirarbollista(a^.hi);
-		end;
+    if(a <> nil) then
+        begin
+             if(a^.dato.marca = marca) then
+                contarCantLista(a^.dato.l, cant)
+            else
+                if(marca < a^.dato.marca) then
+                    cantAutoMarcaII(a^.hi, marca, cant)
+                else
+                    cantAutoMarcaII(a^.hd, marca, cant);
+        end;
 end;
-
-function procesarlista(l : lis) : integer;
+procedure agregarAdelanteII(var l: listaAnio; a: auto3);
 var
-	cant : integer;
+    aux: listaAnio;
 begin
-	cant := 0;
-	while(l <> nil) do
-		begin
-			cant := cant + 1;
-			l := l^.sig;
-		end;
-	procesarlista := cant;
+    new(aux);
+    aux^.sig:= l;
+    l:= aux;
+    aux^.dato:= a;
 end;
-
-function cantmarca(a : arboldelista; marca : string) : integer;
+procedure agregarArbolIII(a: auto; var a3: arbol3);
+var
+    au: auto3;
 begin
-	if(a <> nil) then
-		begin
-			if(a^.marca = marca) then
-				cantmarca := procesarlista(a^.l)
-			else
+    if(a3 = nil) then
+        begin
+            new(a3);
+            a3^.hi:= nil;
+            a3^.hd:= nil;
+			a3^.dato.l:= nil;
+            a3^.dato.anio:= a.anio;
+            au.patente:= a.patente;
+            au.modelo:= a.modelo;
+            au.marca:= a.marca;
+            agregarAdelanteII(a3^.dato.l, au);
+        end
+    else
+        if(a3^.dato.anio = a.anio) then
+            begin
+                au.patente:= a.patente;
+                au.modelo:= a.modelo;
+                au.marca:= a.marca;
+                agregarAdelanteII(a3^.dato.l, au);
+            end
+        else
+            if(a.anio < a3^.dato.anio) then
+                agregarArbolIII(a, a3^.hi)
+            else
+                agregarArbolIII(a, a3^.hd);
+end;
+procedure generarArbolAnio(a: arbol1; var a3: arbol3);
+begin
+    if(a <> nil) then
+        begin
+            agregarArbolIII(a^.dato, a3);
+            generarArbolAnio(a^.hi, a3);
+            generarArbolAnio(a^.hd, a3);
+        end;
+end;
+procedure encontrarPatente(a1: arbol1; patente: integer; var modelo: string; var ok: boolean);
+begin
+    if(a1 <> nil) then
+        begin
+            if(a1^.dato.patente = patente) then
 				begin
-					if(marca > a^.marca) then
-						cantmarca(a^.hd, marca)
-					else
-						cantmarca(a^.hi, marca);
-				end;
-		end
-	else
-		cantmarca := 0;
-end;
-
-procedure agregaratras(var l : listafabricacion; elem : infofabricacion; fecha : ANIO);
-var
-	ult, aux : listafabricacion;
-begin
-	new(aux); aux^.sig:= nil; aux^.fecha := fecha; aux^.info := elem;
-	if(l = nil) then
-		l := aux
-	else
-		begin
-			ult := l;
-			while(ult^.sig <> nil) do
-				ult := ult^.sig;
-			ult^.sig := aux;
-		end;
-end;
-			
-
-procedure fabricacion(a : arbpatente; var listaf : listafabricacion; fecha : ANIO);
-var
-	info : infofabricacion;
-begin
-	if(a <> nil) then
-		begin
-			if(a^.dato.fecha = fecha) then
-				begin
-					info.marca := a^.dato.marca;
-					info.modelo := a^.dato.modelo;
-					info.patente := a^.dato.patente;
-					agregaratras(listaf, info, fecha);
-					fabricacion(a^.hi, listaf, fecha);
-					fabricacion(a^.hd, listaf, fecha);
+					modelo:= a1^.dato.modelo;
+					ok:= true;
 				end
-			else
-				begin
-					fabricacion(a^.hi, listaf, fecha);
-					fabricacion(a^.hd, listaf, fecha);
-				end;
+            else
+                if(patente < a1^.dato.patente) then
+                    encontrarPatente(a1^.hi, patente, modelo, ok)
+                else
+                    encontrarPatente(a1^.hd, patente, modelo, ok);
+        end;
+end;
+procedure buscarPatente(l: lista; patente: integer; var modelo: string; var ok: boolean);
+begin
+    while(l <> nil) and (not ok) do
+        begin
+            if(l^.dato.patente = patente) then
+                begin
+                    modelo:= l^.dato.modelo;
+                    ok:= true;
+                end
+            else
+                l:= l^.sig;
+        end;
+end;
+procedure encontrarPatenteArbII(a: arbol2; patente: integer; var modelo: string; var ok: boolean);
+begin
+    if(a <> nil) and (not ok) then
+        begin
+            buscarPatente(a^.dato.l, patente, modelo, ok);
+            if(not ok) then
+                begin
+                    encontrarPatenteArbII(a^.hi, patente, modelo, ok);
+                    encontrarPatenteArbII(a^.hd, patente, modelo, ok);
+                end;
+ 		end;
+end;
+procedure imprimirArbolI(a: arbol1);
+begin
+	if(a<>nil) then
+		begin
+			imprimirArbolI(a^.hi);
+			imprimirAuto(a^.dato);
+			imprimirArbolI(a^.hd);
 		end;
 end;
-			
-procedure imprimirfabricacion(l : listafabricacion);
-begin
-	while(l <> nil) do
+procedure imprimirListaMarca(l: lista);
+begin	
+	while(l<>nil) do
 		begin
-			writeln(l^.info.patente);
-			l := l^.sig;
+			write(' | PATENTE=', l^.dato.patente, ' ANIO=', l^.dato.anio, ' MODELO=', l^.dato.modelo);
+			l:= l^.sig;
 		end;
 end;
-
-function buscarpatente(a : arbpatente; patente : integer) : string;
+procedure imprimirAutoMarca(a: autoMarca);
 begin
-	if(a <> nil ) then
-		begin
-			if(a^.dato.patente = patente) then	
-				buscarpatente := a^.dato.modelo
-			else
-				begin
-					if(patente > a^.dato.patente) then
-						buscarpatente(a^.hd, patente)
-					else
-						buscarpatente(a^.hi, patente);
-				end;
-		end
-	else
-		buscarpatente := 'no se encontro la patente';
+	write('MARCA=', a.marca);
+	imprimirListaMarca(a.l);
+	writeln();
 end;
-					
-procedure busquedadepatente(l : lis; patente : integer; var ok : boolean; var modelo : string);
+procedure imprimirArbolII(a: arbol2);
 begin
-	while(l <> nil) and (ok = false) do
+	if(a<>nil) then
 		begin
-			if(l^.dato.patente = patente) then
-				begin
-					ok := true;
-					modelo := l^.dato.modelo;
-				end
-			else
-				l := l^.sig;
+			imprimirArbolII(a^.hi);
+			imprimirAutoMarca(a^.dato);
+			imprimirArbolII(a^.hd);
 		end;
 end;
-					
-					
-function buscarpatentelistas(a : arboldelista; patente : integer) : string;
-var
-	ok : boolean;
-	modelo : string;
+procedure imprimirListaAnio(l: listaAnio);
+begin	
+	while(l<>nil) do
+		begin
+			write(' | PATENTE=', l^.dato.patente, ' MARCA=', l^.dato.marca, ' MODELO=', l^.dato.modelo);
+			l:= l^.sig;
+		end;
+end;
+procedure imprimirAutoAnio(a: autoAnio);
+begin
+	write('ANIO=', a.anio);
+	imprimirListaAnio(a.l);
+	writeln();
+end;
+procedure imprimirArbolIII(a: arbol3);
 begin
 	if(a <> nil) then
 		begin
-			busquedadepatente(a^.l, patente, ok, modelo);
-			if(ok) then
-				buscarpatentelistas := modelo
-			else
-				begin
-					buscarpatentelistas := buscarpatentelistas(a^.hd, patente);
-					buscarpatentelistas := buscarpatentelistas(a^.hi, patente);
-				end;
+			imprimirArbolIII(a^.hi);
+			imprimirAutoAnio(a^.dato);
+			imprimirArbolIII(a^.hd);
 		end;
 end;
-
-
 var
-	a : arbpatente;
-	arbl : arboldelista;
-	marca : string;
-	listaf : listafabricacion;
-	fecha : ANIO;
-	patente : integer;
+	a1: arbol1;
+	a2: arbol2;
+	a3: arbol3;
+	marca, modelo: string;
+	cant, patente: integer;
+	ok: boolean;
 begin
-	a := nil;
-	arbl := nil;
-	cargageneral(a, arbl);
-	imprimirarbol(a);
-	imprimirarbollista(arbl);
-	marca := 'kia';
-	writeln('hay ', cantmarca(arbl, marca),' autos de la marca ',marca);
-	listaf := nil;
-	fecha := 2018;
-	fabricacion(a, listaf, fecha);
-	imprimirfabricacion(listaf);
-	patente := 2;
-	writeln('el auto con la patente: ',patente,' es del modelo ',buscarpatente(a, patente));
-	writeln('el auto con la patente: ',patente,' es del modelo ',buscarpatentelistas(arbl, patente));
+    Randomize;
+	a1:= nil;
+	a2:= nil;
+	cargarEstructuras(a1, a2);
+
+	writeln('------------------');
+	imprimirArbolI(a1);
+
+	writeln('------------------');
+	imprimirArbolII(a2);
+	
+	writeln('------------------');
+	writeln('Ingrese una marca de auto');
+	readln(marca);
+	cant:= 0;
+	cantAutoMarcaI(a1, marca, cant);
+	writeln('Para la marca de autos ', marca, ' la agencia posee ', cant, ' autos');
+
+	writeln('------------------');
+	writeln('Ingrese otra marca de auto');
+	readln(marca);
+	cant:= 0;
+	cantAutoMarcaII(a2, marca, cant);
+	writeln('Para la marca de autos ', marca, ' la agencia posee ', cant, ' autos');
+
+	writeln('------------------');
+	a3:= nil;
+	writeln('Informacion de los autos agrupados por anio de fabricacion: ');
+	generarArbolAnio(a1, a3);
+	imprimirArbolIII(a3);
+
+	writeln('------------------');
+	writeln('Ingrese un numero de patente');
+	readln(patente);
+	ok:= false;
+	encontrarPatente(a1, patente, modelo, ok);
+	if(ok) then writeln('El modelo del auto de la patente ', patente, ' es: ', modelo) else writeln('No se encontro un auto con la patente ', patente);
+
+	writeln('------------------');
+	writeln('Ingrese otro numero de patente');
+	readln(patente);
+	ok:= false;
+	encontrarPatenteArbII(a2, patente, modelo, ok);
+	if(ok) then writeln('El modelo del auto de la patente ', patente, ' es: ', modelo) else writeln('No se encontro un auto con la patente ', patente);
 end.
