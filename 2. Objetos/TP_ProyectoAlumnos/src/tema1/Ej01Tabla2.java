@@ -1,8 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+/* 1- Analice el programa Ej01Tabla2.java, que carga un vector que representa la
+tabla del 2. Luego escriba las instrucciones necesarias para:
+- generar enteros aleatorios hasta obtener el número 11. Para cada número
+muestre el resultado de multiplicarlo por 2 (accediendo al vector). */
+
 package tema1;
 
 import PaqueteLectura.GeneradorAleatorio;
