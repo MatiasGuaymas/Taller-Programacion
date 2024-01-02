@@ -1,30 +1,23 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+/* 2- Utilizando la clase Persona. Realice un programa que almacene en un vector a lo sumo
+15 personas. La información (nombre, DNI, edad) se debe generar aleatoriamente hasta
+obtener edad 0. Luego de almacenar la información:
+ - Informe la cantidad de personas mayores de 65 años.
+ - Muestre la representación de la persona con menor DNI. */
+
 package tema2;
 import PaqueteLectura.*;
 
-/**
- *
- * @author Matute
- */
 public class Ejercicio2 {
-
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
         GeneradorAleatorio.iniciar();
         int DF=15;  
         Persona [] vecPersona = new Persona[DF];
-        int edad = PaqueteLectura.GeneradorAleatorio.generarInt(100);
+        int edad = GeneradorAleatorio.generarInt(100);
         int diml = 0;
         while(edad != 0 && diml < 15) {
             String nombre = GeneradorAleatorio.generarString(5);
             int dni = GeneradorAleatorio.generarInt(40);
-            vecPersona[diml] = new Persona(nombre, edad, dni);
+            vecPersona[diml] = new Persona(nombre, dni, edad);
             System.out.println(vecPersona[diml].toString());
             diml++;
             edad = GeneradorAleatorio.generarInt(100);
@@ -42,5 +35,4 @@ public class Ejercicio2 {
         System.out.println("CANT PERSONAS MAYORES DE 65 ANIOS: " + contador);
         System.out.println(menor.toString());
     }
-    
 }
