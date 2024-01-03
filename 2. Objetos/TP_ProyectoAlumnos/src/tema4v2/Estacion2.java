@@ -1,9 +1,5 @@
 package tema4v2;
 
-/**
- *
- * @author Matute
- */
 public class Estacion2 {
     private String nombre;
     private double latitud;

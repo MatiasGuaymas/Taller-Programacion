@@ -1,18 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tema4v2;
 
-/**
- *
- * @author Francisco
- */
 public class Jugador extends Empleado {
     int numeroPartido;
     int cantGoles;
-
     
     public Jugador(int nro, int cant, String nom, double unSueldo, int anti){
         super(nom, unSueldo, anti);
@@ -35,15 +25,16 @@ public class Jugador extends Empleado {
     public void setCantGoles(int cantGoles) {
         this.cantGoles = cantGoles;
     }
+    
 @Override
     public double calcularEfectividad(){
-        double aux = this.getCantGoles() / this.getNumeroPartido();
+        double aux = (double) this.getCantGoles() / this.getNumeroPartido();
         return aux;
     }
     
 @Override
     public double calcularSueldo(){
-        double aux = this.getSueldo() + ((this.getSueldo()* 0.10)*this.getAntiguedad());
+        double aux = this.sueldoBase();
         if(this.calcularEfectividad() > 0.5){
             aux = aux + this.getSueldo();
         }

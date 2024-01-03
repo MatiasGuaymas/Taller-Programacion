@@ -1,10 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tema4v2;
-
 
 public abstract class Figura {
     private String colorRelleno;
@@ -16,13 +10,12 @@ public abstract class Figura {
     }
     
     public String toString(){
-        String aux = "Area: " + this.calcularArea() +
+        String aux = "Area: " + this.calcularArea() + " Perimetro: " + this.calcularPerimetro() +
                      " CR: "  + getColorRelleno() + 
                       " CL: " + getColorLinea();             
              return aux;
        }
 
-    
     public String getColorRelleno(){
         return colorRelleno;       
     }
@@ -38,5 +31,10 @@ public abstract class Figura {
     
     public abstract double calcularArea();
     public abstract double calcularPerimetro();
+    
+    public void despintar(){
+         this.setColorLinea("Negro");
+         this.setColorRelleno("Blanco");
+     }
      
 }

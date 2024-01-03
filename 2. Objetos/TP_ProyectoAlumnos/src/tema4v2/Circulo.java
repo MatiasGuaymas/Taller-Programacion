@@ -1,14 +1,11 @@
-
 package tema4v2;
-
 
 public class Circulo extends Figura{
     double radio;
 
-    
     public Circulo(double radio1, String colorR, String colorL){
         super(colorR, colorL);
-        this.radio = radio1;
+        this.setRadio(radio1);
     }
     
     public double getRadio() {
@@ -31,12 +28,8 @@ public class Circulo extends Figura{
     
     public String ToString(){
         return super.toString()+
-               "Radio: " + this.radio;
+               " Radio: " + this.radio;
     }
     
-    public void despintar(){
-         this.setColorLinea("Negro");
-         this.setColorRelleno("Blanco");
-     }
 }
 

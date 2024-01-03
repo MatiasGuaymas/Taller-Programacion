@@ -1,17 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tema4v2;
-
 
 public abstract class Empleado {
     String nombre;
     double sueldo;
     int antiguedad;
 
-    
     public Empleado(String nom, double unSueldo, int anti){
         this.setNombre(nom);
         this.setAntiguedad(anti);
@@ -48,6 +41,10 @@ public abstract class Empleado {
     }
  
     public abstract double calcularEfectividad();
+    
+    public double sueldoBase() {
+        return this.getSueldo() + ((this.getSueldo()* 0.10)*this.getAntiguedad());
+    }
     
     public abstract double calcularSueldo();
     

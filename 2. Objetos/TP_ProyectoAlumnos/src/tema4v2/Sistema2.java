@@ -1,11 +1,7 @@
 package tema4v2;
 
-
 import PaqueteLectura.*;
-/**
- *
- * @author Matute
- */
+
 public abstract class Sistema2 {
     private Estacion2 estacion;
     private int anioInicial;
@@ -17,9 +13,9 @@ public abstract class Sistema2 {
         this.anioInicial = anioInicial;
         this.cantAnios = cantAnios;
         this.sist = new double[cantAnios][12];
-        for (int i = 0; i<cantAnios; i++) {
+        for (int i = 0; i <cantAnios; i++) {
             for(int j = 0; j < 12; j++) {
-                sist[i][j] = 20 + GeneradorAleatorio.generarDouble(30);
+                sist[i][j] = 100;
             }
         }   
     }
@@ -49,12 +45,11 @@ public abstract class Sistema2 {
     }
 
     public void setTemp(int mes, int anio, double tem) {
-        this.sist[anio][mes] = tem;
-        System.out.println("Cargada la temperatura");
+        this.sist[anio - anioInicial][mes-1] = tem;
     }
     
     public double getTemp(int mes, int anio) {
-        return this.sist[anio][mes];
+        return this.sist[anio-anioInicial][mes-1];
     }
     
      public String mayorTemp(){
@@ -70,7 +65,7 @@ public abstract class Sistema2 {
                 }
             }
         }
-        return "La temp maxima fue en el anio " + anioMax + ", mes "+ mesMax;
+        return "La temp maxima fue en el anio " + (anioMax + this.anioInicial) + ", mes "+ (mesMax+1);
     }
     
     public abstract String retornarMedia();

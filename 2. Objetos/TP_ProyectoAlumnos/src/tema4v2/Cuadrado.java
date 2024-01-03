@@ -1,6 +1,5 @@
 package tema4v2;
 
-
 public class Cuadrado extends Figura{
     
     private double lado;
@@ -8,7 +7,6 @@ public class Cuadrado extends Figura{
     public Cuadrado(double unLado, String unColorR, String unColorL){
         super(unColorR,unColorL);
         setLado(unLado);
-
     } 
     
     public double getLado(){
@@ -32,6 +30,5 @@ public class Cuadrado extends Figura{
                     " Lado: " + getLado();
        return aux;
     }
-
  
 }
