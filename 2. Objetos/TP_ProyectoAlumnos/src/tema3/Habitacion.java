@@ -2,20 +2,16 @@ package tema3;
 
 import PaqueteLectura.*;
 
-/**
- *
- * @author Matute
- */
 public class Habitacion {
     private double costo;
     private boolean ocupada;    
     Cliente cliente;
     
     public Habitacion() {
-    costo = GeneradorAleatorio.generarDouble(5000);
-    ocupada = false;
-    cliente = null;
-}
+        costo = GeneradorAleatorio.generarDouble(6001)+2000;
+        ocupada = false;
+        cliente = null;
+    }
 
     public double getCosto() {
         return costo;
@@ -33,6 +29,10 @@ public class Habitacion {
         this.ocupada = ocupada;
     }
 
+    public void ocupar(){
+        this.ocupada = true;
+    }
+    
     public Cliente getCliente() {
         return cliente;
     }
@@ -41,7 +41,16 @@ public class Habitacion {
         this.cliente = cliente;
     }
     
-    public double aumentarPrecio(double n) {
-        return costo + n;
+    public void aumentarPrecio(double n) {
+        costo += n;
+    }
+    
+    @Override
+    public String toString(){
+        String aux = "Costo="+costo+" Estado="+ ocupada;
+        if(ocupada) {
+            aux+= cliente.toString();
+        }
+        return aux;
     }
 }
