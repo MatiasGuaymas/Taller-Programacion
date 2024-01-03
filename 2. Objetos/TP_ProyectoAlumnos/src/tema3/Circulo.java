@@ -1,9 +1,5 @@
 package tema3;
 
-/**
- *
- * @author Matute
- */
 public class Circulo {
     private double radio;
     private String colorRelleno;
