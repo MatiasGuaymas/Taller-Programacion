@@ -5,6 +5,12 @@ public class Autor {
     private String biografia;
     private String origen;
     
+    public Autor(String nombre, String biografia, String origen) {
+        this.nombre = nombre;
+        this.biografia = biografia;
+        this.origen = origen;
+    }
+    
     public Autor() {
     }
     
@@ -34,6 +40,6 @@ public class Autor {
 
     @Override
     public String toString() {
-        return "El autor se llama" + nombre + " es de origen " + origen + " y su biografia es " + biografia;
+        return nombre + " de origen: " + origen + " y con una biografia: " + biografia;
     }
 }
