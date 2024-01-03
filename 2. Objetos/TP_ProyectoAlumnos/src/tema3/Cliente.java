@@ -1,9 +1,5 @@
 package tema3;
 
-/**
- *
- * @author Matute
- */
 public class Cliente {
     private String nombre;
     private int dni;
@@ -39,5 +35,8 @@ public class Cliente {
         this.edad = edad;
     }
     
-    
+    @Override
+    public String toString(){
+        return " Nombre=" + nombre+ " DNI=" + dni+ " Edad=" + edad;
+    }
 }
