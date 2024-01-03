@@ -15,7 +15,6 @@ public class Triangulo {
         colorRelleno = unColorRelleno;
         colorLinea = unColorLinea;
     }
-
     
     public Triangulo(){
     }
@@ -66,12 +65,7 @@ public class Triangulo {
     }
     
     public double calcularArea() {
-        double s = (lado1 + lado2 + lado3) / 2;
-        double a = lado1;
-        double b = lado2;
-        double c = lado3;
-        
-        double aux = Math.sqrt(s*(s-a)*(s-b)*(s-c));
-        return aux;
+        double s = (lado1 + lado2 + lado3) / 2;        
+        return Math.sqrt(s*(s-this.lado1)*(s-this.lado2)*(s-this.lado3));
     }
 }
