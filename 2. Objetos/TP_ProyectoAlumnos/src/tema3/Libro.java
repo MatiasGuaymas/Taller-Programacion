@@ -56,8 +56,7 @@ public class Libro {
     } 
     
     public Autor getPrimerAutor(){
-        Autor unPrimerAutor = new Autor();
-        return unPrimerAutor;
+        return primerAutor;
     }
     
     public String getISBN(){
@@ -87,13 +86,12 @@ public class Libro {
     public void setPrecio(double unPrecio){
          precio=unPrecio;
     }
-   
     
    @Override
     public String toString(){
         String aux;
-        aux= titulo + " por " + primerAutor + " - " + añoEdicion + " - " + " ISBN: " + ISBN;
-       return (aux);
+        aux= titulo + " por " + primerAutor.toString() + " - " + añoEdicion + " - " + " ISBN: " + ISBN;
+        return aux;
     }
         
 }
