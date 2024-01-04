@@ -8,20 +8,17 @@ public class Gira extends Recital {
     private int fechaMax;
     private int actual;
 
-
     public Gira(String nomGira, String nom, int cant, int cantFechas, int cantMax, int fechasMax){
         super(nom, cant, cantMax);
         this.nombreGira = nomGira;
         this.cantFechas = cantFechas;
         this.fechaMax = fechasMax;
         this.listaFechas = new Fecha[fechaMax];
-        int i;
-        for(i=0; i< this.cantFechas; i++){
-            this.getListaFechas()[i] = new Fecha(GeneradorAleatorio.generarString(5),(GeneradorAleatorio.generarInt(31) + 1));
-        }
         this.actual = 0;
+        for(int i=0; i< this.fechaMax; i++){
+            this.getListaFechas()[i] = null;
+        }
     }
-        
     
     public String getNombreGira() {
         return nombreGira;
@@ -38,12 +35,15 @@ public class Gira extends Recital {
     public void setNombreGira(String nombre) {
         this.nombreGira = nombre;
     }
+    
 @Override
     public String Actuar(){ 
-        String aux;
-        aux = "Buenas Noches " + this.listaFechas[this.actual];//ESTA LINEA: this.listaFechas[this.actual], IMPRIME LO SIGUIENTE Practica5.Fecha@eed1f14
-        actual++;
-        return aux + "\n" + super.Actuar();
+        String aux = "";
+        for(int k = 0; k < actual; k++) {
+            aux = aux+  "Gira numero " + (k+1) + ": Buenas Noches " + this.listaFechas[k].getCiudad() + "\n";
+            aux = aux + super.Actuar() + "\n";
+        }
+        return aux;
 }
 
     public int getCantFechas() {
@@ -58,16 +58,16 @@ public class Gira extends Recital {
         return this.getCantFechas() < this.getFechaMax();
     }
     
-    
-    public void agregarFecha(Fecha f){ //ROMPE EL PROGRAMA
+    public void agregarFecha(Fecha f){
         if(this.HayEspacio()){
-            this.getListaFechas()[this.cantFechas++] = f;
+            this.getListaFechas()[this.actual++] = f;
         }
     }
 @Override
+
     public int CalcularCosto(){
         int i, aux = 0;
-        for (i=0; i<this.cantFechas; i++){
+        for (i=0; i<this.actual; i++){
             aux++;
         }
         aux = aux * 30000;

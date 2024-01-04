@@ -23,14 +23,13 @@ public class Investigador {
     private void inicializarSubsidios(Subsidios [] vec){
         int i;
         for(i=0;i<5;i++)
-            vec[i] = new Subsidios(0, "null");
+            vec[i] = new Subsidios(0, "Null");
     }
     
-    public void agregarSubsidio(double mon, String mot){
+    public void agregarSubsidio(Subsidios sub){
         if(this.puedoAgregar()){
-            this.getSub()[this.cantSub++].setMonto(mon);
-            this.getSub()[this.cantSub].setMotivo(mot);
-            this.getSub()[this.cantSub].setOtorgadoTrue();
+            this.getSub()[this.cantSub] = sub;
+            this.getSub()[this.cantSub++].setOtorgadoTrue();
         }            
     }
     
@@ -47,6 +46,10 @@ public class Investigador {
         return nombre;
     }
 
+    public int getCantSub() {
+        return cantSub;
+    }
+    
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
@@ -70,7 +73,6 @@ public class Investigador {
     public Subsidios[] getSub(){
         return this.sub;
     }
-    
     
 @Override
     public String toString(){

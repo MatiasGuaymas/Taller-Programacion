@@ -5,7 +5,7 @@ public class Auto {
     private String patente;
 
     public Auto(){
-        this.nombreDueno = "ninguno";
+        this.nombreDueno = "Ninguno";
         this.patente = "0";
     }
     

@@ -69,11 +69,10 @@ public class Proyecto {
         return aux;
     }
     
-    
     public int buscar(String str){
         int aux = 0;
         while((aux < this.getCantInvestigadores())&&(!this.getInvest()[aux].getNombre().equals(str))){
-                aux++;
+            aux++;
         }
         if(aux < this.getCantInvestigadores())
             return aux;
@@ -81,21 +80,23 @@ public class Proyecto {
             return -1;
     }
     
-    
     public void otorgarTodos(String str){
         int aux = this.buscar(str);
-        while((this.getInvest()[aux].puedoAgregar())&&(aux != -1)){
-            this.getInvest()[aux].agregarSubsidio(GeneradorAleatorio.generarDouble(1000), GeneradorAleatorio.generarString(10));
+        if(aux == -1) {
+            System.out.println("No existe ese investigador");
+        } else {
+            while((this.getInvest()[aux].puedoAgregar())&&(aux != -1)){
+                Subsidios sub = new Subsidios(GeneradorAleatorio.generarDouble(1000), GeneradorAleatorio.generarString(10));
+                this.getInvest()[aux].agregarSubsidio(sub);
         }
-        if(aux == -1)
-            System.out.println("NO existe ese investigador");
+        }
     }
     
     public String Concatenador(Investigador [] inv, int DL){
         int i;
         String aux = " ";
         for(i=0;i < DL;i++)
-            aux = aux  +  "  |  "  +inv[i].toString();
+            aux = aux  +  "  |  "  + inv[i].toString();
         return aux;
     }
     

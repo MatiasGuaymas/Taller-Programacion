@@ -4,7 +4,6 @@ public class Subsidios {
     private double monto;
     private String motivo;
     private boolean otorgado;
-
     
     public Subsidios(double mon, String motivo){
         this.monto = mon;

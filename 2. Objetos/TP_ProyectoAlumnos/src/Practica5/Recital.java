@@ -1,16 +1,17 @@
 package Practica5;
 
 import PaqueteLectura.*;
+
 public abstract class Recital {
     private String nombre;
     private int cantTemas;
     private String [] listaTemas;
     private int maxTemas;
+    private int temaActual = 0;
 
     public int getMaxTemas() {
         return maxTemas;
     }
-
     
     public Recital(String nom, int cant, int cantMax){
         this.nombre = nom;
@@ -18,8 +19,8 @@ public abstract class Recital {
         this.maxTemas = cantMax;
         this.listaTemas = new String[cantMax];
         int i;
-        for(i=0; i< this.cantTemas; i++){
-            this.getListaTemas()[i] = new String(GeneradorAleatorio.generarString(10));
+        for(i=0; i< this.maxTemas; i++){
+            this.getListaTemas()[i] = null;
         }
     }
     
@@ -42,8 +43,8 @@ public abstract class Recital {
     public String Concatenador(){
         String aux = "";
         int i;
-        for (i=0;i<this.getCantTemas();i++){
-            aux = aux + " Y ahora tocaremos " + this.getListaTemas()[i];
+        for (i=0;i<this.temaActual;i++){
+            aux = aux + "Y ahora tocaremos " + this.getListaTemas()[i] + "\n";
         }
     return aux;
     }
@@ -54,17 +55,15 @@ public abstract class Recital {
     
     public  void agregarTema(String tema){
         if(this.HayLugar()){
-            this.listaTemas[this.cantTemas++] = tema;
+            this.listaTemas[this.temaActual++] = tema;
         }
     }
     
-    
     public  String Actuar(){
     String aux = "";
-     aux = aux +  " "  + this.Concatenador();
+    aux = aux +  " "  + this.Concatenador();
         return aux;
     }
-    
     
     public abstract int CalcularCosto();
     
