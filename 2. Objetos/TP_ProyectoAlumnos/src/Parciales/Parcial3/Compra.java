@@ -1,21 +1,18 @@
 package Parciales.Parcial3;
 
-import PaqueteLectura.*;
-
-
 public abstract class Compra {
     private int nro;
     private Producto[] prod;
     private int cantProductos;
     private int cantMaxProd;
     
-    public Compra(int cantMax, int cantProductos, int nro) {
+    public Compra(int cantMax, int nro) {
         this.cantMaxProd = cantMax;
         this.prod = new Producto[this.cantMaxProd];
         this.nro = nro;
-        this.cantProductos = cantProductos;
-        for(int i = 0; i < this.cantProductos; i++) {
-            this.getProd()[i] = new Producto(GeneradorAleatorio.generarInt(30), GeneradorAleatorio.generarDouble(50)+500.0, GeneradorAleatorio.generarString(4)); 
+        this.cantProductos = 0;
+        for(int i = 0; i < this.cantMaxProd; i++) {
+            this.getProd()[i] = null; 
         }
     }
 
@@ -62,7 +59,7 @@ public abstract class Compra {
         return (aux + aux*0.21);
     }
     
-    public String concatenador(){
+    private String concatenador(){
         String aux = "";
         int i;
         for (i=0;i<this.getCantProductos();i++){

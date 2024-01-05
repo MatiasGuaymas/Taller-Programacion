@@ -3,8 +3,8 @@ package Parciales.Parcial3;
 public class CompraMinorista extends Compra {
     private boolean jubilado;
     
-    public CompraMinorista(int cantMax, int cantProductos, int nro, boolean esJubilado) {
-        super(cantMax, cantProductos, nro);
+    public CompraMinorista(int cantMax, int nro, boolean esJubilado) {
+        super(cantMax, nro);
         this.jubilado = esJubilado;
     }
 
