@@ -62,10 +62,10 @@ public class Alumno {
                 aux++;
             }
         }
-        return this.getAprobadas()[aux].getNombre().equals(auxstr);
+        return !(aux == this.cantAprobadas);
     }
     
-    public String Concatenador(){
+    private String Concatenador(){
         int i;
         String aux="";
         for(i=0;i<this.getCantAprobadas();i++){

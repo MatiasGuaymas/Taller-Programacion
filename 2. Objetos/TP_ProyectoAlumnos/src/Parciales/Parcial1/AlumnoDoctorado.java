@@ -4,7 +4,6 @@ public class AlumnoDoctorado extends Alumno {
     private String titulo;
     private String universidad;
 
-    
     public AlumnoDoctorado(String titulo, String uni, int dni, String nom, int max){
         super(dni, nom, max);
         this.titulo = titulo;
