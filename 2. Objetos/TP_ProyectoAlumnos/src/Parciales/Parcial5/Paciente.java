@@ -31,7 +31,7 @@ public class Paciente {
         return costoAbono;
     }
 
-    private void setCostoAbono(double costoAbono) {
+    public void setCostoAbono(double costoAbono) {
         this.costoAbono = costoAbono;
     }
     
