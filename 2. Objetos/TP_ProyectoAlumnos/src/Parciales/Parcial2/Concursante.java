@@ -5,7 +5,6 @@ public class Concursante {
     private int edad;
     private String instrumento;
     private double puntaje;
-
     
     public Concursante(String nom, int edad, String inst){
         this.edad = edad;
@@ -46,7 +45,8 @@ public class Concursante {
         this.puntaje = puntaje;
     }
     
+    @Override
     public String toString() {
-        return " Nombre: " +  this.getNombre() + " Instrumento: " + this.getInstrumento() + " Edad: " + this.getEdad() + " Puntaje: " + this.getPuntaje() + "\n";
+        return " Nombre: " +  this.getNombre() + " Instrumento: " + this.getInstrumento() + " Edad: " + this.getEdad() + " Puntaje: " + Math.round(this.getPuntaje()*100.0)/100.0 + " | ";
     }
 }

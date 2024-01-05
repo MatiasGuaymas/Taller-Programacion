@@ -4,7 +4,6 @@ public class Concurso {
     private Concursante [][] matriz;
     private int [] cantConcursantes;
     
-    
     public Concurso(int n){
         matriz = new Concursante[5][n];
         cantConcursantes = new int[5];
@@ -35,21 +34,16 @@ public class Concurso {
     public void puntajeConcursante(double puntaje, String nombre){
         boolean encontrado = false;
         int i =0; int j=0;
-        while((!encontrado)&&(i < 5)){
-            if(this.matriz[i][j].getNombre().equals(nombre)){
-                encontrado = true;
-                this.matriz[i][j].setPuntaje(puntaje);
-            }
-            else{
-                j++;
-                if(j == this.cantConcursantes[i]){
-                    j=0;
-                    i++;
+        while((i < 5) && (!encontrado)){
+            while (j < this.cantConcursantes[i] && !encontrado){
+                if(this.matriz[i][j].getNombre().equals(nombre)) {
+                    encontrado = true;
+                    this.matriz[i][j].setPuntaje(puntaje);
                 }
+                j++;
             }
-        }
-        if(!encontrado){
-            System.out.println("No Existe");
+            i++;
+            j=0;
         }
     }   
     
@@ -65,17 +59,16 @@ public class Concurso {
         return maxgenero;
     }
     
-    public String Concatenador(){
+    private String Concatenador(){
         int i, j;
         String aux="";
         for(i=0; i<5; i++){
             for(j=0;j < this.cantConcursantes[i]; j++){
-                aux = aux  + "Genero: " + i + this.matriz[i][j].toString();
+                aux = aux  + "Genero: " + i + this.matriz[i][j].toString() + "\n";
             }
         }
         return aux;
     }
-    
     
 @Override   
     public String toString(){
