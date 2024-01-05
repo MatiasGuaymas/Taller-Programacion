@@ -9,11 +9,10 @@ public class Parejas {
         this.part1=part1;
         this.part2=part2;
         this.estilo=estilo;
-        
     }
-    public Parejas(){
-        
-    }
+
+    public Parejas() {}
+    
     public Participante getPart1() {
         return part1;
     }

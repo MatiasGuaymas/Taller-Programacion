@@ -1,20 +1,16 @@
 package Parciales.Parcial4;
 
-import PaqueteLectura.*;
-
 public class Concurso {
     private Parejas [] pareja;
     private int cantParejas;
     private int parejasMax;
     
-    public Concurso(int cantParejas, int parejasMax){
-        this.cantParejas=cantParejas;
+    public Concurso(int parejasMax){
+        this.cantParejas=0;
         this.parejasMax=parejasMax;
         this.pareja=new Parejas[this.parejasMax];
-        for(int i=0; i<this.cantParejas;i++){
-            Participante p=new Participante(GeneradorAleatorio.generarInt(9), GeneradorAleatorio.generarString(7),15);
-            Participante p2=new Participante(GeneradorAleatorio.generarInt(9), GeneradorAleatorio.generarString(7),5);
-            this.getPareja()[i]=new Parejas(p,p2,GeneradorAleatorio.generarString(5));
+        for(int i=0; i<this.parejasMax;i++){
+            this.getPareja()[i]= null; //Sin parejas inicialmente
         }
     }
     private Parejas[] getPareja() {
