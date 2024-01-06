@@ -16,14 +16,14 @@ public class Butaca {
     }
     
     public void descripcion(int n, int m){
-        this.descriptor = "BUTACA: "+ n + "  "  + m;
+        this.descriptor = "BUTACA: "+ (n+1) + "  "  + (m+1);
     }
     
     public void ocupar(){
         this.ocupado = true;
     }
     
-     public void desocupar(){
+    public void desocupar(){
         this.ocupado = false;
     }
     

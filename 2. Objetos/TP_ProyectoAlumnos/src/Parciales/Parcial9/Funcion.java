@@ -8,7 +8,6 @@ public class Funcion {
     private Butaca[][] sala;
     private int cantButacas;
     private int cantFilas;
-
     
     public Funcion(String tit, int fecha, int hr, int n, int m){
         this.titulo = tit;
@@ -18,8 +17,8 @@ public class Funcion {
         this.cantButacas = m;
         this.sala = new Butaca[this.cantFilas][this.cantButacas];
         int i,j;
-        for (i = 0; i < n; i++) {
-            for(j=0;j<m;j++){
+        for (i = 0; i < this.cantFilas; i++) {
+            for(j=0;j< this.cantButacas;j++){
                 this.sala[i][j] = new Butaca();
                 this.sala[i][j].calcularPrecio(i);
                 this.sala[i][j].descripcion(i, j);
@@ -27,11 +26,10 @@ public class Funcion {
         }
     }
     
-    
     public double ocuparButaca(int n, int m){
-        if(!this.sala[n][m].isOcupado()){
-            this.sala[n][m].ocupar();
-            return this.sala[n][m].getPrecio();
+        if(!this.sala[n-1][m-1].isOcupado()){
+            this.sala[n-1][m-1].ocupar();
+            return this.sala[n-1][m-1].getPrecio();
         }
         else
             return -1.0;
@@ -40,7 +38,7 @@ public class Funcion {
     public void desocuparFila(int n){
         int i;
         for(i=0;i<this.cantButacas;i++){
-            this.sala[n][i].desocupar();
+            this.sala[n-1][i].desocupar();
         }
     }
     
@@ -48,12 +46,12 @@ public class Funcion {
         String aux ="";
         int i;
         for(i=0;i<this.cantFilas;i++){
-            aux =aux + "  "+ this.sala[i][m].toString();
+            aux =aux + "  "+ this.sala[i][m-1].toString();
         }
         return aux;
     }
     
-    public String concatenador(){
+    private String concatenador(){
         int i,j;
         String aux = "";
         for(i=0;i<this.cantFilas;i++){
