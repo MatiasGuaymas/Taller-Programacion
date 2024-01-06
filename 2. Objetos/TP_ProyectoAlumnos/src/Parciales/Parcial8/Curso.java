@@ -9,7 +9,10 @@ public abstract class Curso {
     public Curso(int a, int cant){
         this.anio = a;
         this.cantMax = cant;
-        this.vector = new Alumno2[cantMax];
+        this.vector = new Alumno2[cantMax]; 
+        for(int i=0; i<this.cantMax; i++) {
+            this.vector[i] = null;
+        }
         this.cantAlumnos = 0;
         
     }
@@ -32,12 +35,12 @@ public abstract class Curso {
             return true;    
         }
         else
-             return false;
+            return false;
     }
     
     public boolean incAsistenciaDni(int dni){
         int aux = 0;
-        while(dni != this.vector[aux].getDni()){
+        while((aux < this.cantAlumnos)&&(dni != this.vector[aux].getDni())){
             aux++;
         }
         if(aux != this.cantAlumnos){
@@ -50,7 +53,7 @@ public abstract class Curso {
     
     public boolean aproboPrueba(int dni){
         int aux = 0;
-        while(dni != this.vector[aux].getDni()){
+        while((aux < this.cantAlumnos)&& (dni != this.vector[aux].getDni())){
             aux++;
         }
         if(aux != this.cantAlumnos){

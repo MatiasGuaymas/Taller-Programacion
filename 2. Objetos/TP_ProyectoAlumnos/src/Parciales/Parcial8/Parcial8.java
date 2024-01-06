@@ -1,5 +1,5 @@
-//https://cdn.discordapp.com/attachments/963569430112129025/1160602359517434056/Parcial_2022_Turno_D_1.jpg?ex=6535422d&is=6522cd2d&hm=c726ab9cbcff23be1a61b4fbc7112e47b7dab5767d517ff45010d9734b05b7df&
-//ESE ES LINK CON LA FOTO DEL PARCIAL
+/* https://cdn.discordapp.com/attachments/963569430112129025/1160602359517434056/Parcial_2022_Turno_D_1.jpg?ex=6535422d&is=6522cd2d&hm=c726ab9cbcff23be1a61b4fbc7112e47b7dab5767d517ff45010d9734b05b7df&
+ESE ES LINK CON LA FOTO DEL PARCIAL */
 
 package Parciales.Parcial8;
 
@@ -28,7 +28,7 @@ public class Parcial8 {
        int i,j;
        for(i=0;i<10;i++){
            for(j=0;j<3;j++){
-               if(i!=3){
+               if(i!=3){ //O sea el alumno 3 no va a aprobar, 9 aprobados en total.
                 c1.aproboPrueba(i);
                 c2.aproboPrueba(i);
                 c1.incAsistenciaDni(i);
