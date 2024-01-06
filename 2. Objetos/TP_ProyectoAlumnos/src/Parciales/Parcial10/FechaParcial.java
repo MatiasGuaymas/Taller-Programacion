@@ -24,7 +24,7 @@ public class FechaParcial {
     }
     
     public void agregarEstudiante(Estudiante e, int n){
-        this.matriz[n][this.vector[n]++ ] = e;
+        this.matriz[n][this.vector[n]++] = e;
     }
     
     public void temas(int m){
@@ -35,7 +35,7 @@ public class FechaParcial {
         }
     }
     
-    public String concatenador(int m){
+    private String concatenador(int m){
         String aux = "";
         int i, j;
         for(i=0;i<this.cantSalas;i++){
@@ -46,6 +46,10 @@ public class FechaParcial {
             }
         }
         return aux;
+    }
+    
+    public String toString(int m) {
+        return this.concatenador(m);
     }
     
     public int getCantSalas(){

@@ -6,7 +6,6 @@ public class Estudiante {
     private int dni;
     private int numeroTema;
 
-    
     public Estudiante(String nom, int dni){
         this.nombre = nom;
         this.dni = dni;
