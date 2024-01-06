@@ -11,7 +11,6 @@ public class Goleador {
         this.nombreEquipo = nombreE;
     }
     
-    
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
