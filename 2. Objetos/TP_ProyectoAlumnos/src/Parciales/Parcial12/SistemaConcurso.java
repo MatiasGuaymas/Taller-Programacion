@@ -1,3 +1,5 @@
+/* https://cdn.discordapp.com/attachments/731327190914039852/1193307858687766599/image.png?ex=65ac3d8c&is=6599c88c&hm=fd0217b64390440832693da52e5d539af1d06474225b8ef47d9d2545f80069eb& */
+
 package Parciales.Parcial12;
 import PaqueteLectura.GeneradorAleatorio;
 import PaqueteLectura.Lector;
