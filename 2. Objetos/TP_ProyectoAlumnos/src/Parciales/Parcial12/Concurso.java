@@ -6,11 +6,16 @@ public class Concurso {
     private Cancion[][] canciones;
     private int dimFCate;
     private int dimFCanc;
+    private int [] vecDiml;
     
     public Concurso(int dimFCate, int dimFCanc){
         this.dimFCate = dimFCate;
         this.dimFCanc = dimFCanc;
         this.canciones = new Cancion[this.dimFCate][this.dimFCanc];
+        this.vecDiml = new int [dimFCate];
+        for(int j=0; j< this.dimFCate; j++) {
+            this.vecDiml[j]=0;
+        }
         for (int i = 0; i < this.dimFCate; i++) {
             for (int j = 0; j < this.dimFCanc; j++) {
                 this.canciones[i][j] = null;
@@ -19,29 +24,23 @@ public class Concurso {
     }
     
     public void agregarCancion(Cancion cancion, int categoria){
-        int pos = 0;
-        while(pos < dimFCanc && canciones[categoria][pos] != null)
-            pos++;
-        canciones[categoria][pos] = cancion;
+        this.canciones[categoria][vecDiml[categoria]++] = cancion;
     }
     
-    public void interpretarCancion(int id, Estudiante estudiante, int puntaje){
+    public void interpretarCancion(int id, Estudiante estudiante, double puntaje) {
         int i = 0;
         boolean encontre = false;
         while (i < dimFCate && !encontre) {
             int pos = 0;
-            
-            while(pos < dimFCanc && canciones[i][pos] != null && canciones[i][pos].getId() != id)
+            while(pos < vecDiml[i] && canciones[i][pos].getId() != id)
                 pos++;
-            
-            if(pos < dimFCanc && canciones[i][pos] != null){
+            if(pos < vecDiml[i]){
                 encontre = true;
                 if(canciones[i][pos].getPuntaje() < puntaje){
                     canciones[i][pos].setGanador(estudiante);
                     canciones[i][pos].setPuntaje(puntaje);
                 }
             }
-            
             i++;
         }
     }
@@ -52,11 +51,9 @@ public class Concurso {
         boolean encontre = false;
         while (i < dimFCate && !encontre) {
             int pos = 0;
-            
-            while(pos < dimFCanc && canciones[i][pos] != null && canciones[i][pos].getId() != id)
+            while(pos < vecDiml[i] && canciones[i][pos].getId() != id)
                 pos++;
-            
-            if(pos < dimFCanc && canciones[i][pos] != null){
+            if(pos < vecDiml[i]){
                 encontre = true;
                 estudiante = canciones[i][pos].getGanador();
             }
@@ -68,8 +65,8 @@ public class Concurso {
     public Cancion cancionMayorPuntaje(int categoria){
         Cancion cancion = null;
         int pos = 0;
-        int maxPuntos = -1;
-        while(pos < dimFCanc && canciones[categoria][pos] != null){
+        double maxPuntos = -1;
+        while(pos < vecDiml[categoria]){
             if(canciones[categoria][pos].getPuntaje() > maxPuntos){
                 maxPuntos = canciones[categoria][pos].getPuntaje();
                 cancion = canciones[categoria][pos];
@@ -85,10 +82,12 @@ public class Concurso {
         int pos;
         for (int i = 0; i < dimFCate; i++) {
             pos = 0;
-            while(pos < dimFCanc && canciones[i][pos] != null){
-                aux += "Categoria " + i + ": " + canciones[i][pos].toString() + "\n";
+            aux += "Categoria " + i + ": ";
+            while(pos < vecDiml[i]){
+                aux += canciones[i][pos].toString() + " | ";
                 pos++;
             }
+            aux += "\n";
         }
         return aux;
     }

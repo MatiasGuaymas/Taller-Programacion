@@ -5,7 +5,7 @@ public class Cancion {
     private String nombreCompositor;
     private int id;
     private Estudiante ganador;
-    private int puntaje;
+    private double puntaje;
 
     public Cancion(String nombre, String nombreCompositor, int id) {
         this.nombre = nombre;
@@ -47,17 +47,17 @@ public class Cancion {
         this.ganador = ganador;
     }
 
-    public int getPuntaje() {
+    public double getPuntaje() {
         return puntaje;
     }
 
-    public void setPuntaje(int puntaje) {
+    public void setPuntaje(double puntaje) {
         this.puntaje = puntaje;
     }
 
     @Override
     public String toString() {
-        return "Cancion{" + "nombre=" + nombre + ", nombreCompositor=" + nombreCompositor +  '}';
+        return "Cancion=" + nombre + " Compositor=" + nombreCompositor + " Puntaje=" + Math.round(puntaje*100.0)/100.0;
     }
     
     

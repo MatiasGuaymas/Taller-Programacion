@@ -25,36 +25,38 @@ public class SistemaConcurso {
         concurso.agregarCancion(can4, 2);
         concurso.agregarCancion(can5, 2);
         
-        int puntaje;
+        double puntaje;
         int id = GeneradorAleatorio.generarInt(6)+1;
         int cant = 0;
         while(id != 0 && cant != 20){
             //System.out.println("Ingrese Nombre, Apellido y DNI respectivamente:");
             Estudiante estudiante = new Estudiante(
-                    GeneradorAleatorio.generarString(7),//Lector.leerString(),
-                    GeneradorAleatorio.generarString(7),//Lector.leerString(),
-                    GeneradorAleatorio.generarInt(8)//Lector.leerInt()
+                GeneradorAleatorio.generarString(7),//Lector.leerString(),
+                GeneradorAleatorio.generarString(7),//Lector.leerString(),
+                GeneradorAleatorio.generarInt(8)//Lector.leerInt()
             );
-            puntaje = GeneradorAleatorio.generarInt(23);
+            puntaje = GeneradorAleatorio.generarDouble(10);
             concurso.interpretarCancion(id, estudiante, puntaje);
             id = GeneradorAleatorio.generarInt(6)+1;
             cant++;
         }
         
-        
+        System.out.println(concurso.toString());
         
         System.out.println("Ingrese id de canciones agregadas: 1, 2, 3, 4 o 5");
         id = Lector.leerInt();
         Estudiante ganador = concurso.obtenerGanador(id);
-        
         if(ganador != null)
             System.out.println(ganador.toString());
         else
             System.out.println("Nadie");
         
+        System.out.println("---------------------");
         for (int i = 0; i < cantCategorias; i++) {
             System.out.println(concurso.cancionMayorPuntaje(i).toString());
         }
+        
+        
         
     }
 }
