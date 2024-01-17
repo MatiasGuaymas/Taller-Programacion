@@ -12,7 +12,6 @@ procesos
     repetir aux
       depositarPapel
   fin
-  
   proceso juntarFlores(ES flores: numero)
   variables
     aux: numero

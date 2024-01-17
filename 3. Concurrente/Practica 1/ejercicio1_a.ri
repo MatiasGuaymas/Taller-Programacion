@@ -3,8 +3,9 @@ procesos
   proceso juntarFlorEsquina(ES flores: numero; ES esquinaVacia: numero)   
   comenzar   
     si(HayFlorEnLaEsquina)   
-      tomarFlor   
-      flores := flores + 1   
+      mientras(HayFlorEnLaEsquina)
+        tomarFlor   
+        flores := flores + 1   
     sino  
       esquinaVacia:= esquinaVacia + 1  
   fin 
