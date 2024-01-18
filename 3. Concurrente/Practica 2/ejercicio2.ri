@@ -41,7 +41,8 @@ procesos
       cantEscalones:= cantEscalones+1
   fin
 areas
-  area1: AreaC(1,1,100,100)
+  area1: AreaC(2,1,100,100)
+  areaJ: AreaP(1,1,1,1)
 robots
   robot robot1
   variables
@@ -72,7 +73,7 @@ comenzar
   AsignarArea(r1, area1)
   AsignarArea(r2, area1)
   AsignarArea(r3, area1)
-  AsignarArea(rf, area1)
+  AsignarArea(rf, areaJ)
   Iniciar(rf,1,1)
   Iniciar(r1,2,1)
   Iniciar(r2,7,1)
