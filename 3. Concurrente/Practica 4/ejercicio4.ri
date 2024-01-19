@@ -1,5 +1,4 @@
 programa ejercicio4
-{No compila}
 procesos
   proceso recogerFlores
   comenzar
@@ -45,58 +44,51 @@ robots
           recogerPapeles
         sino
           vaciarBolsa
-      EnviarMensaje(V, rJefe)
       Pos(posX, posY)
       LiberarEsquina(x, y)
       RecibirMensaje(tarea, rJefe)
   fin
-  robot robotJefe
+  robot jefe
   variables
-    ok1, ok2 : boolean
-    aux, idr, x, y : numero
-    cant : numero
+    trabajador: numero
+    tarea: numero
+    av, ca: numero
+    trabajadorUnoActivo, trabajadorDosActivo: boolean
   comenzar
-    cant := 10
-    ok1 := V
-    ok2 := V
-    mientras(((ok1 = V) | (ok2 = V)) & (cant <> 0))
-      Random(idr, 1, 2)
-      si(idr = 1) & (ok1 = V)
-        Random(aux, 1, 4)
-        si(aux = 4)
-          ok1 := F
-          EnviarMensaje(aux, r1)
-          cant := cant - 1
-        sino
-          EnviarMensaje(aux, r1)
-          Random(x, 2, 100)
-          Random(y, 2, 100)
-          EnviarMensaje(x, r1)
-          EnviarMensaje(y, r1)
-          RecibirMensaje(ok1, r1)
-          cant := cant - 1
+    trabajadorUnoActivo := V
+    trabajadorDosActivo := V
+    repetir 10
+      si ((trabajadorUnoActivo) & (trabajadorDosActivo))
+        Random(trabajador, 1, 2)
       sino
-        si(ok2 = V)
-          si(aux = 4)
-            ok2 := F
-            EnviarMensaje(aux, r2)
-            cant := cant - 1
-          sino
-            EnviarMensaje(aux, r2)
-            Random(x, 2, 100)
-            Random(y, 2, 100)
-            EnviarMensaje(x, r2)
-            EnviarMensaje(y, r2)
-            RecibirMensaje(ok2, r1)
-            cant := cant - 1
-    si(cant = 0)
+        si ((trabajadorUnoActivo) & ~(trabajadorDosActivo))
+          trabajador := 1
+        sino
+          trabajador := 2
+          Random(tarea, 1, 4)
+      Random(av, 2, 100)
+      Random(ca, 2, 100)
+      si (trabajador = 1)
+        EnviarMensaje(tarea, r1)
+        EnviarMensaje(av, r1)
+        EnviarMensaje(ca, r1)
+        si (tarea = 4)
+          trabajadorUnoActivo := F
+      sino
+        EnviarMensaje(tarea, r2)
+        EnviarMensaje(av, r2)
+        EnviarMensaje(ca, r2)
+        si (tarea = 4)
+          trabajadorDosActivo := F
+    si (trabajadorUnoActivo)
       EnviarMensaje(4, r1)
-      EnviarMensaje(4, r2)
+    si (trabajadorDosActivo)
+      EnviarMensaje(4, r2)  
   fin
 variables
   r1 : slave
   r2 : slave
-  rJefe : robotJefe
+  rJefe : jefe
 comenzar
   AsignarArea(rJefe, areaJ)
   AsignarArea(r1, area1)
@@ -107,7 +99,3 @@ comenzar
   Iniciar(r1, 2, 1)
   Iniciar(r2, 3, 1)
 fin
-    
-
-    
-    

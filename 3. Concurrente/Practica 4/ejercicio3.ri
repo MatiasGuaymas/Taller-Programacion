@@ -37,7 +37,7 @@ robots
         EnviarMensaje(V, r2)
         RecibirMensaje(ok, *)
         RecibirMensaje(ok, *)
-    mientras(PosCa < 99)
+    repetir 19
       repetir 5
         mover
         juntarP

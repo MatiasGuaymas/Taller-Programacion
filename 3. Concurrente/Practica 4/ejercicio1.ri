@@ -14,8 +14,10 @@ procesos
   proceso avanzarDejandoFlores
   comenzar
     mientras ((HayFlorEnLaBolsa) & (PosCa<100))
-      depositarFlor
+      depositarFlor 
       mover
+    si(HayFlorEnLaBolsa) & (PosCa = 100)
+      depositarFlor
   fin
 areas
   areaS : AreaP(100, 100, 100, 100)
@@ -79,7 +81,7 @@ robots
     id, x, y : numero
   comenzar
     RecibirMensaje(id, serv)
-    mientras(PosCa<99)
+    mientras(PosCa<100)
       Random(aux, 1, 4)
       EnviarMensaje(id, serv)
       EnviarMensaje(aux, serv)
@@ -91,7 +93,6 @@ robots
       Pos(x,y)
       mientras(HayFlorEnLaEsquina)
         tomarFlor
-      depositarFlor
       Pos(x,y-1)
       avanzarDejandoFlores
     EnviarMensaje(id, serv)
