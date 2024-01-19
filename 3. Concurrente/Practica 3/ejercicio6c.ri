@@ -201,7 +201,7 @@ comenzar
   AsignarArea(r2,areaC)
   AsignarArea(r3,areaC)
   AsignarArea(rf,areaJ)
-  Iniciar(r1,2,5)
+  Iniciar(r1,2,2)
   Iniciar(r2,5,5)
   Iniciar(r3,9,9)
   Iniciar(rf,1,1)
