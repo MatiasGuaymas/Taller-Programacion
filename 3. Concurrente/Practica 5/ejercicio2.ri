@@ -15,11 +15,13 @@ procesos
     repetir cant
       juntarF(f)
       mover
+    si PosAv = 100
+      juntarF(f)
     x := PosAv
     y := PosCa
     BloquearEsquina(50, 50)
     Pos(50, 50)
-    mientras(HayFlorEnLaBolsa)
+    repetir f
       depositarFlor
     Pos(x, y)
     LiberarEsquina(50, 50)
@@ -105,7 +107,6 @@ comenzar
   AsignarArea(r2, esquina)
   AsignarArea(r3, esquina)
   AsignarArea(RJ, esquina)
-  
   Iniciar(r1, 1, 1)
   Iniciar(r2, 1, 2)
   Iniciar(r3, 1, 3)

@@ -22,9 +22,9 @@ robots
     caIni:= PosCa
     repetir 12
       RecibirMensaje(id, *)
+      Random(aux, 1,5)
       BloquearEsquina(100,1)
       Pos(100,1)
-      Random(aux, 1,5)
       repetir aux
         depositarPapel
       Pos(avIni, caIni)
@@ -67,7 +67,6 @@ comenzar
   AsignarArea(r3,area3)
   AsignarArea(serv,esquina)
   AsignarArea(serv, areaS)
-  
   Iniciar(r1,10,1)
   Iniciar(r2,11,1)
   Iniciar(r3,12,1)

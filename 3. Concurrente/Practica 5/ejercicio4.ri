@@ -40,7 +40,7 @@ robots
       RecibirMensaje(ok,robotF)
     BloquearEsquina(10,10)
     Pos(10,10)
-    mientras(HayFlorEnLaBolsa)
+    repetir flores
       depositarFlor
     Pos(posAvIni,posCaIni)
     LiberarEsquina(10,10)
