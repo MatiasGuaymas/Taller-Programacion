@@ -1,0 +1,127 @@
+programa parcial1
+procesos
+  proceso juntarFlores(ES f: numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      f:= f+1
+  fin
+  proceso juntarPapeles(ES p: numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      p:= p+1
+  fin
+  proceso recorrerCalle(ES f: numero)
+  variables
+    ca, av: numero
+  comenzar
+    ca:= PosCa
+    repetir 4
+      juntarFlores(f)
+      mover
+    juntarFlores(f)
+    av:= PosAv + 1
+    BloquearEsquina(av,ca)
+    mover
+    juntarFlores(f)
+    mover
+    LiberarEsquina(av,ca)
+    repetir 3
+      juntarFlores(f)
+      mover
+    juntarFlores(f)
+  fin
+  proceso recorrerAv(ES p: numero)
+  variables
+    ca, av: numero
+  comenzar
+    av:= PosAv
+    repetir 7
+      juntarPapeles(p)
+      mover
+    juntarPapeles(p)
+    ca:= PosCa + 1
+    BloquearEsquina(av,ca)
+    mover
+    juntarPapeles(p)
+    mover
+    LiberarEsquina(av,ca)
+    repetir 10
+      juntarPapeles(p)
+      mover
+    juntarPapeles(p)
+  fin
+areas
+  cuadrante1: AreaPC(2,4,12,24)
+  cuadrante2: AreaPC(16,4,26,24)
+  areaF: AreaP(1,1,1,1)
+robots
+  robot florero
+  variables
+    f, id: numero
+  comenzar
+    f:= 0
+    RecibirMensaje(id,rf)
+    derecha
+    recorrerCalle(f)
+    EnviarMensaje(id, rf)
+    EnviarMensaje(f, rf)
+  fin
+  robot papelero
+  variables
+    p, id: numero
+  comenzar
+    p:= 0
+    RecibirMensaje(id,rf)
+    recorrerAv(p)
+    EnviarMensaje(id,rf)
+    EnviarMensaje(p,rf)
+  fin
+  robot fiscalizador
+  variables
+    id, cant, c1, c2: numero
+  comenzar
+    c1:= 0
+    c2:= 0
+    EnviarMensaje(1,a1)
+    EnviarMensaje(2,a2)
+    EnviarMensaje(3,v1)
+    EnviarMensaje(4,v2)
+    repetir 4
+      RecibirMensaje(id, *)
+      si(id = 1)
+        RecibirMensaje(cant, a1)
+        c1 := c1 + cant
+      sino
+        si (id = 2)
+          RecibirMensaje(cant, a2)
+          c1 := c1 + cant
+        sino
+          si(id=3)
+            RecibirMensaje(cant,v1)
+            c2:= c2 + cant
+          sino
+            RecibirMensaje(cant,v2)
+            c2:= c2 + cant
+    si(c1 > c2)
+      Informar('GanoAzul', 1)
+    sino
+      Informar('GanoVerde', 2)
+  fin
+variables
+  a1, v1: florero
+  a2, v2: papelero
+  rf: fiscalizador
+comenzar
+  AsignarArea(a1,cuadrante1)
+  AsignarArea(a2, cuadrante1)
+  AsignarArea(v1,cuadrante2)
+  AsignarArea(v2, cuadrante2)
+  AsignarArea(rf, areaF)
+  Iniciar(a1,2,12)
+  Iniciar(a2,7,4)
+  Iniciar(v1,16,12)
+  Iniciar(v2,21,4)
+  Iniciar(rf,1,1)
+fin 

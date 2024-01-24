@@ -1,0 +1,139 @@
+programa parcial4
+procesos
+  proceso juntarF(ES flores : numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores := flores + 1
+  fin
+  proceso juntarP(ES papeles : numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      papeles := papeles + 1
+  fin
+  proceso maximo(E c1 : numero; E c2 : numero; ES idMax : numero)
+  variables
+    max : numero
+  comenzar
+    max := -1
+    si(c1 > max)
+      max := c1
+      idMax := 1
+    si(c2 > max)
+      max := c2
+      idMax :=2
+  fin
+  proceso lado(E num : numero; ES f : numero; ES p : numero)
+  comenzar
+    f := 0
+    p := 0
+    repetir num
+      juntarF(f)
+      juntarP(p)
+      mover
+  fin
+  proceso vaciarContenido(E f : numero;E p : numero)
+  variables
+    posA, posB : numero
+  comenzar
+    posA := PosAv
+    posB := PosCa
+    mientras(HayFlorEnLaBolsa)
+      BloquearEsquina(21, 21)
+      Pos(21, 21)
+      depositarFlor
+      Pos(posA, posB)
+      LiberarEsquina(21, 21)
+    mientras(HayPapelEnLaBolsa)
+      BloquearEsquina(22, 22)
+      Pos(22, 22)
+      depositarPapel
+      Pos(posA, posB)
+      LiberarEsquina(22, 22)
+  fin
+areas
+  area1 : AreaP(1, 1, 20, 20)
+  area2 : AreaP(21,1,40,20)
+  areaC : AreaP(23, 23, 23, 23)
+  EF : AreaPC(21, 21, 21, 21)
+  EP : AreaPC(22, 22 ,22, 22)
+robots
+  robot coordinador
+  variables
+    idMaxF, idMaxP, id : numero
+    f, p , f1, f2, p1, p2 : numero
+    x, y : numero
+  comenzar
+    idMaxF := 0
+    idMaxP:= 0
+    EnviarMensaje(1, r1)
+    EnviarMensaje(2, r2)
+    Random(x, 1, 20)
+    Random(y, 1, 20)
+    EnviarMensaje(x, r1)
+    EnviarMensaje(y, r1)
+    Random(x, 1, 20)
+    Random(y, 1, 20)
+    EnviarMensaje(x, r2)
+    EnviarMensaje(y, r2)
+    f1 := 0
+    f2 := 0
+    p1 := 0
+    p2 := 0
+    repetir 8
+      RecibirMensaje(id, *)
+      si(id = 1)
+        RecibirMensaje(f, r1)
+        RecibirMensaje(p, r1)
+        f1 := f1 + f
+        p1 := p1 + p
+      sino
+        RecibirMensaje(f, r2)
+        RecibirMensaje(p, r2)
+        f2 := f2 + f
+        p2:= p2 + p
+    maximo(f1, f2, idMaxF)
+    maximo(p1, p2, idMaxP)
+    Informar('RMaxFlores',idMaxF)
+    Informar('RMaxPapeles',idMaxP)
+  fin
+  robot recolector
+  variables
+    id, f, p, x, y : numero
+    posA, posB : numero
+  comenzar
+    RecibirMensaje(id, rJefe)
+    RecibirMensaje(x, rJefe)
+    RecibirMensaje(y, rJefe)
+    repetir 2
+      lado(y, f, p)
+      EnviarMensaje(id, rJefe)
+      EnviarMensaje(f, rJefe)
+      EnviarMensaje(p, rJefe)
+      vaciarContenido(f, p)
+      derecha
+      lado(x, f, p)
+      EnviarMensaje(id, rJefe)
+      EnviarMensaje(f, rJefe)
+      EnviarMensaje(p, rJefe)
+      vaciarContenido(f, p)
+      derecha
+  fin
+variables
+  r1 : recolector
+  r2 : recolector
+  rJefe : coordinador
+comenzar
+  AsignarArea(r1, area1)
+  AsignarArea(r2, area2)
+  AsignarArea(rJefe, areaC)
+  AsignarArea(r1, EP)
+  AsignarArea(r1, EF)
+  AsignarArea(r2, EP)
+  AsignarArea(r2, EF)
+  
+  Iniciar(r1, 1, 1)
+  Iniciar(r2, 21, 1)
+  Iniciar(rJefe, 23, 23)
+fin
