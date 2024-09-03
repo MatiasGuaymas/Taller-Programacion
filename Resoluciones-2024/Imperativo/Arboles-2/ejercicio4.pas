@@ -304,23 +304,14 @@ begin
 end;				
 
 procedure actualizarCant(var l: listaISBN; tipoC: tipoCant);
-var
-	aux: listaISBN;
-	sigo: boolean;
 begin
-	sigo:= false;
-	aux:= l;
-	while(aux<>nil) and (tipoC.isbn <  aux^.dato.isbn) do
-		aux:= aux^.sig;
-    if(aux <> nil) and (aux^.dato.isbn = tipoC.isbn) then
+    	if(l <> nil) and (l^.dato.isbn = tipoC.isbn) then
+		l^.dato.cant:= l^.dato.cant + 1
+	else 
 		begin
-			aux^.dato.cant:= aux^.dato.cant + 1;
-			sigo:= true;
+			tipoC.cant:= 1;
+        		agregarAdelante(l, tipoC);
 		end;
-	if(not sigo) then begin
-        tipoC.cant:= 1;
-        agregarAdelante(l, tipoC);
-    end;
 end;
 
 procedure generarListaF(a: arb; var l: listaISBN);
@@ -329,7 +320,7 @@ var
 begin
 	if(a<>nil)then
 		begin
-            generarListaF(a^.hd, l);
+            		generarListaF(a^.hd, l);
 			tipoC.isbn:= a^.dato.isbn;
 			actualizarCant(l, tipoC);
 			generarListaF(a^.hi, l);
