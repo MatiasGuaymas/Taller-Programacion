@@ -1,2 +1,4 @@
 *.exe
 *.o 
+Objetos/TP_ProyectoAlumnos/build/
+Objetos/TP_ProyectoAlumnos/nbproject/
