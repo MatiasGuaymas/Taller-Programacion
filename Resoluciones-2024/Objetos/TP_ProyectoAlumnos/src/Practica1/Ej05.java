@@ -23,9 +23,9 @@ public class Ej05 {
                 restaurante[i][j] = (GeneradorAleatorio.generarInt(10)+1);
             }
         
-        for (i=0; i<5; i++) {
+        for (i=0; i<dimColumna; i++) {
              System.out.println("-------------");
-             for(j=0; j<4; j++)
+             for(j=0; j<dimFila; j++)
                   System.out.print(restaurante[i][j] + " | ");
         }     
         
@@ -34,7 +34,7 @@ public class Ej05 {
             double prom = 0;
             for(i=0; i<dimColumna; i++)
                 prom+= restaurante[i][j];
-            promedio[j] = prom/5;
+            promedio[j] = prom/dimColumna;
         }
         System.out.println("-------------");
         for (i=0; i<dimFila; i++)
