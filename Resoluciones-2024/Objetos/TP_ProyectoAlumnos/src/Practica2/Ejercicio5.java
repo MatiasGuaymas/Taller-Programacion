@@ -35,7 +35,7 @@ public class Ejercicio5 {
        int diml = 0;
        String nomV = GeneradorAleatorio.generarString(3);
        
-       while((!nomV.equals("ZZZ")&&(diml < 3))){
+       while((!nomV.equals("ZZZ")&&(diml < 20))){
            //nomL = GeneradorAleatorio.generarString(5);
            vec[diml++] = new Partido(Lector.leerString(), nomV , GeneradorAleatorio.generarInt(7), GeneradorAleatorio.generarInt(7));
            nomV = GeneradorAleatorio.generarString(3);
