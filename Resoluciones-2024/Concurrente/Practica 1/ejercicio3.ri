@@ -1,0 +1,74 @@
+programa Ejercicio3
+procesos 
+  proceso juntarPapeles(ES papeles: numero)
+  variables
+    aux: numero
+  comenzar
+    aux:=0
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      papeles:= papeles+1
+      aux:=aux+1
+    repetir aux
+      depositarPapel
+  fin
+  proceso juntarFlores(ES flores: numero)
+  variables
+    aux: numero
+  comenzar
+    aux:= 0
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:= flores+1
+      aux:= aux+1
+    repetir aux
+      depositarFlor
+  fin
+  proceso escalon(ES papeles: numero; ES flores: numero; E pasos: numero)
+  comenzar
+    repetir 2
+      repetir pasos
+        juntarPapeles(papeles)
+        juntarFlores(flores)
+        mover
+      derecha
+    repetir 2
+      derecha
+  fin
+  proceso escalera(ES cant: numero)
+  variables
+    flores, papeles, pasos: numero
+  comenzar
+    pasos:= 1
+    repetir 4
+      papeles:= 0
+      flores:= 0
+      escalon(papeles, flores, pasos)
+      pasos:= pasos+1
+      si(papeles - flores = 1)
+        cant:= cant+1
+  fin
+areas
+  area1 : AreaC(1, 1, 100, 100)
+{Solo para este caso usaremos Area compartida, se podria hacer por escalera areas privadas, pero quedarian muchas y solo para este ejercicio se permite que sea AreaC}
+robots
+  robot tipo1
+  variables
+    cant: numero
+  comenzar
+    cant:= 0
+    escalera(cant)
+    Informar(cant)
+  fin
+variables
+  r1: tipo1
+  r2: tipo1
+  r3: tipo1
+comenzar
+  AsignarArea(r1, area1)
+  AsignarArea(r2, area1)
+  AsignarArea(r3, area1)
+  Iniciar(r1, 22, 6)
+  Iniciar(r2, 17, 10)
+  Iniciar(r3, 12, 14)
+fin
