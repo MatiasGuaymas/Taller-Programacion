@@ -1,0 +1,71 @@
+programa ejercicio1c
+procesos
+  proceso juntarFlores(ES flores: numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:= flores +1
+  fin
+  proceso recorrerAvenida(ES flores: numero)
+  comenzar
+    repetir 9
+      juntarFlores(flores)
+      mover
+    juntarFlores(flores)
+  fin
+  proceso actualizarMax(E flores: numero; ES floresMax: numero)
+  comenzar
+    si flores > floresMax
+      floresMax:= flores
+  fin
+areas
+  area1: AreaP(1,1,1,10)
+  area2: AreaP(2,11,2,20)
+  area3: AreaP(3,21,3,30)
+  area4: AreaP(4,31,4,40)
+  area5: AreaP(5,41,5,50)
+  area6: AreaP(6,51,6,60)
+  areaF: AreaP(2,1,2,1)
+robots
+  robot robot1
+  variables
+    f: numero
+  comenzar
+    f:= 0
+    recorrerAvenida(f)
+    EnviarMensaje(f, rf)
+  fin
+  robot fiscal
+  variables
+    f, floresMax: numero
+  comenzar
+    floresMax:= 0
+    repetir 6
+      RecibirMensaje(f,*)
+      actualizarMax(f, floresMax)
+    Informar('CantFloresWinner',floresMax)
+  fin
+variables
+  r1: robot1
+  r2: robot1
+  r3: robot1
+  r4: robot1
+  r5: robot1
+  r6: robot1
+  rf: fiscal
+comenzar
+  AsignarArea(r1,area1)
+  AsignarArea(r2,area2)
+  AsignarArea(r3,area3)
+  AsignarArea(r4,area4)
+  AsignarArea(r5,area5)
+  AsignarArea(r6,area6)
+  AsignarArea(rf,areaF)
+  Iniciar(r1,1,1)
+  Iniciar(r2,2,11)
+  Iniciar(r3,3,21)
+  Iniciar(r4,4,31)
+  Iniciar(r5,5,41)
+  Iniciar(r6,6,51)
+  Iniciar(rf,2,1)
+fin

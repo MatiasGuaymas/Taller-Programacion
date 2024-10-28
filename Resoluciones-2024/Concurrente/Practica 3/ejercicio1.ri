@@ -1,0 +1,115 @@
+programa Ejercio1
+procesos
+  proceso juntarF(ES flores: numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores := flores + 1
+  fin
+  proceso juntarP(ES papeles : numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      papeles := papeles + 1
+  fin
+  proceso recogerElementos(ES cant : numero; E cantLoop : numero; E ok : boolean)
+  variables
+    x : numero
+    y : numero
+    inicioX : numero
+    inicioY : numero
+  comenzar
+    inicioX := PosAv
+    inicioY := PosCa
+    cant := 0
+    repetir cantLoop
+      si(ok = F)
+        Random(x, 1, 5)
+        Random(y, 1, 10)
+        BloquearEsquina(x, y)
+        Pos(x, y)
+        juntarF(cant)
+        Pos(inicioX, inicioY)
+        LiberarEsquina(x, y)
+      sino
+        Random(x, 6, 10)
+        Random(y, 1, 9)
+        BloquearEsquina(x, y)
+        Pos(x, y)
+        juntarP(cant)
+        Pos(inicioX, inicioY)
+        LiberarEsquina(x, y)
+  fin
+areas
+  areaF: AreaPC(1,1,5,10)
+  areaP : AreaPC(6, 1, 10, 9)
+  area1 : AreaP(6, 10, 6, 10)
+  area2 : AreaP(7, 10, 7, 10)
+  area3 : AreaP(8, 10, 8, 10)
+  area4 : AreaP(9, 10, 9, 10)
+  areaFin : AreaC(10, 10, 10, 10) 
+robots
+  robot robot1
+  variables
+    flores: numero
+    cant : numero
+    ok : boolean
+    inicioX : numero
+    inicioY : numero
+  comenzar
+    cant := 5
+    inicioX := PosAv
+    inicioY := PosCa
+    ok := F
+    flores := 0
+    recogerElementos(flores, cant, ok)
+    repetir flores
+      BloquearEsquina(10, 10)
+      Pos(10, 10)
+      depositarFlor
+      Pos(inicioX, inicioY)
+      LiberarEsquina(10, 10)
+  fin
+  robot robot2
+  variables
+    papeles : numero
+    cant : numero
+    ok : boolean
+    inicioX : numero
+    inicioY : numero
+  comenzar
+    cant := 3
+    ok := V
+    inicioX := PosAv
+    inicioY := PosCa
+    recogerElementos(papeles, cant, ok)  
+    repetir papeles
+      BloquearEsquina(10, 10)
+      Pos(10, 10)
+      depositarPapel
+      Pos(inicioX, inicioY)
+      LiberarEsquina(10, 10)
+  fin
+variables
+  r1 : robot1
+  r2 : robot1
+  r3 : robot2
+  r4 : robot2
+comenzar
+  AsignarArea(r1, areaF)
+  AsignarArea(r1, area1)
+  AsignarArea(r1, areaFin)
+  AsignarArea(r2, areaF)
+  AsignarArea(r2, area2)
+  AsignarArea(r2, areaFin)
+  AsignarArea(r3, areaP)
+  AsignarArea(r3, area3)
+  AsignarArea(r3, areaFin)
+  AsignarArea(r4, areaP)
+  AsignarArea(r4, area4)
+  AsignarArea(r4, areaFin)
+  Iniciar(r1,6,10)
+  Iniciar(r2,7,10)
+  Iniciar(r3,8,10)
+  Iniciar(r4,9,10)
+fin

@@ -1,0 +1,50 @@
+programa ejercicio1a
+procesos
+  proceso juntarFlores(ES flores: numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:= flores +1
+  fin
+  proceso recorrerAvenida(ES flores: numero)
+  comenzar
+    repetir 9
+      juntarFlores(flores)
+      mover
+    juntarFlores(flores)
+  fin
+areas
+  area1: AreaP(1,1,1,10)
+  area2: AreaP(2,11,2,20)
+robots
+  robot robot1
+  variables
+    f, f2: numero
+  comenzar
+    f:= 0
+    recorrerAvenida(f)
+    EnviarMensaje(f, r2)
+    RecibirMensaje(f2, r2)
+    si f > f2
+      Informar('Diferencia', f-f2)
+  fin
+  robot robot2
+  variables
+    f, f1: numero
+  comenzar
+    f:= 0
+    recorrerAvenida(f)
+    EnviarMensaje(f, r1)
+    RecibirMensaje(f1, r1)
+    si f > f1
+      Informar('Diferencia', f - f1)
+  fin
+variables
+  r1: robot1
+  r2: robot2
+comenzar
+  AsignarArea(r1,area1)
+  AsignarArea(r2, area2)
+  Iniciar(r1,1,1)
+  Iniciar(r2,2,11)
+fin
