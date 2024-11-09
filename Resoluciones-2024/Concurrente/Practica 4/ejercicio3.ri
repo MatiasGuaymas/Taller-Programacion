@@ -1,0 +1,81 @@
+programa ejercicio3
+procesos
+  proceso juntarP
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+  fin
+areas
+  area1 : AreaP(1, 1, 1, 100)
+  area2 : AreaP(2, 1, 2, 100)
+  area3 : AreaP(3, 1, 3, 100)
+  aux : AreaP(5, 5, 5, 5)
+robots
+  robot robot1
+  variables
+    id : numero
+    ok : boolean
+  comenzar
+    RecibirMensaje(id, rI)
+    repetir 4
+      juntarP
+      mover
+    juntarP
+    si(id = 1)
+      EnviarMensaje(V, r2)
+      EnviarMensaje(V, r3)
+      RecibirMensaje(ok, *)
+      RecibirMensaje(ok, *)
+    sino
+      si(id = 2)
+        EnviarMensaje(V, r1)
+        EnviarMensaje(V, r3)
+        RecibirMensaje(ok, *)
+        RecibirMensaje(ok, *)
+      sino
+        EnviarMensaje(V, r1)
+        EnviarMensaje(V, r2)
+        RecibirMensaje(ok, *)
+        RecibirMensaje(ok, *)
+    repetir 19
+      repetir 5
+        mover
+        juntarP
+      si(id = 1)
+        EnviarMensaje(V, r2)
+        EnviarMensaje(V, r3)
+        RecibirMensaje(ok, *)
+        RecibirMensaje(ok, *)
+      sino
+        si(id = 2)
+          EnviarMensaje(V, r1)
+          EnviarMensaje(V, r3)
+          RecibirMensaje(ok, *)
+          RecibirMensaje(ok, *)
+        sino
+          EnviarMensaje(V, r1)
+          EnviarMensaje(V, r2)
+          RecibirMensaje(ok, *)
+          RecibirMensaje(ok, *)
+  fin  
+  robot identificador
+  comenzar
+    EnviarMensaje(1, r1)
+    EnviarMensaje(2, r2)
+    EnviarMensaje(3, r3)
+  fin
+variables
+  r1 : robot1
+  r2 : robot1
+  r3 : robot1
+  rI : identificador
+comenzar
+  AsignarArea(r1, area1)
+  AsignarArea(r2, area2)
+  AsignarArea(r3, area3)
+  AsignarArea(rI, aux)
+  Iniciar(r1, 1, 1)
+  Iniciar(r2, 2, 1)
+  Iniciar(r3, 3, 1)
+  Iniciar(rI, 5, 5)
+fin

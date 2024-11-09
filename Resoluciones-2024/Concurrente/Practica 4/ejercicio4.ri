@@ -1,0 +1,101 @@
+programa ejercicio4
+procesos
+  proceso recogerFlores
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+  fin
+  proceso recogerPapeles
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+  fin
+  proceso vaciarBolsa
+  comenzar
+    mientras(HayPapelEnLaBolsa)
+      depositarPapel
+    mientras(HayFlorEnLaBolsa)
+      depositarFlor
+  fin
+areas
+  areaJ : AreaP(1, 1, 1, 1)
+  area1: AreaP(2, 1, 2, 1)
+  area2 : AreaP(3, 1,3 ,1)
+  cuadrante: AreaPC(2, 2, 100, 100)
+robots
+  robot slave
+  variables
+    x, y : numero
+    posX, posY : numero
+    tarea : numero
+  comenzar
+    RecibirMensaje(tarea, rJefe)
+    posX := PosAv
+    posY := PosCa
+    mientras(tarea <> 4)
+      RecibirMensaje(x, rJefe)
+      RecibirMensaje(y, rJefe)
+      BloquearEsquina(x, y)
+      Pos(x, y)
+      si(tarea = 1) 
+        recogerFlores
+      sino
+        si(tarea = 2)
+          recogerPapeles
+        sino
+          vaciarBolsa
+      Pos(posX, posY)
+      LiberarEsquina(x, y)
+      RecibirMensaje(tarea, rJefe)
+  fin
+  robot jefe
+  variables
+    trabajador: numero
+    tarea: numero
+    av, ca: numero
+    trabajadorUnoActivo, trabajadorDosActivo: boolean
+  comenzar
+    trabajadorUnoActivo := V
+    trabajadorDosActivo := V
+    repetir 10
+      si ((trabajadorUnoActivo) & (trabajadorDosActivo))
+        Random(trabajador, 1, 2)
+      sino
+        si ((trabajadorUnoActivo) & ~(trabajadorDosActivo))
+          trabajador := 1
+        sino
+          trabajador := 2
+          Random(tarea, 1, 4)
+      Random(av, 2, 100)
+      Random(ca, 2, 100)
+      si (trabajador = 1)
+        EnviarMensaje(tarea, r1)
+        EnviarMensaje(av, r1)
+        EnviarMensaje(ca, r1)
+        si (tarea = 4)
+          trabajadorUnoActivo := F
+      sino
+        EnviarMensaje(tarea, r2)
+        EnviarMensaje(av, r2)
+        EnviarMensaje(ca, r2)
+        si (tarea = 4)
+          trabajadorDosActivo := F
+    si (trabajadorUnoActivo)
+      EnviarMensaje(4, r1)
+    si (trabajadorDosActivo)
+      EnviarMensaje(4, r2)  
+  fin
+variables
+  r1 : slave
+  r2 : slave
+  rJefe : jefe
+comenzar
+  AsignarArea(rJefe, areaJ)
+  AsignarArea(r1, area1)
+  AsignarArea(r2, area2)
+  AsignarArea(r1, cuadrante)
+  AsignarArea(r2, cuadrante)
+  Iniciar(rJefe, 1, 1)
+  Iniciar(r1, 2, 1)
+  Iniciar(r2, 3, 1)
+fin
