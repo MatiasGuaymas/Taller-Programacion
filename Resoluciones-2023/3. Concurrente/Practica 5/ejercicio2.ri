@@ -1,0 +1,114 @@
+programa ej2
+procesos
+  proceso juntarF(ES flores : numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores := flores + 1
+  fin
+  proceso recorrer(E cant : numero)
+  variables
+    f : numero
+    x, y : numero
+  comenzar
+    f := 0
+    repetir cant
+      juntarF(f)
+      mover
+    si PosAv = 100
+      juntarF(f)
+    x := PosAv
+    y := PosCa
+    BloquearEsquina(50, 50)
+    Pos(50, 50)
+    repetir f
+      depositarFlor
+    Pos(x, y)
+    LiberarEsquina(50, 50)
+  fin   
+areas
+  area1 : AreaP(1, 1, 100, 1)
+  area2 : AreaP(1, 2, 100, 2)
+  area3 : AreaP(1, 3, 100, 3)
+  areaF : AreaP(1, 4, 1, 4)
+  esquina : AreaC(50, 50, 50, 50)
+robots
+  robot robot1
+  variables
+    ok : boolean
+    id : numero
+  comenzar
+    derecha
+    RecibirMensaje(id, RJ)
+    recorrer(9)
+    si(id = 1)
+      EnviarMensaje(V, r2)
+      EnviarMensaje(V, r3)
+      RecibirMensaje(ok, *)
+      RecibirMensaje(ok, *)
+    sino
+      si(id = 2)
+        EnviarMensaje(V, r1)
+        EnviarMensaje(V, r3)
+        RecibirMensaje(ok, *)
+        RecibirMensaje(ok, *)
+      sino
+        EnviarMensaje(V, r1)
+        EnviarMensaje(V, r2)
+        RecibirMensaje(ok, *)
+        RecibirMensaje(ok, *)
+    repetir 9
+      recorrer(10)
+      si(id = 1)
+        EnviarMensaje(V, r2)
+        EnviarMensaje(V, r3)
+        RecibirMensaje(ok, *)
+        RecibirMensaje(ok, *)
+      sino
+        si(id = 2)
+          EnviarMensaje(V, r1)
+          EnviarMensaje(V, r3)
+          RecibirMensaje(ok, *)
+          RecibirMensaje(ok, *)
+        sino
+          EnviarMensaje(V, r1)
+          EnviarMensaje(V, r2)
+          RecibirMensaje(ok, *)
+          RecibirMensaje(ok, *)
+    EnviarMensaje(V, RJ)
+  fin
+  robot robotJ
+  variables
+    ok : boolean
+    x, y : numero
+    total : numero
+  comenzar
+    EnviarMensaje(1, r1)
+    EnviarMensaje(2, r2)
+    EnviarMensaje(3, r3)
+    repetir 3
+      RecibirMensaje(ok, *)
+    Pos(50, 50)
+    total := 0
+    juntarF(total)
+    Informar(total)
+  fin
+variables
+  r1 : robot1
+  r2 : robot1
+  r3 : robot1
+  RJ : robotJ
+comenzar
+  AsignarArea(r1, area1)
+  AsignarArea(r2, area2)
+  AsignarArea(r3, area3)
+  AsignarArea(RJ, areaF)
+  AsignarArea(r1, esquina)
+  AsignarArea(r2, esquina)
+  AsignarArea(r3, esquina)
+  AsignarArea(RJ, esquina)
+  Iniciar(r1, 1, 1)
+  Iniciar(r2, 1, 2)
+  Iniciar(r3, 1, 3)
+  Iniciar(RJ, 1, 4)
+fin

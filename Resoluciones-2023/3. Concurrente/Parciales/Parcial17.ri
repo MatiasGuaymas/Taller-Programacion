@@ -1,0 +1,112 @@
+programa parcial17
+procesos
+  proceso izquierda
+  comenzar
+    repetir 3
+      derecha
+  fin
+  proceso juntarP(ES p: numero; ES esq: numero)
+  comenzar
+    si(HayPapelEnLaEsquina)
+      esq:= esq+1
+      mientras(HayPapelEnLaEsquina)
+        tomarPapel
+        p:= p+1
+  fin
+  proceso depositarPapelesSeguro(E p: numero)
+  variables
+    avIni, caIni: numero
+  comenzar
+    avIni:= PosAv
+    caIni:= PosCa
+    BloquearEsquina(99,99)
+    Pos(99,99)
+    repetir p
+      depositarPapel
+    Pos(avIni, caIni)
+    LiberarEsquina(99,99)
+  fin
+  proceso unLadoEscalon(E lado: numero; ES total: numero; ES esq: numero)
+  variables
+    p: numero
+  comenzar
+    p:= 0
+    repetir lado
+      juntarP(p, esq)
+      mover
+    total:= total + p
+    depositarPapelesSeguro(p)    
+  fin
+areas
+  areaR1: AreaP(2,1,18,13)
+  areaR2: AreaP(32,1,48,13)
+  areaR3: AreaP(62,1,78,13)
+  areaRF: AreaP(1,1,1,1)
+  esquina: AreaC(99,99,99,99)
+robots
+  robot papelero
+  variables
+    id, total, esq, alto, ancho: numero
+    ok: boolean
+  comenzar
+    RecibirMensaje(id, rf)
+    total:=0
+    esq:=0
+    Random(alto, 1, 3)
+    Random(ancho,2, 4)
+    repetir 4
+      unLadoEscalon(alto, total, esq)
+      derecha
+      unLadoEscalon(ancho, total, esq)
+      izquierda
+      EnviarMensaje(V, rf)
+      RecibirMensaje(ok, rf)
+    EnviarMensaje(total, rf)
+    RecibirMensaje(ok, rf)
+    EnviarMensaje(esq, rf)
+  fin
+  robot fiscalizador
+  variables
+    cant, total, esq, esqTotal: numero
+    ok: boolean
+  comenzar
+    EnviarMensaje(1, r1)
+    EnviarMensaje(2, r2)
+    EnviarMensaje(3, r3)
+    repetir 4
+      repetir 3
+        RecibirMensaje(ok, *)
+      EnviarMensaje(V, r1)
+      EnviarMensaje(V, r2)
+      EnviarMensaje(V, r3)
+    repetir 3
+      RecibirMensaje(cant, *)
+      total:= total + cant
+    EnviarMensaje(V, r1)
+    EnviarMensaje(V, r2)
+    EnviarMensaje(V, r3)
+    repetir 3
+      RecibirMensaje(esq, *)
+      esqTotal:= esqTotal + esq
+    Pos(99, 99)
+    repetir total
+      tomarPapel
+    Informar(esqTotal)
+  fin
+variables
+  r1, r2, r3: papelero
+  rf: fiscalizador
+comenzar
+  AsignarArea(r1, areaR1)
+  AsignarArea(r2, areaR2)
+  AsignarArea(r3, areaR3)
+  AsignarArea(rf, areaRF)
+  AsignarArea(r1, esquina)
+  AsignarArea(r2, esquina)
+  AsignarArea(r3, esquina)
+  AsignarArea(rf, esquina)
+  Iniciar(r1,2,1)
+  Iniciar(r2,32,1)
+  Iniciar(r3,62,1)
+  Iniciar(rf,1,1)
+fin
