@@ -2,10 +2,7 @@
 
 > [!WARNING]
 > Las soluciones, explicaciones o guías compartidas en este repositorio son propuestas personales y no representan en ningún momento las opiniones 
-> oficiales, resoluciones ni contenidos aprobados por la cátedra de las materia.
-
-> [!TIP]
-> Se recomienda tomar esta información como una referencia adicional y siempre corroborar con el material oficial y/o consultar a los profesores titulares para resolver dudas específicas.
+> oficiales, resoluciones ni contenidos aprobados por la cátedra de la materia.
 
 ## Prácticas 2024
 ### Imperativo
