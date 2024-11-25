@@ -5,7 +5,7 @@
 > oficiales, resoluciones ni contenidos aprobados por la cátedra de las materia.
 
 > [!TIP]
-> Se recomienda a los estudiantes tomar esta información como una referencia adicional y siempre corroborar con el material oficial y/o consultar > a los profesores titulares para resolver dudas específicas.
+> Se recomienda tomar esta información como una referencia adicional y siempre corroborar con el material oficial y/o consultar a los profesores titulares para resolver dudas específicas.
 
 ## Prácticas 2024
 ### Imperativo
