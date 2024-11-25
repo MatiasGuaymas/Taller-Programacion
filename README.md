@@ -1,8 +1,7 @@
 <h1 align="center"> Taller de Programación </h1>
 
 > [!WARNING]
-> Las soluciones, explicaciones o guías compartidas en este repositorio son propuestas personales y no representan en ningún momento las opiniones 
-> oficiales, resoluciones ni contenidos aprobados por la cátedra de la materia.
+> Las soluciones, explicaciones o guías compartidas en este repositorio son propuestas personales y no representan en ningún momento las opiniones oficiales, resoluciones ni contenidos aprobados por la cátedra de la materia.
 
 ## Prácticas 2024
 ### Imperativo
