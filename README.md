@@ -1,10 +1,11 @@
 <h1 align="center"> Taller de Programación </h1>
 
-> [!TIP]
-> Recomiendo que miren las prácticas resueltas de 2024, las de 2023 están desactualizadas y con algunos errores.
-> Hay más modelos de parciales en el apartado de 2023.
+> [!WARNING]
+> Las soluciones, explicaciones o guías compartidas en este repositorio son propuestas personales y no representan en ningún momento las opiniones 
+> oficiales, resoluciones ni contenidos aprobados por la cátedra de las materia.
 
-### [**Modelos de parciales 2024**](https://github.com/MatiasGuaymas/Taller-Programacion/tree/main/Resoluciones-2024/Modelos%20de%20parciales)
+> [!TIP]
+> Se recomienda a los estudiantes tomar esta información como una referencia adicional y siempre corroborar con el material oficial y/o consultar > a los profesores titulares para resolver dudas específicas.
 
 ## Prácticas 2024
 ### Imperativo
@@ -31,15 +32,12 @@
 ## Prácticas 2023
 ### Imperativo PDF [*](https://github.com/MatiasGuaymas/Taller-Programacion/tree/main/Resoluciones-2023/1.%20Imperativo/Practicas%20PDF)
 * [**Prácticas**](https://github.com/MatiasGuaymas/Taller-Programacion/tree/main/Resoluciones-2023/1.%20Imperativo)
-* [**Parciales Resueltos**](https://github.com/MatiasGuaymas/Taller-Programacion/tree/main/Resoluciones-2023/1.%20Imperativo/Parciales)
 
 ### Objetos PDF [*](https://github.com/MatiasGuaymas/Taller-Programacion/tree/main/Resoluciones-2023/2.%20Objetos/Practicas%20PDF)
 * [**Prácticas**](https://github.com/MatiasGuaymas/Taller-Programacion/tree/main/Resoluciones-2023/2.%20Objetos/TP_ProyectoAlumnos/src)
-* [**Parciales Resueltos**](https://github.com/MatiasGuaymas/Taller-Programacion/tree/main/Resoluciones-2023/2.%20Objetos/TP_ProyectoAlumnos/src/Parciales)
 
 ### Concurrente PDF [*](https://github.com/MatiasGuaymas/Taller-Programacion/tree/main/Resoluciones-2023/3.%20Concurrente/Practicas%20PDF)
 * [**Prácticas**](https://github.com/MatiasGuaymas/Taller-Programacion/tree/main/Resoluciones-2023/3.%20Concurrente)
-* [**Parciales Resueltos**](https://github.com/MatiasGuaymas/Taller-Programacion/tree/main/Resoluciones-2023/3.%20Concurrente/Parciales)
 
 ## Cómo contribuir
 * Darle estrella (Star) al repositorio.
